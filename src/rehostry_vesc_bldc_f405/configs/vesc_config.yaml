@@ -1,0 +1,195 @@
+# Copyright 2026 Christopher Wright
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# vesc-bldc-f405 -- HALucinator config for the VESC firmware (vedderb/bldc @
+# e4db57a8, FW 7.01) built for the Trampa VESC 100/250: STM32F405RG,
+# Cortex-M4F, ChibiOS 3.0.5. Everything here describes a stock upstream
+# `make 100_250`; nothing in the image was written for the re-host.
+#
+# Layout, recovered from 100_250.elf by tools/extract_firmware.py:
+#   PT_LOAD 0x08000000  startup(vectors) + .text2   0x03cd0
+#   PT_LOAD 0x0800c000  .text + .rodata             0x6d5b0
+#   PT_LOAD 0x080795b0  .data init image -> 0x20001000
+#   PT_LOAD 0x0807fff0  .crcinfo (app-CRC slot, left 0xFFFFFFFF)
+#   vectors  init SP 0x20000800   reset 0x0800c001 (Thumb)
+# 0x08004000-0x0800c000 is left ERASED (0xFF): those are the two 16 KiB pages
+# VESC's emulated EEPROM lives in (driver/eeprom.h:40-50), and the driver
+# recognises an unused page by its 0xFFFF status halfword.
+
+machine:
+  arch: cortex-m3               # unicorn's M-profile model; covers ARMv7-M
+  cpu_model: cortex-m3          # (the FPU is selected by HAL_CORTEXM_CPU_MODEL
+                                #  in spawn.py -- the YAML key does NOT do it,
+                                #  playbook §2.120)
+  entry_addr: 0x0800c001        # Reset_Handler, Thumb bit set
+  init_sp: 0x20000800           # vector[0] = top of ChibiOS' main stack
+  vector_base: 0x08000000       # the app IS at the flash base on this board
+  interrupt_controller:
+    type: cortex_m              # NVIC
+
+memories:
+  # The STM32 BOOT-REMAP ALIAS. 0x00000000-0x000FFFFF mirrors whatever the BOOT
+  # pins select, which on a board that boots from its own flash is main flash.
+  # This is not decoration: on a COLD first boot, with the emulated EEPROM still
+  # erased, VESC's conf_general_init() ends in conf_general_store_backup_data(),
+  # which calls mc_interface_release_motor_override_both() BEFORE
+  # mc_interface_init() has ever run. `m_motor_1` is still zeroed .bss, so
+  # motor_type reads MOTOR_TYPE_BLDC (0) and the call reaches mcpwm.c's
+  # stop_pwm_hw(), whose last line is `set_switching_frequency(conf->m_bldc_f_sw_max)`
+  # with the file-static `conf` pointer still NULL. That is a real null-pointer
+  # read of address 0x268 in shipping VESC firmware; it is harmless on silicon
+  # only because the alias makes address 0 readable. Without this region the
+  # rehost dies at 0x080550e8 with UC_ERR_READ_UNMAPPED, which reads like a
+  # rehost bug and is not one.
+  flash_alias:
+    base_addr: 0x00000000
+    file: vesc.bin
+    permissions: r-x
+    size: 0x00100000
+  # 1 MiB of flash. Writable: VESC programs its emulated EEPROM (sectors 1-2)
+  # through the flash controller, and on silicon those stores go to the array
+  # itself. The image is padded to the full megabyte with 0xFF by the extractor.
+  flash:
+    base_addr: 0x08000000
+    file: vesc.bin
+    permissions: rwx
+    size: 0x00100000
+  # 128 KiB main SRAM: ChibiOS' stacks, .data, .bss, .noinit (crash_info).
+  sram:
+    base_addr: 0x20000000
+    permissions: rw-
+    size: 0x00020000
+  # 64 KiB core-coupled memory. VESC puts .ram4 here -- the uartcomm thread's
+  # working area, the LispBM heap, and `g_backup`.
+  ccm:
+    base_addr: 0x10000000
+    permissions: rw-
+    size: 0x00010000
+  # STM32 system memory: the factory ROM bootloader. Split around the modelled
+  # UID page below, because overlapping regions leave the overlap UNMAPPED
+  # (playbook §2.39).
+  sysmem_low:
+    base_addr: 0x1fff0000
+    permissions: r--
+    size: 0x00007000
+  sysmem_high:
+    base_addr: 0x1fff8000
+    permissions: r--
+    size: 0x00008000
+  # HALucinator's IRQ/exception scratch windows.
+  halucinator-irq:
+    base_addr: 0x03ffc000
+    size: 0x00004000
+  halucinator:
+    base_addr: 0x04000000
+    size: 0x00100000
+
+peripherals:
+  # The die's unique ID (0x1FFF7A10) -- read straight into COMM_FW_VERSION's
+  # reply. Unmapped this is a UC_ERR_READ_UNMAPPED and a dead run (§2.80).
+  uid_page:
+    base_addr: 0x1fff7000
+    emulate: rehostry_vesc_bldc_f405.peripheral_models.stm32_sysmem.Stm32SystemMemory
+    permissions: r--
+    size: 0x00001000
+
+  # TIM2..TIM5 and the rest of the low APB1 block, up to the USART page.
+  soc_apb1_low:
+    base_addr: 0x40000000
+    emulate: rehostry_vesc_bldc_f405.peripheral_models.soc_catchall.SocCatchAll
+    permissions: rw-
+    size: 0x00004000
+
+  # USART2 / USART3 / UART4 share this page. USART3 is the COMM seam.
+  usart_page:
+    base_addr: 0x40004000
+    emulate: rehostry_vesc_bldc_f405.peripheral_models.stm32_usart.Stm32UsartBlock
+    permissions: rw-
+    size: 0x00001000
+
+  # I2C1/2/3.
+  soc_apb1_i2c:
+    base_addr: 0x40005000
+    emulate: rehostry_vesc_bldc_f405.peripheral_models.soc_catchall.SocCatchAll
+    permissions: rw-
+    size: 0x00001000
+
+  # bxCAN: CAN1 (+0x400) and CAN2 (+0x800). ChibiOS' can_lld_start waits for
+  # MSR.INAK to SET and then to CLEAR; the catch-all's all-ones breaker can only
+  # ever satisfy one of those (playbook §2.72).
+  can_page:
+    base_addr: 0x40006000
+    emulate: rehostry_vesc_bldc_f405.peripheral_models.stm32_bxcan.Stm32BxCan
+    permissions: rw-
+    size: 0x00001000
+
+  # PWR, DAC and everything else up to (but not including) the CRC/RCC/FLASH page.
+  soc_apb1_high:
+    base_addr: 0x40007000
+    emulate: rehostry_vesc_bldc_f405.peripheral_models.soc_catchall.SocCatchAll
+    permissions: rw-
+    size: 0x0001c000
+
+  # CRC (+0x000), RCC (+0x800), embedded-flash interface (+0xc00). All three
+  # need real behaviour; see peripheral_models/stm32_clock.py.
+  clock_block:
+    base_addr: 0x40023000
+    emulate: rehostry_vesc_bldc_f405.peripheral_models.stm32_clock.Stm32ClockBlock
+    permissions: rw-
+    size: 0x00001000
+
+  # DMA, the AHB peripherals, OTG_FS/HS, RNG -- everything above the clock page.
+  soc_high:
+    base_addr: 0x40024000
+    emulate: rehostry_vesc_bldc_f405.peripheral_models.soc_catchall.SocCatchAll
+    permissions: rw-
+    size: 0x1ffdc000
+
+  # NOTE: no entry for the Cortex-M private peripheral bus (0xE0000000). The
+  # backend maps it as plain RW memory and maintains SCB->ICSR itself, which is
+  # exactly what ChibiOS' ARMv7-M exception epilogue needs -- it tests
+  # ICSR.RETTOBASE and skips the reschedule if it is clear (playbook §2.56). An
+  # absorbing model there would swallow that and the kernel would tick forever
+  # without ever switching to a thread.
+
+intercepts:
+  # --- the clock and the serial interrupt (bp_handlers/chibios_pump.py) -----
+  - class: rehostry_vesc_bldc_f405.bp_handlers.chibios_pump.ChibiosIdlePump
+    function: _idle_thread
+
+  # --- the cycle-counter busy delay (bp_handlers/dwt_delay.py) -------------
+  # DWT->CYCCNT lives in the backend-owned PPB and never advances, so ChibiOS'
+  # chSysPolledDelayX() can never satisfy its own loop.
+  - class: rehostry_vesc_bldc_f405.bp_handlers.dwt_delay.PolledDelay
+    function: chSysPolledDelayX
+
+  # --- the reset the firmware asks for (bp_handlers/system_reset.py) -------
+  # unicorn implements no SYSRESETREQ, so CMSIS' NVIC_SystemReset() is a
+  # permanent `b .`. VESC reaches one on its FIRST boot (it programs the app
+  # CRC and reboots so the value takes effect) and one more from COMM_REBOOT,
+  # which is attacker-reachable. The three sites are found by scanning the
+  # image (tools/extract_firmware.py emits sysresetreq_spin_N) so a rebuild
+  # moves them instead of leaving the intercepts on the wrong instruction.
+  - class: rehostry_vesc_bldc_f405.bp_handlers.system_reset.SystemReset
+    function: sysresetreq_spin_0
+  - class: rehostry_vesc_bldc_f405.bp_handlers.system_reset.SystemReset
+    function: sysresetreq_spin_1
+  - class: rehostry_vesc_bldc_f405.bp_handlers.system_reset.SystemReset
+    function: sysresetreq_spin_2
+
+  # --- name a kernel panic instead of an anonymous spin (§2.67) -------------
+  - class: rehostry_vesc_bldc_f405.bp_handlers.boot_trace.ChibiosHalt
+    function: chSysHalt
+  - class: rehostry_vesc_bldc_f405.bp_handlers.boot_trace.ChibiosHalt
+    function: main_system_halt
+
+  # --- boot milestones (observe-only) --------------------------------------
+  - {class: rehostry_vesc_bldc_f405.bp_handlers.boot_trace.BootTrace, function: main, registration_args: {label: "main"}}
+  - {class: rehostry_vesc_bldc_f405.bp_handlers.boot_trace.BootTrace, function: conf_general_init, registration_args: {label: "conf_general_init (emulated EEPROM)"}}
+  - {class: rehostry_vesc_bldc_f405.bp_handlers.boot_trace.BootTrace, function: mc_interface_init, registration_args: {label: "mc_interface_init (motor control)"}}
+  - {class: rehostry_vesc_bldc_f405.bp_handlers.boot_trace.BootTrace, function: commands_init, registration_args: {label: "commands_init (the COMM stack)"}}
+  - {class: rehostry_vesc_bldc_f405.bp_handlers.boot_trace.BootTrace, function: app_uartcomm_initialize, registration_args: {label: "app_uartcomm_initialize"}}
+  - {class: rehostry_vesc_bldc_f405.bp_handlers.boot_trace.BootTrace, function: app_uartcomm_start, registration_args: {label: "app_uartcomm_start (SD3 = USART3)"}}
+  - {class: rehostry_vesc_bldc_f405.bp_handlers.boot_trace.BootTrace, function: app_set_configuration, registration_args: {label: "app_set_configuration"}}
+  - {class: rehostry_vesc_bldc_f405.bp_handlers.boot_trace.BootTrace, function: timeout_init, registration_args: {label: "timeout_init"}}
+  - {class: rehostry_vesc_bldc_f405.bp_handlers.boot_trace.BootTrace, function: commands_process_packet, registration_args: {label: "commands_process_packet (a COMM packet arrived)"}}

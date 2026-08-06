@@ -1,0 +1,23 @@
+# Firmware bytes are NOT committed. The VESC firmware is GPL-3.0 and this
+# package is AGPL-3.0-or-later; build it yourself (FIRMWARE.md) and regenerate
+# the image with tools/extract_firmware.py.
+*.bin
+*.elf
+*.out
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# run artifacts
+*.log
+tmp/
+
+.DS_Store
+
+# scratch
+diag.yaml

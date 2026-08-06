@@ -257,3 +257,24 @@ own right — and the firmware answers `"-> fault \n"` from its own
    record that actually matters (`vector table slot … is zero or unmapped`) is a
    WARNING, so the shipped `logging.cfg` sets that logger to WARNING and says how
    to raise it.
+
+## Adversarial verification
+
+Every claim above was re-tested against a deliberate attempt to break it.
+
+| check | result |
+|---|---|
+| **Cold re-run, 3×**, each a fresh process from a fresh boot | `RESULT: {"booted": true, "landed": true}`, exit 0, **3/3**, with byte-identical evidence each time (`readback_in_current_max_bytes` `43960000`, `readback_current_max_scale_bytes` `03e8`, ack frame `020130365303`) |
+| **Polluted environment** — `HALUCINATOR_SRC=/nonexistent/x PYTHONPATH=/nonexistent/x` | same result; `spawn_env()` strips both, and `tests/test_structure.py` asserts it |
+| **Negative control 1** (attack frame, one CRC byte flipped) | no reply, configuration unchanged — the firmware dropped it |
+| **Negative control 2** (5000 A / scale 9.0 through the same command) | acked but **clamped** to 300.0 / 1.0 — the firmware discriminates |
+| **Static prediction** written before the first boot | matched, 41/41 bytes including the CRC |
+| **Structural tests** (no emulator) | 20 passed — config/image agreement, every intercept symbol resolves, every scanned reset site is intercepted, no overlapping or misaligned regions, `crc16_tab` present verbatim in the image, and CRC/float encodings checked against independent implementations *and* against a plausible wrong constant that must disagree |
+
+Reproduce:
+
+```bash
+rehostry-vesc-bldc-f405-attack                       # expect RESULT: {"booted": true, "landed": true}
+HALUCINATOR_SRC=/nonexistent/x PYTHONPATH=/nonexistent/x rehostry-vesc-bldc-f405-attack
+python3 -m pytest tests/test_structure.py -q
+```

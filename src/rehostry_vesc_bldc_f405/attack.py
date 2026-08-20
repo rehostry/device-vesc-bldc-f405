@@ -88,6 +88,15 @@ ATTACK_CURRENT_MAX_SCALE = 0.10
 TERMINAL_PROBE = b"fault"
 
 BOOT_MARKER = "USART3: enabled by the firmware"
+#: Falsification knob for the census seam.  With ``HAL_SEAM_CONTROL=1`` no VESC
+#: packet is ever put on the wire, so the firmware's own packet.c never answers
+#: and ``vesc_packet_round_trip`` -- and therefore ``landed`` -- must come out
+#: false.  A seam boolean that no control can move is not evidence.  It is armed
+#: only after the boot oracle has been satisfied, so the control falsifies the
+#: evidence seam rather than the boot check in front of it.
+SEAM_CONTROL = os.environ.get("HAL_SEAM_CONTROL") == "1"
+_SEAM_ARMED = False
+
 BOOT_TIMEOUT = float(os.environ.get("VESC_BOOT_TIMEOUT", "900"))
 REPLY_TIMEOUT = float(os.environ.get("VESC_REPLY_TIMEOUT", "180"))
 # How long to wait when the firmware's source says NOTHING should come back.
@@ -192,6 +201,8 @@ class VescScenario:
     # ---- protocol ----------------------------------------------------------
     def _send(self, raw: bytes) -> None:
         assert self._sock is not None
+        if SEAM_CONTROL and _SEAM_ARMED:
+            return
         self._sock.sendall(raw)
 
     def _read_frame(self, timeout: float = REPLY_TIMEOUT,
@@ -415,18 +426,39 @@ def run_attack(on_stage: Optional[Callable] = None,
             on_stage(name, **d)
 
     sc = VescScenario(python=sys.executable, log_dir=log_dir or "/tmp")
-    result: dict = {"booted": False, "landed": False}
+    result: dict = {"booted": False, "landed": False, "milestone": "M1",
+                    "vesc_packet_round_trip": False,
+                    "seam_control": SEAM_CONTROL}
     try:
         if not sc.boot(stage):
             return result
         result["booted"] = True
+        # M2/M3: the boot oracle is the firmware's own output over its own
+        # protocol engine, which needs ChibiOS scheduling its comm threads.
+        result["milestone"] = "M3"
         state = sc.read_state()
         stage("read", state=state)
+        global _SEAM_ARMED
+        _SEAM_ARMED = SEAM_CONTROL
         atk = sc.attack()
         stage("attack", result=atk)
         result["state"] = state
         result["attack"] = atk
-        result["landed"] = bool(atk.get("landed"))
+        # THE SEAM (M4).  Every clause is a reply the firmware framed and CRC'd
+        # with its own packet.c: an independent COMM_GET_MCCONF read-back
+        # reporting the attacker's value, the SAME frame with one CRC byte
+        # flipped dropped in silence, and absurd values clamped by the
+        # firmware's own utils_truncate_number() against this board's limits.
+        # Inbound protocol request -> outbound firmware-composed reply that
+        # DISCRIMINATES on the request.
+        result["vesc_packet_round_trip"] = bool(
+            atk.get("changed")
+            and atk.get("neg_bad_crc_rejected")
+            and atk.get("neg_clamp_enforced"))
+        result["landed"] = bool(atk.get("landed")
+                                and result["vesc_packet_round_trip"])
+        if result["landed"]:
+            result["milestone"] = "M4"
     finally:
         sc.shutdown()
     return result
@@ -446,7 +478,9 @@ def main() -> int:
 
     res = run_attack(on_stage=show)
     print("RESULT:", json.dumps({k: v for k, v in res.items()
-                                 if k in ("booted", "landed")}))
+                                 if k in ("booted", "landed", "milestone",
+                                          "vesc_packet_round_trip",
+                                          "seam_control")}))
     return 0 if res.get("landed") else 1
 
 

@@ -126,7 +126,7 @@ def main(argv=None) -> int:
     r.set_defaults(func=cmd_run)
 
     a = sub.add_parser("attack", help="run the unauthenticated COMM_SET_MCCONF "
-                                      "attack (prints one RESULT: {json} line)")
+                                      "attack (prints one RESULT-tagged JSON verdict)")
     a.set_defaults(func=cmd_attack)
 
     pan = sub.add_parser("panel", help="serve the live web panel")

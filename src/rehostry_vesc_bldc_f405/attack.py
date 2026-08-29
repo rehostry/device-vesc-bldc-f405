@@ -143,7 +143,7 @@ class VescScenario:
             self._sock = None
         for p in self._procs:
             try:
-                os.killpg(os.getpgid(p.pid), 15)
+                os.killpg(p.pid, 15)
             except Exception:  # noqa: BLE001
                 pass
             try:

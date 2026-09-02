@@ -1,4 +1,4 @@
-<!-- rehostry-census: milestone=M4 landed=true verdict=M4-OK verified=2026-08-28 method=live-run -->
+<!-- rehostry-census: milestone=M4 landed=true verdict=M4-OK verified=2026-09-02 method=live-run -->
 <!-- Copyright 2026 Christopher Wright; SPDX-License-Identifier: AGPL-3.0-or-later -->
 # Status — device-vesc-bldc-f405
 
@@ -279,3 +279,94 @@ rehostry-vesc-bldc-f405-attack                       # expect RESULT: {"booted":
 HALUCINATOR_SRC=/nonexistent/x PYTHONPATH=/nonexistent/x rehostry-vesc-bldc-f405-attack
 python3 -m pytest tests/test_structure.py -q
 ```
+
+
+## Startup gates — telling a dead install from a dead device (2026-09-02)
+
+`run_attack` pre-initialised its result with `"milestone": "M1"` and returned it
+verbatim from `if not sc.boot(stage): return result`. Every failure inside
+`boot()` — the emulator process exiting, USART3 never coming up, the bridge
+refusing a connection — therefore reported **M1**, and `census_score.score()`
+scored that `WALL-M1`: a *device* wall. A wrong interpreter, a missing
+`halucinator`, an import error and a firmware that genuinely walls at M1 were
+all recorded identically.
+
+That mattered on this device specifically: two core-validation agents ran it
+concurrently on 2026-09-01, on the same `--rx_port 6102` and the same fixed log
+path. A harness that cannot separate a broken install from a dead device can
+hand a core gate a false "safe to ship".
+
+Two gates now run before anything is graded. **Both are computed, neither is an
+opt-in, and neither can raise a milestone — only lower one.**
+
+**Gate 1 — the core's own positive CPU-start marker.** `halucinator.main` logs
+`Letting Unicorn Run` immediately before it enters the dispatch loop.
+
+The marker was **not printable on this device**. `python -m halucinator.main`
+runs `main.py` as `__main__`, so the marker goes to the logger `__main__`; this
+device's `configs/logging.cfg` named `root`, `halucinator.main`, `HAL_LOG` and
+the backend, but not `__main__`, so it inherited root's `ERROR` — and on the
+cores whose CWD branch loads the file with `disable_existing_loggers=True` it is
+disabled outright, where raising root's level would not help. Measured here
+before the fix: a boot that reached the firmware's own USART3 driver contained
+**zero** occurrences of the marker. `logging.cfg` now carries a
+`[logger_mainmod]` stanza (`propagate=0` plus its own handler, so it works on
+both branches); no other logger's output moved and no line prefix changed.
+
+`logging_cfg_present()` therefore tests **printability** — the file exists *and*
+names `__main__` — not mere existence. When it is false, Gate 1 reports `None`,
+never `False`, so an absent marker is never read as a startup failure when the
+real cause is that it could not have been printed.
+
+**Gate 2 — a measured-work floor.** The metric is the emulator child's own CPU
+seconds: model- and firmware-independent, and it measures *work*, so it does not
+tighten when the box is loaded. Derived from **this device's own healthy boot**,
+sampled the moment the firmware's USART3 driver enables the port:
+
+| run | CPU s at the gate | wall s | box load |
+|---|---:|---:|---:|
+| A | 25.77 | 26.1 | 22.7 |
+| B | 25.34 | 26.1 | 17.9 |
+
+1.7 % apart across a 27 % swing in load — which is why the metric is CPU time
+and not wall clock. **The floor is 2.0 CPU s, about 1/13 of that.** A floor is a
+classifier: set it near the healthy figure and a slow-but-live boot is filed as
+a dead device, which reads exactly like a device wall. The only safe direction
+to be wrong in is down. The failure it must catch reads **0.00**.
+
+Gate 2 does **not** fire when the log carries guest-fault evidence (`UC_ERR`,
+`FETCH-DERAIL`, a unicorn `UcError`). Only the core's own guest-fault path can
+emit those, so their presence proves the install works and the failure belongs
+to the firmware — a firmware that faults after 1.5 CPU seconds would otherwise
+be filed as a broken install, which is exactly the classifier failure a work
+floor must not commit.
+
+**The swallowed reason is now in the RESULT.** `note="... (see <path>)"` is
+gone; failed runs carry `error`, `error_detail`, `child_returncode` and
+`child_output_tail`, and `main()` prints the tail to stderr.
+
+`run_attack` also now honours `HAL_PY`. It passed `sys.executable` explicitly,
+which overrode the env var and made the one control arm that reproduces a broken
+install unrunnable against this harness.
+
+### The three arms, all run live on 2026-09-02
+
+| arm | how | RESULT (verbatim) | `census_score.score()` |
+|---|---|---|---|
+| healthy | `VESC_UART_PORT=31430` | `{"booted": true, "landed": true, "milestone": "M4", "vesc_packet_round_trip": true, "seam_control": false, "gate1_cpu_started": true, "gate2_child_cpu_s": 52.32, "gate2_floor_cpu_s": 2.0, "logging_cfg_present": true}` | `M4-OK` |
+| broken install | `HAL_PY=<a venv with no halucinator>` | `{"booted": false, "landed": false, "milestone": "ERROR", ..., "gate1_cpu_started": false, "gate2_child_cpu_s": 0.0, "child_returncode": 1, "error_detail": "... ModuleNotFoundError: No module named 'halucinator'"}` | `WALL` |
+| seam control | `HAL_SEAM_CONTROL=1` | unchanged — the knob still flips `landed` | `WALL-*` |
+
+The healthy arm reported `gate1 marker=True … gate2 child cpu=27.73s (floor
+2.00)` at the gate and 52.32 CPU s by the end. **The milestone did not move:
+M4 before, M4 after.** The broken-install arm moved from `WALL-M1` (a device
+wall) to `WALL` on `milestone: "ERROR"` — no rung at all, which is correct,
+because nothing was measured.
+
+## Log path (2026-09-02)
+
+`self.log` was `<log_dir>/vesc_bldc_f405_attack.log` — a constant. Two
+concurrent runs open it `"w"`, interleave and truncate, and every log-derived
+field in *both* results then describes two guests. It is now
+`vesc_bldc_f405_attack.<pid>.log`: unique per run, still findable by name, and
+the stem is unchanged so `vesc_bldc_f405_attack.*.log` still globs.

@@ -235,11 +235,26 @@ def _child_cpu_seconds(proc) -> float:
 
     Sampled while the child is still alive; returns 0.0 once it is gone or if
     it was never started, which is exactly the reading a failed startup gives.
+
+    Raises RuntimeError if psutil is missing -- see below.
     """
     if proc is None:
         return 0.0
+    # An ABSENT psutil is not a measurement of zero. Swallowing the ImportError
+    # here returned 0.0, which is byte-identical to "the emulator did no work"
+    # -- so running in a venv without psutil failed gate 2 on a HEALTHY boot and
+    # blamed the device. Distinguish the two: a gate that cannot measure must
+    # say so, not report the failing value.
     try:
         import psutil
+    except ImportError as exc:                             # noqa: BLE001
+        raise RuntimeError(
+            "gate 2 cannot measure child CPU time: psutil is not installed in "
+            f"this interpreter ({sys.executable}). This is a HARNESS fault, not "
+            "a device result -- rerun in a venv that has psutil rather than "
+            "reading the 0.0 this used to return."
+        ) from exc
+    try:
         p = psutil.Process(proc.pid)
         t = p.cpu_times()
         total = float(t.user) + float(t.system)

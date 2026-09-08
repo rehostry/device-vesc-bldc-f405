@@ -192,4 +192,10 @@ intercepts:
   - {class: rehostry_vesc_bldc_f405.bp_handlers.boot_trace.BootTrace, function: app_uartcomm_start, registration_args: {label: "app_uartcomm_start (SD3 = USART3)"}}
   - {class: rehostry_vesc_bldc_f405.bp_handlers.boot_trace.BootTrace, function: app_set_configuration, registration_args: {label: "app_set_configuration"}}
   - {class: rehostry_vesc_bldc_f405.bp_handlers.boot_trace.BootTrace, function: timeout_init, registration_args: {label: "timeout_init"}}
-  - {class: rehostry_vesc_bldc_f405.bp_handlers.boot_trace.BootTrace, function: commands_process_packet, registration_args: {label: "commands_process_packet (a COMM packet arrived)"}}
+  # `count: true` on THIS site only. commands_process_packet is reached exactly
+  # once per packet the firmware's own packet.c decoder ACCEPTED, so the running
+  # total is a guest-side count of accepted frames -- the M6 witness that a host
+  # cannot compute without reimplementing try_decode_packet(). Every other site
+  # logs its first hit only, because a per-hit log line on a hot address costs
+  # emulation speed (playbook §2.51).
+  - {class: rehostry_vesc_bldc_f405.bp_handlers.boot_trace.BootTrace, function: commands_process_packet, registration_args: {label: "commands_process_packet (a COMM packet arrived)", count: true}}

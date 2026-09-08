@@ -22,6 +22,16 @@ Seven arms, serial, each on its own bridge/rx/tx port triple.
 `PREDICTIONS-M6-M7.md` was committed **before** the first graded arm
 (`bee3100`), and every prediction in it held.
 
+⚠ **A note on the source cross-references below.** The C quoted here is read
+from a `vedderb/bldc` checkout at `b9d287b3`, which is **not** the pinned
+`e4db57a8` this image was built from. Every load-bearing claim is therefore
+also verified against **this image or a live run of it**: the `Invalid command`
+template is at image offset `0x726e1` (once) and was rendered live with a
+per-run nonce; the `bytes_left` behaviour was measured as a live A/B; the
+`float16` truncation was measured as a firmware answer of 5274 against a
+predicted 5275. Where a claim rests only on the cross-reference tree it is
+marked as such.
+
 ### The previous lane found the corpse, and both halves of its diagnosis are wrong
 
 A lane on 2026-09-08 ran one probe session here and stopped, reporting that
@@ -164,9 +174,11 @@ type help to list all available commands
 **The twin is `fault`, and that choice was checked before it was used.** A twin
 whose own answer is a refusal string would leave a witness standing in the
 valid-only control arm. `fault` answers `FAULT_CODE_NONE` and contains none.
-(The "one byte shorter" heuristic does not apply here: this console uses
-`strcmp`, not a unique-abbreviation match, so `faul` is simply another unknown
-command — which is a fact about this firmware, not a general rule.)
+(The "one byte shorter" heuristic does not apply here: this console dispatches
+on `strcmp`, not on a unique abbreviation, so `faul` is simply another unknown
+command. ⚠ That reading is from the cross-reference tree and was **not**
+separately measured on this image — it is why the graded twin is `fault` rather
+than a one-byte neighbour, not a claim the rung rests on.)
 
 **The clamp bracket is ONE binary32 step wide**, and it is graded on the raw
 bytes the firmware serialized rather than on the three-decimal rounding the

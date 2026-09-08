@@ -1162,20 +1162,31 @@ def _m7_phase(sc: "VescScenario", mint: _Mint, stage: Callable) -> dict:
              "l_in_current_max one float32 step ABOVE HW_LIM_CURRENT_IN"),
             ("l_current_max_scale", "clamp_scale",
              "l_current_max_scale above the fixed 0.0-1.0 range")):
+        # The ENCODER is per field and must be used for every prediction about
+        # that field. A first version compared the read-back against BOTH
+        # encoders "whichever matched", and `_f16_bytes(300.00003)` is
+        # 3_000_000 in an int16 -- it raised, mid-arm, on the first live run.
+        # An encoder chosen by `or` is a prediction nobody wrote down.
         if field == "l_in_current_max":
+            enc, predict = _f32_bytes, _predict_in_current_max
             good_v = _f32_neighbour(HW_LIM_CURRENT_IN, up=False)
             bad_v = _f32_neighbour(HW_LIM_CURRENT_IN, up=True)
             sent = good_v if mode == "m7-valid-only" else bad_v
             kw = {"l_in_current_max": sent, "l_current_max_scale": 0.5}
-            predict_clamped = _f32_bytes(_predict_in_current_max(bad_v))
-            predict_accept = _f32_bytes(good_v)
         else:
+            enc, predict = _f16_bytes, _predict_scale
             good_v = (mint.below(9000) + 500) / 10000.0
             bad_v = 1.0 + (mint.below(9000) + 500) / 10000.0
             sent = good_v if mode == "m7-valid-only" else bad_v
             kw = {"l_in_current_max": 250.0, "l_current_max_scale": sent}
-            predict_clamped = _f16_bytes(_predict_scale(bad_v))
-            predict_accept = _f16_bytes(good_v)
+        predict_clamped = enc(predict(bad_v))
+        predict_accept = enc(good_v)
+        # What the firmware would have stored had it NOT clamped. The class is
+        # only a measurement if that differs from the clamped prediction.
+        predict_unclamped = enc(bad_v) if field == "l_in_current_max" \
+            else _f16_bytes(min(bad_v, 3.2767))
+        assert predict_unclamped != predict_clamped, (
+            "the clamp class must send a value the firmware has to CHANGE")
         sc.drain(0.5)
         sc._send(vc.frame(vc.set_mcconf_temp_payload(
             base, store=False, ack=True, **kw)))
@@ -1186,8 +1197,7 @@ def _m7_phase(sc: "VescScenario", mint: _Mint, stage: Callable) -> dict:
         after = sc.raw_config_fields()
         got = (after or {}).get(field)
         digest.update(("clamp|%s|%s" % (name, got)).encode())
-        if got == predict_clamped and got != _f32_bytes(bad_v) \
-                and got != _f16_bytes(bad_v):
+        if got == predict_clamped and got != predict_unclamped:
             observed = "clamped-to-limit"
             res["clamp_refusals_seen"] += 1
         elif got == predict_accept:
@@ -1198,7 +1208,8 @@ def _m7_phase(sc: "VescScenario", mint: _Mint, stage: Callable) -> dict:
             else "clamped-to-limit"
         record(name, expected, observed, note,
                {"sent": sent, "got": got, "predict_clamped": predict_clamped,
-                "predict_accept": predict_accept})
+                "predict_accept": predict_accept,
+                "predict_unclamped": predict_unclamped})
         # the twin: the value ONE representable step on the other side, which
         # the firmware must store unchanged.
         sc.drain(0.5)

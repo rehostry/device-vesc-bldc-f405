@@ -178,6 +178,25 @@ def test_float_encodings_match_vesc_buffer_helpers():
     assert up > 300.0 > down
 
 
+def test_each_clamp_field_is_predicted_with_its_OWN_encoder():
+    """The refutation of my own second version, kept as a test.
+
+    The observed-answer test was written as "the read-back equals the clamped
+    prediction and is neither `_f32_bytes(bad)` nor `_f16_bytes(bad)`" -- an
+    encoder chosen by `or`. `_f16_bytes(300.00003)` is 3_000_000 in an int16,
+    so it RAISED mid-arm on the first live run, after the M6 phase had already
+    passed 6/6. The phase now binds one encoder per field.
+    """
+    with pytest.raises(struct.error):
+        A._f16_bytes(300.0)
+    src = textwrap.dedent(inspect.getsource(A._m7_phase))
+    assert "enc, predict = _f32_bytes, _predict_in_current_max" in src
+    assert "enc, predict = _f16_bytes, _predict_scale" in src
+    assert "predict_clamped = enc(predict(bad_v))" in src
+    # and the class must send something the firmware has to CHANGE
+    assert "assert predict_unclamped != predict_clamped" in src
+
+
 def test_nextafter_on_a_double_would_have_made_the_clamp_class_test_nothing():
     """The refutation of my own first version, kept as a test.
 

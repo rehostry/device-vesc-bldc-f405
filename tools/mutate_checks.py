@@ -75,6 +75,12 @@ MUTATIONS = [
      ATTACK, '    result["landed"] = bool(result.get("landed")) and \\\n'
              '        result["milestone"] in ("M4", "M6", "M7")',
      '    result["landed"] = bool(result.get("landed"))'),
+    ("the clamp field's encoder is chosen by `or` instead of per field",
+     ATTACK, "        predict_clamped = enc(predict(bad_v))",
+     "        predict_clamped = _f32_bytes(predict(bad_v))"),
+    ("the clamp class is allowed to send a value needing no clamp",
+     ATTACK, '        assert predict_unclamped != predict_clamped, (',
+     '        assert True or predict_unclamped != predict_clamped, ('),
     ("the valid-only arm sends the malformed frame anyway (w91.2)",
      ATTACK, '        sc._send(good if mode == "m7-valid-only" else raw)',
      '        sc._send(raw)'),

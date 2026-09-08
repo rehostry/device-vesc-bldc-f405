@@ -1560,6 +1560,13 @@ def main() -> int:
             return "unobservable"
         return {k: d.get(k) for k in keys}
 
+    # The full result, including EVERY graded class row, written where a
+    # reader can check the verdict against the rows that produced it. A
+    # summary line is not evidence: it cannot say WHICH class or twin moved.
+    dump = os.environ.get("VESC_RESULT_JSON")
+    if dump:
+        with open(dump, "w") as fh:
+            json.dump(res, fh, indent=1, default=str)
     print("RESULT:", json.dumps({
         **{k: v for k, v in res.items()
            if k in ("booted", "landed", "milestone",

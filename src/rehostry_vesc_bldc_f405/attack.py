@@ -1065,6 +1065,17 @@ def _m7_phase(sc: "VescScenario", mint: _Mint, stage: Callable) -> dict:
         res["error"] = "no COMM_GET_MCCONF before the M7 phase"
         return res
 
+    def record_twin(name, ok, want, got, extra=None):
+        """A twin is a graded observation too. Recording only the COUNT means a
+        failing twin cannot be named -- which is exactly where this lane's
+        first complete arm stopped: `twins 9/10`, and nothing said which."""
+        row = {"twin": name, "ok": bool(ok), "want": want, "got": got}
+        if extra:
+            row.update(extra)
+        res.setdefault("twins", []).append(row)
+        res["twins_total"] += 1
+        res["twins_ok"] += int(bool(ok))
+
     def record(name, expected, observed, note, extra=None):
         ok = (observed == expected)
         row = {"class": name, "expected": expected, "observed": observed,
@@ -1117,9 +1128,10 @@ def _m7_phase(sc: "VescScenario", mint: _Mint, stage: Callable) -> dict:
         sc._send(good)
         sc._read_frame(timeout=REPLY_TIMEOUT)
         tw = sc.raw_config_fields()
-        res["twins_total"] += 1
-        twin_ok = tw is not None and tw["l_current_max_scale"] == _f16_bytes(w)
-        res["twins_ok"] += int(twin_ok)
+        record_twin(name, tw is not None
+                    and tw["l_current_max_scale"] == _f16_bytes(w),
+                    _f16_bytes(w), (tw or {}).get("l_current_max_scale"),
+                    {"minted_scale": w})
         digest.update(("twin|%s|%s" % (name, (tw or {}).get(
             "l_current_max_scale"))).encode())
 
@@ -1150,10 +1162,10 @@ def _m7_phase(sc: "VescScenario", mint: _Mint, stage: Callable) -> dict:
     # an invalid command. Its answer is NOT itself a refusal string, which is
     # what w100.2 says to check before using a twin at all.
     tlines = sc.terminal_lines(TERMINAL_PROBE)
-    res["twins_total"] += 1
-    res["twins_ok"] += int(any(l.startswith("FAULT_CODE") for l in tlines)
-                           and not any(l.startswith("Invalid command")
-                                       for l in tlines))
+    record_twin("terminal_known",
+                any(l.startswith("FAULT_CODE") for l in tlines)
+                and not any(l.startswith("Invalid command") for l in tlines),
+                "a FAULT_CODE line and NO refusal string", tlines)
     digest.update(("termtwin|%s" % "|".join(tlines)).encode())
 
     # ---- the clamp classes: a refusal that SUBSTITUTES ------------------
@@ -1219,8 +1231,8 @@ def _m7_phase(sc: "VescScenario", mint: _Mint, stage: Callable) -> dict:
             base, store=False, ack=True, **kw2)))
         sc._read_frame(timeout=REPLY_TIMEOUT)
         tw = (sc.raw_config_fields() or {}).get(field)
-        res["twins_total"] += 1
-        res["twins_ok"] += int(tw == predict_accept)
+        record_twin(name, tw == predict_accept, predict_accept, tw,
+                    {"sent": good_v, "field": field})
         digest.update(("clamptwin|%s|%s" % (name, tw)).encode())
 
     res["reply_digest"] = digest.hexdigest()[:16]

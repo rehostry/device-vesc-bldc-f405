@@ -964,8 +964,15 @@ def _f32_bytes(v: float) -> str:
 
 
 def _f16_bytes(w: float) -> str:
-    import struct as _s
-    return _s.pack(">h", int(round(w * 10000.0))).hex()
+    """The firmware's own `buffer_append_float16`, which TRUNCATES.
+
+    Not `round()`. A twin caught this live: the minted scale 0.5275 was
+    predicted 5275 and the firmware answered 5274, because binary32(0.5275)
+    sits just below 0.5275 and `(int16_t)(number * scale)` is a C cast. It is
+    wrong for 537 of the 9000 minted values this phase can draw, so a
+    six-per-cent failure rate on a single twin is exactly what it produced.
+    """
+    return vc.float16(w).hex()
 
 
 def _f32_neighbour(v: float, up: bool) -> float:

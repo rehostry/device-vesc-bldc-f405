@@ -1,13 +1,279 @@
-<!-- rehostry-census: milestone=M4 landed=true verdict=M4-OK verified=2026-09-02 method=live-run -->
+<!-- rehostry-census: milestone=M7 landed=true verdict=M4-OK verified=2026-09-08 method=live-run -->
 <!-- Copyright 2026 Christopher Wright; SPDX-License-Identifier: AGPL-3.0-or-later -->
 # Status — device-vesc-bldc-f405
 
-**Milestone: M4** — a real VESC COMM protocol round-trip over USART3, matching a
-byte-exact prediction made before the first boot.
+**Milestone: M7** (2026-09-08) — a real VESC COMM protocol round-trip over
+USART3, matching a byte-exact prediction made before the first boot; the same
+byte-identical `COMM_GET_MCCONF` answered differently at six attacker-installed
+states; and ten classes of malformed input each answered as `comm/packet.c`
+says they must, with the seam proven alive after every one.
+
+**M5 and M8 are UNDEFINED**, not failed: this device drives one link (the
+USART3 COMM seam) to one peer, so RULES §1a leaves both undefined and the
+ladder deliberately has no branch for either.
 
 Firmware: `vedderb/bldc` @ `e4db57a8d90747091a4ea98c381fe3efc83a8722`, hardware
 target `100_250` (Trampa VESC 100/250, STM32F405RG, ChibiOS 3.0.5), built from
 source — see `FIRMWARE.md`. No firmware bytes are committed.
+
+## 2026-09-08 — M4 -> M7, and the corpse that had to be killed first
+
+Seven arms, serial, each on its own bridge/rx/tx port triple.
+`PREDICTIONS-M6-M7.md` was committed **before** the first graded arm
+(`bee3100`), and every prediction in it held.
+
+### The previous lane found the corpse, and both halves of its diagnosis are wrong
+
+A lane on 2026-09-08 ran one probe session here and stopped, reporting that
+**11 of 14 malformed frames left the next known-good `COMM_FW_VERSION` request
+unanswered**, and that this was *"the decoder's `rx_timeout` versus its own
+buffered reader, and not distinguishable from what it measured."* Stopping was
+right. The diagnosis is refutable and is refuted:
+
+* **There is no `rx_timeout` and no `packet_timerfunc`** anywhere in the pinned
+  `comm/packet.c` or `comm/packet.h`. That mechanism does not exist in this
+  firmware.
+* **The known-good round trip costs 0.01–0.02 s** on this rehost (five
+  consecutive, measured), so a 6 s `alive()` timeout was never the constraint
+  either.
+
+The real mechanism is `packet_process_byte`'s own arithmetic:
+
+```c
+if (state->bytes_left > 1) { state->bytes_left--; return; }        // swallow, no decode
+if (data_len >= PACKET_BUFFER_LEN) { write = read = 0; bytes_left = 0; }  // the ONLY reset
+```
+
+A 16-bit-length header declaring 255 bytes sets `bytes_left` to 258, and the
+decoder then **eats the next 255 bytes without attempting a decode at all** —
+so every known-good request inside that window reads as "the firmware ignored
+this", and no timer ever ends it. The only unconditional escape is the overflow
+reset, at `PACKET_BUFFER_LEN` = 520 bytes. Measured, on the same class, in the
+same run:
+
+```
+three plain known-good retries, 30 s each   ->  DEAD, 3 of 3
+then 544 bytes of filler, then one retry    ->  ALIVE in 0.03 s
+```
+
+`VescScenario.resync()` is that sequence — one cheap retry, then the flush the
+decoder's own overflow reset requires — it runs after **every** graded class,
+and `m7_ok` is false unless every one came back alive. On the graded set it
+never has to reach for the flush: **10 of 10 classes recover on the first plain
+retry, in 0.51 s each**, which is the measurement that says these ten classes
+are not corpses.
+
+⚠ **What I refused to grade.** The 16-bit-length `254 refused / 255 accepted`
+bracket the previous lane handed over is real on its refused side and costs
+**minutes** on its accepted side, and its recovery time depends on our own
+`HAL_IRQ_CHUNK` and on the USART3 model's byte-delivery rate rather than on the
+firmware. A behaviour I cannot attribute to the guest is not adversarial
+evidence, so it is recorded here and **nothing graded sits inside it**. The
+same one-unit shape was available for six bytes and is graded instead:
+
+```
+02 00 …   8-bit form declaring length 0   ->  no reply, seam alive     (refused, 0.02 s)
+02 01 …   8-bit form declaring length 1   ->  0007013130305f323530…    (answered, 0.02 s)
+```
+
+### A wrong model this row has been carrying, found by a twin
+
+The M7 phase minted `l_current_max_scale = 0.5275`, predicted the firmware
+would report **5275**, and it reported **5274**. `util/buffer.c` is
+
+```c
+buffer_append_int16(buffer, (int16_t)(number * scale), index);
+```
+
+— `(int16_t)` is a C cast, so it **truncates toward zero**. This package's
+`vesc_comm.float16` used `round()` and its docstring said rounding. The two
+disagree whenever the binary32 nearest `n/10000` sits just below it:
+**537 of the 9000 values** `n/10000` for n in 500..9500, about six per cent.
+`binary32(0.5275) * 10000` computed in binary32 is `5274.999512`.
+
+That is what a near-miss twin is for. A class with no twin would have reported
+ten of ten and the model would still be wrong — and it survived every previous
+run of this device because the M4 attack's own `0.10` is one of the values
+where truncation and rounding agree.
+
+### M6 — the same request, six states, three witnesses
+
+The request is byte-identical every round (`COMM_GET_MCCONF`). What changes is
+the configuration the attacker installs, and the sides alternate so neither
+direction can be absent by luck:
+
+```
+round over  minted scale  minted l_in_current  read back            guest counter
+  0   no    0.6284        101.85 A             188c / 42cbb333      7 accepted of 7+1 sent
+  1   YES   1.2796        316.00 A             2710 / 43960000      6 accepted of 6+2 sent
+  2   no    0.8859        292.51 A             229b / 43924148      5 accepted of 5+1 sent
+  3   YES   1.6646        444.00 A             2710 / 43960000      7 accepted of 7+2 sent
+  4   no    0.4708         94.45 A             1264 / 42bce666      7 accepted of 7+0 sent
+  5   YES   1.5236        661.00 A             2710 / 43960000      6 accepted of 6+0 sent
+```
+
+* **witness A** — the firmware's own serialized `mc_configuration`. On the
+  accepting rounds both fields carry the mint; on the clamping rounds
+  `l_in_current_max` predicts the **constant** `43960000` (300.0 A) whatever we
+  mint, so it is only half a witness there — which is why it is paired with the
+  scale, minted inside the accepted range on the same round and still moving.
+* **witness B** — `COMM_GET_MCCONF_TEMP` (id 91), a *different* handler with a
+  *different* serializer (`float32_auto`, not the int16 the full configuration
+  uses), reporting the same state: 0.62840, 1.00000, 0.88590, 1.00000,
+  0.47080, 1.00000. One wrong offset model cannot satisfy both.
+* **witness C** — a **guest counter against a per-run mint, negative in some
+  rounds**. `commands_process_packet` is reached exactly once per packet the
+  firmware's own `try_decode_packet` accepted, and this device's boot-trace
+  handler now logs every arrival. Each round mints `k` well-formed and `j`
+  malformed frames; the guest's count rose by exactly `k` in **6 of 6** rounds,
+  so the delta against what we put on the wire is `−j` — −1, −2, −1, −2, 0, 0.
+  A host cannot produce that number without reimplementing `packet.c`.
+
+### M7 — ten classes, three distinct answers, none of them graded on silence
+
+Every framing class carries a real `COMM_SET_MCCONF_TEMP` write of a per-run
+minted value, so the witness of the refusal is **the limit the firmware
+declined to move**, not the silence:
+
+```
+class               frame                                    answer                    twin (must LAND)
+hdr_len_zero        8-bit form declaring length 0            silent, no write          the same payload framed correctly
+hdr_len_over        declared length = real + 1               silent, no write          "
+hdr_len_under       declared length = real - 1               silent, no write          "
+start_byte_24bit    start byte 4 (compiled out at 512)       silent, no write          "
+stop_byte_wrong     stop byte 4                              silent, no write          "
+crc_one_bit         ONE minted bit of the CRC-16 flipped     silent, no write          "
+truncated           the last two bytes dropped               silent, no write          "
+terminal_unknown    COMM_TERMINAL_CMD + a minted nonce       renders the nonce         `fault` -> FAULT_CODE_NONE
+clamp_in_current    l_in_current_max = 43960001 (one ULP)    stored as 43960000        4395ffff stored unchanged
+clamp_scale         l_current_max_scale minted above 1.0     stored as 2710            the minted value stored
+```
+
+**The rendered witness.** `terminal_process_string()` prints
+`Invalid command: %s\ntype help to list all available commands\n`. That format
+string is at image offset `0x726e1` and appears **once**; the *rendered* line,
+carrying this run's `zz%08x` nonce, appears **zero** times in the image and
+zero times in this package. Measured:
+
+```
+-> zz1c642e0c
+Invalid command: zz1c642e0c
+type help to list all available commands
+```
+
+**The twin is `fault`, and that choice was checked before it was used.** A twin
+whose own answer is a refusal string would leave a witness standing in the
+valid-only control arm. `fault` answers `FAULT_CODE_NONE` and contains none.
+(The "one byte shorter" heuristic does not apply here: this console uses
+`strcmp`, not a unique-abbreviation match, so `faul` is simply another unknown
+command — which is a fact about this firmware, not a general rule.)
+
+**The clamp bracket is ONE binary32 step wide**, and it is graded on the raw
+bytes the firmware serialized rather than on the three-decimal rounding the
+report uses — `round(299.99997, 3)` is `300.0`, so the rounded form cannot tell
+the two sides apart at all:
+
+```
+l_in_current_max = 43960001 (300.00003)  ->  stored 43960000    CLAMPED
+l_in_current_max = 4395ffff (299.99997)  ->  stored 4395ffff    UNCHANGED
+```
+
+⚠ `math.nextafter(300.0, 1e9)` steps a **double**; packed back to binary32 it
+lands on 300.0 again, so a class built that way would have sent the limit
+itself and passed while measuring nothing. Caught by this row's own tests
+before the first arm ran.
+
+**Three witness counters, deliberately in separate fields** — a rendered
+string, a limit the firmware declined to move, and a limit it substituted are
+different kinds of thing, and a control that has to drive a number to zero must
+not be scored against a number we can pad.
+
+### The arms, with both sides of every control
+
+```
+arm                        milestone  guard     m6                m7 classes  twins   rendered  state  clamp  reply_digest
+default (seeded)           M7         M4-OK     6/6, ctr 6/6      10/10       10/10   1         7      2      0fe32b452605f752
+default (unseeded)         M7         M4-OK     6/6, ctr 6/6      10/10       10/10   1         7      2      f1538f0122bd66b2
+--falsify m7-valid-only    M6         M4-OK     6/6, ctr 6/6      0/10        10/10   0         0      0      c98fe2272b577b8c
+--falsify m7-mispredict    M6         M4-OK     6/6, ctr 6/6      0/10        10/10   1         7      2      0fe32b452605f752
+--falsify m6-freeze        M7         M4-OK     1/6, ok FALSE     10/10       10/10   1         7      2      96b70146f54af965
+HAL_SEAM_CONTROL=1         M3         WALL-M3   unobservable      unobservable
+VESC_BOOT_TIMEOUT=14       M2         WALL-M2   unobservable      unobservable
+```
+
+Read the three rows that decide it:
+
+* **valid-only** replaces every malformed probe with its own valid twin. All
+  **three** witness counters go to **zero** while the twins stay at **10/10**
+  and the seam answers throughout. That is the arm the rung is worthless
+  without, and it is a measurement, not an argument about the code.
+* **mispredict** is the seeded partner of the seeded default, and its
+  `reply_digest` is **byte-identical** — `0fe32b452605f752` on both. The
+  firmware said exactly the same thing; only what the host expected changed.
+  It rotates each class onto the next **distinct** answer, never onto the next
+  class, because seven of the ten share `silent-nowrite` and a next-class
+  rotation would leave those seven predicting what they already predict.
+* **m6-freeze** collapses M6 to 1 of 6 while M4 and M7 are untouched, which is
+  what shows the two new rungs are decided by separate terms.
+
+Both control arms report `unobservable` rather than a scored zero.
+
+### The ladder — three assignments and two early returns, and a false floor
+
+The old grader was:
+
+```python
+result = {..., "milestone": "M0", ...}
+if not sc.boot(stage):
+    milestone = "ERROR" if gated else ("M0" if faulted else "M1")
+    return result
+result["milestone"] = "M3"          # boot() returned True
+if result["landed"]: result["milestone"] = "M4"
+```
+
+Enumerated over the seven booleans the repaired ladder takes
+(`tools/enumerate_ladder.py`):
+
+```
+attack.py BEFORE (transcription), 128 assignments
+  ERROR 64  M0 16  M1 16  M3 16  M4 16     PRINTABLE {ERROR,M0,M1,M3,M4}
+attack._ladder AFTER,             128 assignments
+  ERROR 64  M0 32  M1 16  M2 8  M3 4  M4 1  M6 1  M7 2
+  PRINTABLE {ERROR,M0,M1,M2,M3,M4,M6,M7}   WRITTEN == PRINTABLE by ast, no dead branch
+  11 of 128 assignments move UP   (w91.1's DOWNWARD false floor)
+  24 of 128 move DOWN             (the old grader printed M3/M4 for runs whose
+                                   guest never cleared the work gate)
+```
+
+⚠ **The floor is proved to have moved by a CONTROL ARM, not by the happy
+path.** `boot()` returns False when the firmware has not enabled USART3 inside
+the timeout, and that path could only ever answer M0 or M1 — so a guest that
+ran ChibiOS' `crt0`, reached `main()` and printed its own
+`BOOT: conf_general_init` / `BOOT: mc_interface_init` trace (M2 by the fleet's
+own definition) reported **M1**, with the evidence sitting in its own log. The
+`VESC_BOOT_TIMEOUT=14` arm is exactly that run, and it now prints:
+
+```
+"own_init": true, "seam_up": false, "milestone": "M2",
+"error": "the firmware never enabled USART3 within 14 s -- and the gates PASSED
+          (marker=True, 13.89 CPU seconds burned by the child), so this is the
+          device, not the install"
+```
+
+`_ladder` is pure, is called from **one** place, and that call is in
+`run_attack`'s `finally` block, so every exit — the refusal, both gate
+failures, an exception and the graded path — is graded by the same function on
+the same facts. There is **no M5 and no M8 branch**, deliberately.
+
+`tools/mutate_checks.py` plants **eighteen** defects — including a dead *and* a
+live `M5` branch, the collapsed floor, a chained M7, a rounding `float16`, a
+short flush and a valid-only arm that sends the malformed frame anyway — and
+requires every one to make the suite fail: **18 of 18**. Three of those
+mutations are refutations of my own code found before it ran, and one is a
+refutation of my own *test*, which passed on a version that had dropped the
+thing it was written for.
+
+---
 
 ## Milestones, with the evidence and the alternative ruled out
 

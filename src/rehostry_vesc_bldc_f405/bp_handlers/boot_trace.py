@@ -48,19 +48,32 @@ class BootTrace(BPHandler):
         self.labels: dict = {}
         self.hits: dict = {}
         self.show_lr: dict = {}
+        self.count_every: dict = {}
 
     def register_handler(self, qemu: "HalBackend", addr: int, func_name: str,
                          label: str = "", show_lr: bool = False,
+                         count: bool = False,
                          ) -> HandlerFunction:
         self.labels[addr] = label or func_name
         self.hits[addr] = 0
         self.show_lr[addr] = show_lr
+        # ``count`` turns a first-hit marker into a per-arrival counter. It is
+        # set for ONE site, `commands_process_packet`, because that address is
+        # reached exactly once per packet the firmware's OWN `packet.c`
+        # decoder accepted -- so the running total is a GUEST-SIDE count of
+        # accepted frames, which no host bookkeeping can produce without
+        # reimplementing the decoder. It is deliberately not set anywhere else:
+        # a per-hit log line on a hot address costs emulation speed.
+        self.count_every[addr] = bool(count)
         return cast(HandlerFunction, BootTrace.trace)
 
     @bp_handler(["boot_trace"])
     def trace(self, qemu: "HalBackend", addr: int) -> HandlerReturn:
         n = self.hits.get(addr, 0) + 1
         self.hits[addr] = n
+        if self.count_every.get(addr):
+            log.info("BOOT-COUNT: %s n=%d", self.labels.get(addr, hex(addr)), n)
+            return False, None
         if n == 1:
             if self.show_lr.get(addr):
                 # At a function's FIRST instruction, lr IS the call site --

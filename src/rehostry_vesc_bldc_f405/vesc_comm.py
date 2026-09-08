@@ -149,9 +149,35 @@ def parse_float32_auto(buf: bytes, off: int) -> float:
     return struct.unpack_from(">f", buf, off)[0]
 
 
+def float32(value: float) -> float:
+    """``value`` rounded to the nearest binary32, the way the guest holds it."""
+    return struct.unpack(">f", struct.pack(">f", value))[0]
+
+
 def float16(value: float, scale: float = 10000.0) -> bytes:
-    """``buffer_append_float16()``: round(value * scale) as a big-endian int16."""
-    return struct.pack(">h", int(round(value * scale)))
+    """``buffer_append_float16()`` -- and it TRUNCATES, it does not round.
+
+    ``util/buffer.c`` is::
+
+        void buffer_append_float16(uint8_t* buffer, float number, float scale,
+                                   int32_t *index) {
+            buffer_append_int16(buffer, (int16_t)(number * scale), index);
+        }
+
+    ``(int16_t)`` is a C cast: it truncates toward zero. This function
+    previously used ``round()``, and the docstring said so -- which is wrong
+    for **537 of the 9000** values ``n/10000`` for n in 500..9500, because the
+    binary32 nearest ``n/10000`` can sit just BELOW it and the product then
+    truncates to ``n - 1``. Worked example, measured live on this device: the
+    attacker writes ``l_current_max_scale = 0.5275``; binary32(0.5275) * 10000
+    computed in binary32 is 5274.999512, and the firmware answers **5274**,
+    not 5275.
+
+    The arithmetic is done in binary32 at every step because that is what the
+    Cortex-M4F's VFP does with two ``float`` operands.
+    """
+    prod = float32(float32(value) * float32(scale))
+    return struct.pack(">h", int(prod))     # int() truncates toward zero
 
 
 def parse_float16(buf: bytes, off: int, scale: float = 10000.0) -> float:

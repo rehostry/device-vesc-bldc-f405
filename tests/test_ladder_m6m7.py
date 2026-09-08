@@ -268,3 +268,23 @@ def test_a_phase_that_never_ran_reports_unobservable():
     src = textwrap.dedent(inspect.getsource(A.run_attack))
     assert '"unobservable": True' in src
     assert "if not SEAM_CONTROL:" in src
+
+
+def test_float16_TRUNCATES_the_way_the_firmware_does():
+    """`util/buffer.c`: `buffer_append_int16(buffer, (int16_t)(number*scale))`.
+
+    A C cast truncates toward zero. This module used `round()` and its
+    docstring claimed rounding; a twin refuted it live -- the attacker wrote
+    `l_current_max_scale = 0.5275` and the firmware answered 5274, because
+    binary32(0.5275)*10000 in binary32 is 5274.999512.
+    """
+    from rehostry_vesc_bldc_f405 import vesc_comm as vc
+    assert vc.float16(0.5275) == struct.pack(">h", 5274)
+    assert vc.float16(0.5275) != struct.pack(">h", 5275)
+    assert A._f16_bytes(0.5275) == struct.pack(">h", 5274).hex()
+    # the values where it matters at all, counted rather than asserted
+    wrong = sum(1 for n in range(500, 9500)
+                if vc.float16(n / 10000.0) != struct.pack(">h", n))
+    assert wrong == 537, wrong
+    # and the ones that do not: the M4 attack's own 0.10 is unaffected
+    assert vc.float16(0.10) == struct.pack(">h", 1000)

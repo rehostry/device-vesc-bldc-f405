@@ -1,6 +1,8 @@
 <!-- Copyright 2026 Christopher Wright; SPDX-License-Identifier: AGPL-3.0-or-later -->
 # device-vesc-bldc-f405
 
+**Status: M7** (census-verified 2026-09-08) — see [STATUS.md](STATUS.md) for the graded evidence and for which rungs are refused or undefined. The machine-readable record is the census header on line 1 of that file.
+
 A **VESC 100/250** brushless motor controller, rehosted: the VESC project's own
 firmware (`vedderb/bldc` 7.01, ChibiOS 3.0.5 on an STM32F405RG) executed
 instruction by instruction under HALucinator/unicorn, with its real **COMM

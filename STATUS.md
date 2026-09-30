@@ -1,4 +1,4 @@
-<!-- rehostry-census: milestone=M7 landed=true verdict=M4-OK verified=2026-09-08 method=live-run -->
+<!-- rehostry-census: milestone=M7 landed=true verdict=M4-OK verified=2026-09-30 method=live-run n=none core=hal-b0818-on-9bde2c0@60619b7e faults=0 fault_before_round_trip=false fault_after_round_trip=false note=NO-ENTRY-WAS-REMOVED-this-row-had-NO-M8-denominator-at-all-and-this-session-CREATES-one-so-the-reported-coverage-is-WORSE-than-the-row-s-previous-silence-implied-which-is-the-correct-direction;M8-WAS-RECORDED-UNDEFINED-ON-THE-WRONG-GROUND-the-old-reason-was-one-link-one-peer-which-answers-M5-not-M8-RULES-1b-separates-them-and-the-2026-09-29-ruling-makes-a-command-inside-one-framing-layer-an-ENTRY-naming-this-firmware-s-own-sibling-vesc-bms-16-COMM-packets-over-ONE-CAN-link-as-the-precedent;M5-STAYS-UNDEFINED-one-USART3-link-one-peer;M8-IS-DEFINED-AND-UNMET-denominator-52;WHAT-n-WOULD-COUNT-52-TERMINAL-COMMANDS-the-firmware-publishes-in-its-OWN-help-menu-NOT-interfaces-and-NOT-COMM-packet-ids;n-IS-none-BECAUSE-THE-NUMERATOR-IS-NOT-FULLY-MEASURED-49-driven-2-recognised-but-silent-1-UNDETERMINED-rebootwdt-so-the-bound-is-49-to-50-of-52-and-per-the-2026-09-30-ruling-a-bounded-numerator-publishes-n-none-never-a-fraction;INVENTORY-DERIVED-LIVE-FROM-THE-GUEST-S-OWN-BYTES-IN-EVERY-BOOT-one-COMM_TERMINAL_CMD-help-and-every-COMM_PRINT-frame-parsed-BY-SHAPE-52-command-shaped-lines-60-description-shaped-0-unclassifiable-summing-exactly-to-the-112-line-body-and-51-of-52-boots-re-derived-52-independently;COMPLETENESS-IS-STRUCTURAL-NOT-NUMERIC-help-ends-with-commands_printf-space-so-an-intact-menu-s-last-line-is-exactly-one-space-and-a-parse-without-that-sentinel-VOIDS-rather-than-reporting-a-smaller-denominator-because-a-count-cannot-detect-its-own-truncation-which-is-the-26-vs-34-lesson-the-sibling-paid-for;GUARD-IS-DIAGONAL-AND-PINNED-TO-RAW-BYTES-52-token-to-full-declaration-line-PAIRS-plus-help_sha256-625878ee-and-pairs_sha256-611e20fa-so-a-command-that-kept-its-name-and-changed-its-ARITY-breaks-it-and-a-mismatch-EITHER-WAY-voids;COULD-A-PASS-HAPPEN-WITH-THE-FIRMWARE-ASLEEP-NO-arm-B-is-the-answer-the-guest-must-RENDER-a-nonce-the-host-minted-seconds-earlier-inside-its-own-Invalid-command-line-and-both-strings-must-be-on-ONE-line-because-the-terminal-ECHOES-the-command-so-checking-them-separately-was-satisfied-by-the-echo-a-defect-caught-on-the-smoke-run;KNOB-BINDS-VESC_M8_TWIN_ONLY=1-gives-6-of-6-sampled-entries-driven-false-refused_by_firmware-with-the-inventory-STILL-52-and-the-guard-STILL-ok-which-is-pre-registered-PREDICTION-8-confirmed;HAL_SEAM_CONTROL-CANNOT-SERVE-AS-THE-NUMERATOR-KNOB-and-that-was-pre-registered-it-closes-the-seam-the-menu-is-read-over-so-it-voids-the-denominator-too;MY-PREDICTION-6-WAS-FALSIFIED-I-predicted-driven-in-15-to-40-and-measured-49-the-range-is-NOT-widened-the-error-was-conceptual-I-predicted-coverage-from-what-the-host-side-code-already-NAMES-when-the-sweep-drives-every-entry-DIRECTLY;ONE-FRESH-BOOT-PER-ENTRY-ENTRY-FIRST-52-of-52-because-stop-rebootwdt-and-foc_openloop-change-the-machine-a-later-entry-would-be-graded-against;MY-OWN-DEFECTS-a-late-async-print-from-measure_res_ind-was-consumed-by-arm-B-and-desynchronised-every-later-exchange-fixed-by-a-settle-and-re-run-with-4-driven-controls-unchanged-AND-my-aggregator-read-a-key-that-does-not-exist-and-printed-a-FALSE-VOID;THREE-CHECKS-ALL-0-check1-verdict-M4-OK-check2-0-check3-entitled-M7-credited-M7;firmware-UNCHANGED-sha256-ea6e96f9-before-and-after-all-59-chains-and-it-is-NOT-the-sibling-s-image-vesc-bms-is-f72bb1c4-and-85240-bytes-against-this-row-s-1048576 -->
 <!-- Copyright 2026 Christopher Wright; SPDX-License-Identifier: AGPL-3.0-or-later -->
 # Status — device-vesc-bldc-f405
 
@@ -8,13 +8,221 @@ byte-identical `COMM_GET_MCCONF` answered differently at six attacker-installed
 states; and ten classes of malformed input each answered as `comm/packet.c`
 says they must, with the seam proven alive after every one.
 
-**M5 and M8 are UNDEFINED**, not failed: this device drives one link (the
-USART3 COMM seam) to one peer, so RULES §1a leaves both undefined and the
-ladder deliberately has no branch for either.
+**M5 is UNDEFINED**, not failed: this device drives one link (the USART3 COMM
+seam) to one peer, so RULES §1a leaves M5 undefined and the ladder deliberately
+has no branch for it.
+
+⚠ **This block used to say the same about M8, and that was WRONG — corrected
+2026-09-30.** One link answers **M5**; RULES §1b makes **M8** a question about
+*coverage of everything the image declares*, and the 2026-09-29 ruling makes a
+command inside one framing layer an entry. **M8 is DEFINED here and UNMET against
+a 52-command inventory the firmware publishes itself** — see the 2026-09-30
+section below. The ladder still has no `M8` branch, and that is now a consequence
+of parity being a fraction rather than of M8 being undefined.
 
 Firmware: `vedderb/bldc` @ `e4db57a8d90747091a4ea98c381fe3efc83a8722`, hardware
 target `100_250` (Trampa VESC 100/250, STM32F405RG, ChibiOS 3.0.5), built from
 source — see `FIRMWARE.md`. No firmware bytes are committed.
+
+## 2026-09-30 — M8 is DEFINED here, and UNMET: the 52 commands the firmware publishes itself
+
+**No entry was removed. This row had no M8 denominator at all; this session
+creates one, and the coverage it reports is worse than the row's previous silence
+implied.** RULES §1a calls raising parity by shrinking a denominator the cardinal
+sin, so that is the first thing stated.
+
+### The old reason for "M8 UNDEFINED" answered the wrong question
+
+This file used to say *"M5 and M8 are UNDEFINED, not failed: this device drives
+one link (the USART3 COMM seam) to one peer."* **The M5 half is correct and
+stands.** The M8 half is not: RULES §1b separates independence (M5) from coverage
+(M8), and the 2026-09-29 ruling makes *a command inside one framing layer* an
+entry when the firmware declares it — naming **this firmware's own sibling** as
+the precedent, *"`vesc-bms` grades 16 COMM packets over ONE CAN link."*
+
+⚠ **The sibling's image is NOT this image, and no constant was transferred.**
+
+| row | image | sha256 | size |
+|---|---|---|---|
+| `device-vesc-bldc-f405` | `configs/vesc.bin` | `ea6e96f9c282f93f…` | 1 048 576 |
+| `device-vesc-bms` | `configs/vesc_bms.bin` | `f72bb1c48eb90491…` | 85 240 |
+
+Different builds, different silicon (STM32F405/ChibiOS against an STM32L4), and
+different inventories — 52 here against 16 there. They are **two independent
+observations**, so the byte-identical-images ruling does not apply and neither row
+may be cited as corroboration for the other.
+
+### The inventory: 52, from the guest's own bytes, in every boot
+
+One `COMM_TERMINAL_CMD "help"` over USART3, and every `COMM_PRINT` frame the
+firmware emits in reply — 115 lines. Parsed **by shape**, never grepped out of the
+image (a string census is what pooled literals defeat):
+
+| shape | count |
+|---|---|
+| preamble `Valid commands are:` | 1 |
+| **command-shaped** (no leading space) | **52** |
+| description-shaped (two leading spaces) | 60 |
+| unclassifiable | **0** |
+| sentinel (a single space) | 1 |
+
+The three body classes sum **exactly** to the 112-line body, so no line is
+unaccounted for, and **51 of the 52 graded boots re-derived 52 independently**.
+
+⭐ **The completeness witness is structural, not numeric.** `help` ends with
+`commands_printf(" ")`, so an intact menu's last line is **exactly one space**. A
+count cannot detect its own truncation — that is the lesson the sibling paid for
+when it relayed **26** CRC-valid packets against a **34**-entry menu and lost 7 of
+16 names, *"true and incomplete"*, because the short path carries no CRC at all.
+Here a parse whose last line is not `" "` **VOIDS** rather than reporting a
+smaller denominator.
+
+### What the denominator counts, and what it does not
+
+It counts **52 terminal commands the firmware publishes in its own help menu** —
+not interfaces, not COMM packet ids.
+
+⚠ **The `COMM_PACKET_ID` switch in `commands_process_packet` is a second declared
+surface on the same seam, and it is NOT counted here.** `COMM_TERMINAL_CMD` is
+id 20, so all 52 arrive *inside* one member of that switch; counting both would
+double-count. **A reader who counts it instead gets a larger denominator and a
+worse fraction, and every number needed to re-derive that is printed here.**
+
+### The guard: diagonal, and pinned to raw bytes
+
+`tools/m8_inventory_guard.json` pins all **52 `(token -> full declaration line)`
+pairs** (`pairs_sha256 = 611e20fa…`), the whole menu (`help_sha256 = 625878ee…`),
+the preamble and the sentinel. ⚠ Pairs, not tokens: the declaration line carries
+the command's **arity** (`param_detect [current] [min_rpm] [low_duty]`), so a
+command that keeps its name and changes its arguments breaks the pairing. A
+mismatch **either way** voids.
+
+### Parity: `n=none`, and the bound is 49–50 of 52
+
+| class | count | entries |
+|---|---|---|
+| **driven** | **49** | — |
+| recognised but silent | 2 | `drv_reset_faults`, `update_pid_pos_offset` |
+| **UNDETERMINED** | **1** | `rebootwdt` |
+
+⚠ **`n=none`, not a fraction**, per the 2026-09-30 ruling: one entry is not
+scoreable, so the numerator is bounded, not measured.
+
+* **recognised but silent** is a limit of **my oracle**, not of the firmware:
+  these two are accepted by `terminal_process_string` (no refusal) and print
+  nothing. Counting them as driven would be an absence-witness pass.
+* **`rebootwdt` is undetermined, and the reason is the honest one**: it produced
+  **zero** output — no arm A, no arm B, no menu — and `seam_alive_after` was
+  false. It reboots the board through the watchdog and this rehost does not
+  re-establish the COMM seam afterwards, so ⭐ *the instrument dies with the
+  phenomenon and correctly reports its absence.* A reader who treats an empty
+  arm A as a determinate failure gets **49 of 52**; that number is printed here
+  so the reading can be chosen explicitly rather than smuggled.
+
+### Could a pass have happened with the firmware asleep? No — and arm B is why
+
+Each entry is graded in **its own fresh boot, entry first** (52 of 52), because
+`stop`, `rebootwdt` and `foc_openloop` change the machine a later entry would be
+graded against, and a shared-boot sweep manufactures a false LOW parity.
+
+* **Arm A** — a non-empty `COMM_PRINT` reply that is not the refusal. A sleeping
+  guest emits nothing and arm A is false.
+* **Arm B, the diagonal** — the guest must **render a nonce the host minted this
+  run** inside its own `Invalid command:` line. A sleeping guest cannot; a
+  recorded or replayed refusal carries a different nonce.
+
+⚠ **Both strings must appear on ONE line, and that was a real defect.** The
+terminal *echoes* the command it was given, so `-> <nonce>` already contains the
+nonce, and a check that scanned the lines separately was satisfied by the echo.
+Caught on this file's own smoke run and fixed before any graded arm.
+
+### The falsification knob binds — and the obvious one could not
+
+`VESC_M8_TWIN_ONLY=1` sends the minted nonce **in place of** the token, leaving
+the inventory parse untouched: **6 of 6 sampled entries go to `driven=false`,
+`refused_by_firmware`, with the inventory still 52 and the guard still `ok`.**
+That is pre-registered PREDICTION 8, confirmed.
+
+⚠ **`HAL_SEAM_CONTROL=1` cannot serve as the numerator knob, and PREDICTIONS-M8.md
+said so before the run**: it closes the seam the menu is itself read over, so it
+voids the denominator as well as the numerator. It can only show that nothing is
+measurable without the seam. That is why a second knob exists.
+
+### PREDICTION 6 was FALSIFIED, and the range is not widened
+
+I predicted the driven count would land in **[15, 40]**. It is **49**. The
+interval is not widened. The error was conceptual: I predicted coverage from what
+the row's **host-side code already names**, when the sweep drives every entry
+**directly** — so what it measures is what the *firmware* handles, not what
+`vesc_comm.py` has constants for. The same mistake was made, in the same
+direction, on both sibling rows in this lane.
+
+### The three checks
+
+| check | result | mechanism |
+|---|---|---|
+| 1 `DEFECT-landed-without-M4` | **0** | `census_score.score()` (imported, `sha256 56cd3ab3…`) returned verdict field 3 = `M4-OK` |
+| 2 landed-vs-rung | **0** | rung `M7`, `landed` true, expected true |
+| 3 `entitled()` over OBSERVATIONS | **0** | `entitled=M7`, credited `M7`; 52 per-entry records |
+
+**Both directions of the by-construction argument**, because two zeros on their
+own are not informative. `attack.py` closes with
+`result["landed"] = bool(result.get("landed")) and result["milestone"] in
+("M4","M6","M7")`:
+
+* *landed true below M4* is impossible — the whitelist forces it false for
+  `ERROR`/`M0`…`M3`;
+* *a rung ≥ M4 with landed false* is impossible — `_ladder` is called with
+  `m4=result["landed"]` and only returns `M4`/`M6`/`M7` when that is true.
+
+⭐ **The teeth are kept**: this is a whitelist, **not** `landed = rung >= 4`, which
+would make both checks tautologies. ⚠ **Latent defect, reported and deliberately
+not patched:** if an `M8` branch is ever added to `_ladder` without adding `"M8"`
+to that whitelist, a full-parity run scores `milestone=M8, landed=False` and the
+guard returns **`WALL-M8`** — the row's best run reported as a wall. No `M8`
+branch is added today: parity is a fraction, so the branch would be a dead one.
+
+⚠⚠ **`tools/enumerate_ladder.py` cannot do check 3** and was not used for it: it
+quantifies over the ladder's free booleans and never inspects how a term is
+constructed. That is the fifth confirmation on this fleet.
+
+### Defects in my own work, all found by me
+
+1. **The async-print desync.** `measure_res_ind` prints seconds late; arm B
+   consumed its line, every later exchange was one behind, and the nonce-bearing
+   refusal surfaced in the help drain and broke the menu parse. Fixed with a
+   settle that runs for **all** entries (not a template for the hard one), and
+   re-run with **four already-driven entries as controls**, all unchanged.
+2. **A false VOID from my aggregator**, which read `inventory_why.denominator` —
+   a key this row never emits — and so reported "the inventory differed across
+   boots" against 50 agreeing boots.
+3. **`entitled_check3.py` asked for `guest_ran`**, a local in `_finalize` that
+   never reaches the record, and **demanded the guard's sha unconditionally**, so
+   one unscoreable entry raised `Undetermined` for the whole run. Both were caught
+   *by the file raising rather than scoring a false floor*, which is the behaviour
+   it exists to have.
+
+### Not measured
+
+* The `COMM_PACKET_ID` surface (above).
+* Whether each driven command's **output is semantically correct**. M8 asks
+  coverage; this measures that the firmware routed the command to its own handler
+  and answered in its own bytes, discriminated against a minted twin.
+* The CAN, USB and servo/ADC inputs this firmware also has: declared by the
+  hardware, **not driven** by this rehost. A failure to cover, not a §1d absence.
+
+### Environment
+
+* venv `venvs-on-9bde2c0.noindex/vesc-bldc-f405-a69`; core
+  `hal-b0818-on-9bde2c0` at **`60619b7e`**, clean, identical across all 59 boots.
+  `origin/dev` **resolved at read time** was `9bde2c0c` and **is an ancestor** of
+  that HEAD (+9 local commits). No SHA is quoted for a moving ref.
+* Ports: lane `s0930-laneJ`, all binds inside **37750–37849** and verified from
+  `lsof`; no device-default port (21201/6102/6103) was bound.
+* ⚠ Box load was **14.1–19.9** throughout, largely self-inflicted. `BOOT_TIMEOUT`
+  is 900 s against ~60 s observed, so no entry was decided by a budget; the one
+  place a budget could have classified is named and tested on the sibling rows.
+* Firmware `sha256 ea6e96f9…` **before and after every chain**, 59 of 59 unchanged.
 
 ## 2026-09-08 — M4 -> M7, and the corpse that had to be killed first
 

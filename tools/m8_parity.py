@@ -143,6 +143,25 @@ def grade_entry(token, port, log_dir, nonce):
         rec["arm_a_sent"] = sent_a
         a_lines = sc.terminal_lines(sent_a.encode(), first=25.0, quiet=6.0)
         rec["arm_a_lines"] = a_lines
+
+        # ⚠⚠ SETTLE. THIS WAS A REAL DEFECT AND IT COST TWO ENTRIES.
+        # Some of these commands print ASYNCHRONOUSLY: `measure_res_ind`
+        # answered "Measuring resistance and inductance..." inside arm A's quiet
+        # window and then emitted "Inductance: inf uH (Lq-Ld: nan uH)" SECONDS
+        # LATER -- which arm B's read consumed instead of the refusal. Every
+        # exchange after it was then one behind, and the refusal carrying the
+        # nonce turned up in the HELP drain, where it broke the menu parse. The
+        # row's own `drain()` docstring warns about exactly this: "a reply that
+        # arrived late is handed to the NEXT exchange and the answer you read is
+        # the previous question's."
+        #
+        # ⭐ This is the harness's instrument, NOT a per-entry template: the same
+        # settle runs for all 52 entries, and it is reported as a v2 instrument
+        # with driven entries re-run as controls to show it does not change a
+        # driven verdict.
+        settle = float(os.environ.get("VESC_M8_SETTLE", "20"))
+        rec["settle_s"] = settle
+        rec["settle_frames_discarded"] = sc.drain(settle)
         body_a = [l for l in a_lines if l.strip()
                   and not l.strip().startswith("-> ")]
         refused_a = any(REFUSAL_MARK in l for l in a_lines)
@@ -190,7 +209,20 @@ def grade_entry(token, port, log_dir, nonce):
     # THE VERDICT for this entry. Both arms, in this boot, or it is not driven.
     rec["driven"] = bool(rec.get("arm_a_answered") and rec.get("arm_b_ok")
                          and rec.get("token_in_own_menu"))
+    # ⚠ An inventory that could NOT BE READ in a boot is not the same fact as an
+    # inventory that MOVED. `parse_inventory` says which: a missing preamble or
+    # missing sentinel means the stream was desynchronised or truncated in THIS
+    # boot (undetermined); a clean parse whose tokens differ means the menu
+    # really changed (VOID). Collapsing the two would let my own drain classify
+    # an entry, and a drain must never classify.
+    iw = rec.get("inventory_why") or {}
+    rec["inventory_unreadable_this_boot"] = bool(
+        iw.get("void") and ("preamble absent" in str(iw.get("void"))
+                            or "sentinel absent" in str(iw.get("void"))
+                            or "fewer than 4 lines" in str(iw.get("void"))))
     rec["klass"] = ("driven" if rec["driven"] else
+                    "not_measured_inventory_unreadable"
+                    if rec.get("inventory_unreadable_this_boot") else
                     "refused_by_firmware" if rec.get("arm_a_refused") else
                     "recognised_but_silent"
                     if rec.get("booted") and rec.get("arm_b_ok")

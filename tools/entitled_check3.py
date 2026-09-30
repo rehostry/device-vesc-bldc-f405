@@ -85,7 +85,22 @@ def entry_driven(rec):
     in_menu = toks is not None and entry in toks
 
     guard = need(rec, "inventory_guard", dict)
-    guard_ok = (need(guard, "observed_pairs_sha256", str)
+    # ⚠ THREE-WAY, NOT TWO-WAY. A boot in which the menu could not be READ at
+    # all is not the same fact as a menu that MOVED, and it is not a tool defect
+    # either -- it is a per-entry UNDETERMINED, which is a data point. The first
+    # version of this file demanded `observed_pairs_sha256` unconditionally and
+    # raised Undetermined for the WHOLE RUN because one entry (`rebootwdt`)
+    # reboots the board and killed its own inventory read. One unscoreable entry
+    # must not erase 51 scoreable ones.
+    if "observed_pairs_sha256" not in guard:
+        unreadable = bool(need(rec, "inventory_unreadable_this_boot", bool)) \
+            if "inventory_unreadable_this_boot" in rec else True
+        return {"entry": entry, "arm_a": a_ok, "arm_a_refused": a_refused,
+                "arm_a_reply_lines": len(body_a), "arm_b": b_ok,
+                "in_menu": False, "guard_ok": None,
+                "inventory_unreadable": unreadable,
+                "undetermined": True, "driven": False}
+    guard_ok = (guard["observed_pairs_sha256"]
                 == need(guard, "expected_pairs_sha256", str)
                 and not need(guard, "missing", list)
                 and not need(guard, "extra", list)
@@ -94,13 +109,22 @@ def entry_driven(rec):
     return {"entry": entry, "arm_a": a_ok, "arm_a_refused": a_refused,
             "arm_a_reply_lines": len(body_a), "arm_b": b_ok,
             "in_menu": in_menu, "guard_ok": guard_ok,
+            "inventory_unreadable": False, "undetermined": False,
             "driven": bool(a_ok and b_ok and in_menu and guard_ok)}
 
 
 def entitled(run, entries):
     """§0, term by term, from observations only. Returns (rung, why)."""
     why = {}
-    why["m1_guest_executed"] = need(run, "guest_ran", bool)
+    # ⚠ `guest_ran` is a LOCAL in `_finalize` and never reaches the record; the
+    # first version of this file asked for it and correctly raised Undetermined
+    # rather than reporting a false floor. The record carries `booted` and
+    # `guest_faulted`, so M1 is rebuilt from those. ⚠ The fault terms are
+    # REQUIRED reported fields, not colour: a row printing a bare faults=0 while
+    # faulting after its round trip is hiding the fault, not passing the check.
+    why["m1_booted"] = need(run, "booted", bool)
+    why["guest_faulted"] = need(run, "guest_faulted", bool)
+    why["m1_guest_executed"] = why["m1_booted"] and not why["guest_faulted"]
     why["m2_own_init"] = need(run, "own_init", bool)
     why["m3_seam_up"] = need(run, "seam_up", bool)
 
@@ -116,15 +140,17 @@ def entitled(run, entries):
     rows = [entry_driven(r) for r in entries]
     if not rows:
         raise Undetermined("no per-entry records were supplied")
-    guards = {r["guard_ok"] for r in rows}
-    if guards != {True}:
-        # A moved inventory VOIDS parity; it does not lower it.
-        why["m8"] = "VOID: the shrink guard failed in %d of %d boots" % (
-            sum(1 for r in rows if not r["guard_ok"]), len(rows))
+    # A MOVED inventory voids parity. An UNREADABLE one in a single boot makes
+    # that entry undetermined and leaves the others intact.
+    moved = [r for r in rows if r["guard_ok"] is False]
+    undet = [r for r in rows if r["undetermined"]]
+    if moved:
+        why["m8"] = "VOID: the shrink guard MISMATCHED in %d of %d boots" % (
+            len(moved), len(rows))
         m8 = False
     else:
-        inv = {len(r_toks) for r_toks in
-               [need(r, "inventory_tokens") for r in entries]}
+        inv = {len(rec["inventory_tokens"]) for rec in entries
+               if rec.get("inventory_tokens")}
         if len(inv) != 1:
             why["m8"] = "VOID: the inventory differed across boots: %s" % (inv,)
             m8 = False
@@ -133,11 +159,15 @@ def entitled(run, entries):
             passed = [r["entry"] for r in rows if r["driven"]]
             why["m8_inventory"] = n
             why["m8_measured"] = len(rows)
+            why["m8_boots_that_read_the_menu"] = len(rows) - len(undet)
             why["m8_driven"] = len(passed)
+            why["m8_undetermined"] = sorted(r["entry"] for r in undet)
             why["m8_not_driven"] = sorted(r["entry"] for r in rows
-                                          if not r["driven"])
-            # Strict parity, and only if EVERY entry was actually measured.
-            m8 = (n > 1 and len(rows) == n and len(passed) == n)
+                                          if not r["driven"]
+                                          and not r["undetermined"])
+            # STRICT: parity needs every entry measured AND none undetermined.
+            # A bounded numerator is not a parity fraction (2026-09-30 ruling).
+            m8 = (n > 1 and len(rows) == n and not undet and len(passed) == n)
             why["m8"] = m8
 
     if m4 and m8:

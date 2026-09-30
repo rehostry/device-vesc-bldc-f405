@@ -116,7 +116,7 @@ def main(argv):
                                         if k != "m8_not_driven"}))
         if w.get("m8_not_driven"):
             print("         NOT driven (%d): %s"
-                  % (len(w["m8_not_driven"]), " ".join(w["m8_not_driven"])))
+                  % (len(w["m8_not_driven"]), " ".join(map(str, w["m8_not_driven"]))))
         c3 = 0
         if rung in RUNGS:
             if RUNGS.index(rung) > RUNGS.index(ent):

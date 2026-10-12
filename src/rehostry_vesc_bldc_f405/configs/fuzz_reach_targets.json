@@ -1,0 +1,900 @@
+{
+ "row": "device-vesc-bldc-f405",
+ "bin": "vesc.bin",
+ "image_sha256": "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9",
+ "source": "the image's own dispatch in terminal_process_string (strcmp chain + registered-callback loop) and every terminal_register_command_callback call site; cross-checked against the help-menu guard",
+ "terminal_process_string": "0x080001c0",
+ "callback_loop_site": "0x08000244",
+ "chain_start": "0x0800025c",
+ "default": "0x0800253c",
+ "default_format": "Invalid command: %s\ntype help to list all available commands\n",
+ "function_exit": [
+  "0x08002544"
+ ],
+ "chain_links": 34,
+ "callbacks_registered": 18,
+ "unresolved_registrations": [],
+ "callback_shadows_builtin": [],
+ "help_guard_size": 52,
+ "dispatch_not_in_help": [],
+ "help_not_in_dispatch": [],
+ "inventory_size": 52,
+ "id_set_sha256": "f057a207527f388e2323ac49719fe4a12a7cef19e5eb0688da081ff3c6b0ef6a",
+ "entries": [
+  {
+   "id": "help",
+   "name": "help",
+   "kind": "builtin",
+   "handler": "0x08002324",
+   "site": "0x08002314",
+   "abi": "r4",
+   "next_entry": "mem",
+   "in_help": true
+  },
+  {
+   "id": "mem",
+   "name": "mem",
+   "kind": "builtin",
+   "handler": "0x08000286",
+   "site": "0x0800027c",
+   "abi": "r4",
+   "next_entry": "threads",
+   "in_help": true
+  },
+  {
+   "id": "threads",
+   "name": "threads",
+   "kind": "builtin",
+   "handler": "0x080002b6",
+   "site": "0x080002aa",
+   "abi": "r4",
+   "next_entry": "fault",
+   "in_help": true
+  },
+  {
+   "id": "fault",
+   "name": "fault",
+   "kind": "builtin",
+   "handler": "0x08000354",
+   "site": "0x0800034a",
+   "abi": "r4",
+   "next_entry": "faults",
+   "in_help": true
+  },
+  {
+   "id": "faults",
+   "name": "faults",
+   "kind": "builtin",
+   "handler": "0x08000374",
+   "site": "0x08000364",
+   "abi": "r4",
+   "next_entry": "stop",
+   "in_help": true
+  },
+  {
+   "id": "stop",
+   "name": "stop",
+   "kind": "builtin",
+   "handler": "0x08000266",
+   "site": "0x0800025c",
+   "abi": "r4",
+   "next_entry": "volt",
+   "in_help": true
+  },
+  {
+   "id": "volt",
+   "name": "volt",
+   "kind": "builtin",
+   "handler": "0x0800059c",
+   "site": "0x08000592",
+   "abi": "r4",
+   "next_entry": "param_detect",
+   "in_help": true
+  },
+  {
+   "id": "param_detect",
+   "name": "param_detect",
+   "kind": "builtin",
+   "handler": "0x080005be",
+   "site": "0x080005b0",
+   "abi": "r4",
+   "next_entry": "rpm_dep",
+   "in_help": true
+  },
+  {
+   "id": "rpm_dep",
+   "name": "rpm_dep",
+   "kind": "builtin",
+   "handler": "0x08000784",
+   "site": "0x08000778",
+   "abi": "r4",
+   "next_entry": "foc_encoder_detect",
+   "in_help": true
+  },
+  {
+   "id": "foc_encoder_detect",
+   "name": "foc_encoder_detect",
+   "kind": "builtin",
+   "handler": "0x08000838",
+   "site": "0x0800082c",
+   "abi": "r4",
+   "next_entry": "measure_res",
+   "in_help": true
+  },
+  {
+   "id": "measure_res",
+   "name": "measure_res",
+   "kind": "builtin",
+   "handler": "0x08000924",
+   "site": "0x08000918",
+   "abi": "r4",
+   "next_entry": "measure_ind",
+   "in_help": true
+  },
+  {
+   "id": "measure_ind",
+   "name": "measure_ind",
+   "kind": "builtin",
+   "handler": "0x08000a02",
+   "site": "0x080009f6",
+   "abi": "r4",
+   "next_entry": "measure_linkage",
+   "in_help": true
+  },
+  {
+   "id": "measure_linkage",
+   "name": "measure_linkage",
+   "kind": "builtin",
+   "handler": "0x08000b78",
+   "site": "0x08000ad4",
+   "abi": "r4",
+   "next_entry": "measure_res_ind",
+   "in_help": true
+  },
+  {
+   "id": "measure_res_ind",
+   "name": "measure_res_ind",
+   "kind": "builtin",
+   "handler": "0x08000cb4",
+   "site": "0x08000ae0",
+   "abi": "r4",
+   "next_entry": "measure_linkage_foc",
+   "in_help": true
+  },
+  {
+   "id": "measure_linkage_foc",
+   "name": "measure_linkage_foc",
+   "kind": "builtin",
+   "handler": "0x08000afe",
+   "site": "0x08000aee",
+   "abi": "r4",
+   "next_entry": "measure_linkage_openloop",
+   "in_help": true
+  },
+  {
+   "id": "measure_linkage_openloop",
+   "name": "measure_linkage_openloop",
+   "kind": "builtin",
+   "handler": "0x08000f34",
+   "site": "0x08000f26",
+   "abi": "r4",
+   "next_entry": "foc_state",
+   "in_help": true
+  },
+  {
+   "id": "foc_state",
+   "name": "foc_state",
+   "kind": "builtin",
+   "handler": "0x08001132",
+   "site": "0x08001128",
+   "abi": "r4",
+   "next_entry": "foc_dc_cal",
+   "in_help": true
+  },
+  {
+   "id": "foc_dc_cal",
+   "name": "foc_dc_cal",
+   "kind": "builtin",
+   "handler": "0x0800114c",
+   "site": "0x08001140",
+   "abi": "r4",
+   "next_entry": "hw_status",
+   "in_help": true
+  },
+  {
+   "id": "hw_status",
+   "name": "hw_status",
+   "kind": "builtin",
+   "handler": "0x080011fe",
+   "site": "0x080011f0",
+   "abi": "r4",
+   "next_entry": "foc_openloop",
+   "in_help": true
+  },
+  {
+   "id": "foc_openloop",
+   "name": "foc_openloop",
+   "kind": "builtin",
+   "handler": "0x080013c2",
+   "site": "0x080013b4",
+   "abi": "r4",
+   "next_entry": "foc_openloop_duty",
+   "in_help": true
+  },
+  {
+   "id": "foc_openloop_duty",
+   "name": "foc_openloop_duty",
+   "kind": "builtin",
+   "handler": "0x08001520",
+   "site": "0x08001514",
+   "abi": "r4",
+   "next_entry": "nrf_ext_set_enabled",
+   "in_help": true
+  },
+  {
+   "id": "nrf_ext_set_enabled",
+   "name": "nrf_ext_set_enabled",
+   "kind": "builtin",
+   "handler": "0x080015d6",
+   "site": "0x080015cc",
+   "abi": "r4",
+   "next_entry": "foc_sensors_detect_apply",
+   "in_help": true
+  },
+  {
+   "id": "foc_sensors_detect_apply",
+   "name": "foc_sensors_detect_apply",
+   "kind": "builtin",
+   "handler": "0x08001622",
+   "site": "0x08001616",
+   "abi": "r4",
+   "next_entry": "rotor_lock_openloop",
+   "in_help": true
+  },
+  {
+   "id": "rotor_lock_openloop",
+   "name": "rotor_lock_openloop",
+   "kind": "builtin",
+   "handler": "0x080016a2",
+   "site": "0x08001692",
+   "abi": "r4",
+   "next_entry": "foc_detect_apply_all",
+   "in_help": true
+  },
+  {
+   "id": "foc_detect_apply_all",
+   "name": "foc_detect_apply_all",
+   "kind": "builtin",
+   "handler": "0x08001898",
+   "site": "0x0800188a",
+   "abi": "r4",
+   "next_entry": "foc_detect_apply_all_can",
+   "in_help": true
+  },
+  {
+   "id": "foc_detect_apply_all_can",
+   "name": "foc_detect_apply_all_can",
+   "kind": "builtin",
+   "handler": "0x08001a00",
+   "site": "0x080019f0",
+   "abi": "r4",
+   "next_entry": "uptime",
+   "in_help": true
+  },
+  {
+   "id": "uptime",
+   "name": "uptime",
+   "kind": "builtin",
+   "handler": "0x08001bf4",
+   "site": "0x08001bea",
+   "abi": "r4",
+   "next_entry": "hall_analyze",
+   "in_help": true
+  },
+  {
+   "id": "hall_analyze",
+   "name": "hall_analyze",
+   "kind": "builtin",
+   "handler": "0x08001c20",
+   "site": "0x08001c10",
+   "abi": "r4",
+   "next_entry": "crc",
+   "in_help": true
+  },
+  {
+   "id": "crc",
+   "name": "crc",
+   "kind": "builtin",
+   "handler": "0x08002040",
+   "site": "0x08002034",
+   "abi": "r4",
+   "next_entry": "drv_reset_faults",
+   "in_help": true
+  },
+  {
+   "id": "drv_reset_faults",
+   "name": "drv_reset_faults",
+   "kind": "builtin",
+   "handler": "0x08002084",
+   "site": "0x0800207a",
+   "abi": "decision",
+   "empty_case_exit": "0x08002544",
+   "next_entry": "update_pid_pos_offset",
+   "in_help": true
+  },
+  {
+   "id": "update_pid_pos_offset",
+   "name": "update_pid_pos_offset",
+   "kind": "builtin",
+   "handler": "0x08002092",
+   "site": "0x08002088",
+   "abi": "r4",
+   "next_entry": "fw_info",
+   "in_help": true
+  },
+  {
+   "id": "fw_info",
+   "name": "fw_info",
+   "kind": "builtin",
+   "handler": "0x080020f0",
+   "site": "0x080020e6",
+   "abi": "r4",
+   "next_entry": "rebootwdt",
+   "in_help": true
+  },
+  {
+   "id": "rebootwdt",
+   "name": "rebootwdt",
+   "kind": "builtin",
+   "handler": "0x08002114",
+   "site": "0x0800210a",
+   "abi": "r4",
+   "next_entry": "crash_diag",
+   "in_help": true
+  },
+  {
+   "id": "crash_diag",
+   "name": "crash_diag",
+   "kind": "builtin",
+   "handler": "0x08002128",
+   "site": "0x0800211a",
+   "abi": "r4",
+   "next_entry": "events",
+   "in_help": true
+  },
+  {
+   "id": "events",
+   "name": "events",
+   "kind": "callback",
+   "handler": "0x08017660",
+   "site": "0x0801777a",
+   "cbf_symbol": "terminal_print",
+   "registered_in": "events_init",
+   "abi": "argv_r1",
+   "next_entry": "encoder",
+   "in_help": true
+  },
+  {
+   "id": "encoder",
+   "name": "encoder",
+   "kind": "callback",
+   "handler": "0x08026d40",
+   "site": "0x08026ac8",
+   "cbf_symbol": "terminal_encoder",
+   "registered_in": "encoder_init",
+   "abi": "argv_r1",
+   "next_entry": "encoder_clear_errors",
+   "in_help": true
+  },
+  {
+   "id": "encoder_clear_errors",
+   "name": "encoder_clear_errors",
+   "kind": "callback",
+   "handler": "0x080272f8",
+   "site": "0x08026ad4",
+   "cbf_symbol": "terminal_encoder_clear_errors",
+   "registered_in": "encoder_init",
+   "abi": "argv_r1",
+   "next_entry": "encoder_clear_multiturn",
+   "in_help": true
+  },
+  {
+   "id": "encoder_clear_multiturn",
+   "name": "encoder_clear_multiturn",
+   "kind": "callback",
+   "handler": "0x0802722c",
+   "site": "0x08026ae0",
+   "cbf_symbol": "terminal_encoder_clear_multiturn",
+   "registered_in": "encoder_init",
+   "abi": "argv_r1",
+   "next_entry": "connect_virtual_motor",
+   "in_help": true
+  },
+  {
+   "id": "connect_virtual_motor",
+   "name": "connect_virtual_motor",
+   "kind": "callback",
+   "handler": "0x0805e790",
+   "site": "0x0805ea14",
+   "cbf_symbol": "terminal_cmd_connect_virtual_motor",
+   "registered_in": "virtual_motor_init",
+   "abi": "argv_r1",
+   "next_entry": "disconnect_virtual_motor",
+   "in_help": true
+  },
+  {
+   "id": "disconnect_virtual_motor",
+   "name": "disconnect_virtual_motor",
+   "kind": "callback",
+   "handler": "0x0805e6d0",
+   "site": "0x0805ea24",
+   "cbf_symbol": "terminal_cmd_disconnect_virtual_motor",
+   "registered_in": "virtual_motor_init",
+   "abi": "argv_r1",
+   "next_entry": "foc_plot_hfi_en",
+   "in_help": true
+  },
+  {
+   "id": "foc_plot_hfi_en",
+   "name": "foc_plot_hfi_en",
+   "kind": "callback",
+   "handler": "0x08058390",
+   "site": "0x0805e448",
+   "cbf_symbol": "terminal_plot_hfi",
+   "registered_in": "mcpwm_foc_init",
+   "abi": "argv_r1",
+   "next_entry": "imu_read_reg",
+   "in_help": true
+  },
+  {
+   "id": "imu_read_reg",
+   "name": "imu_read_reg",
+   "kind": "callback",
+   "handler": "0x080207a0",
+   "site": "0x08020972",
+   "cbf_symbol": "terminal_read_reg",
+   "registered_in": "imu_thread_set_device",
+   "abi": "argv_r1",
+   "next_entry": "imu_status",
+   "in_help": true
+  },
+  {
+   "id": "imu_status",
+   "name": "imu_status",
+   "kind": "callback",
+   "handler": "0x08020700",
+   "site": "0x0802097e",
+   "cbf_symbol": "terminal_status",
+   "registered_in": "imu_thread_set_device",
+   "abi": "argv_r1",
+   "next_entry": "uavcan_debug",
+   "in_help": true
+  },
+  {
+   "id": "uavcan_debug",
+   "name": "uavcan_debug",
+   "kind": "callback",
+   "handler": "0x0801c070",
+   "site": "0x0801cc5c",
+   "cbf_symbol": "terminal_debug_on",
+   "registered_in": "canard_driver_init",
+   "abi": "argv_r1",
+   "next_entry": "bm_swdp_scan",
+   "in_help": true
+  },
+  {
+   "id": "bm_swdp_scan",
+   "name": "bm_swdp_scan",
+   "kind": "callback",
+   "handler": "0x08021324",
+   "site": "0x0802100a",
+   "cbf_symbol": "terminal_swdp_scan",
+   "registered_in": "bm_init",
+   "abi": "argv_r1",
+   "next_entry": "bm_attach",
+   "in_help": true
+  },
+  {
+   "id": "bm_attach",
+   "name": "bm_attach",
+   "kind": "callback",
+   "handler": "0x080212ac",
+   "site": "0x08021016",
+   "cbf_symbol": "terminal_attach",
+   "registered_in": "bm_init",
+   "abi": "argv_r1",
+   "next_entry": "bm_flash_erase",
+   "in_help": true
+  },
+  {
+   "id": "bm_flash_erase",
+   "name": "bm_flash_erase",
+   "kind": "callback",
+   "handler": "0x08021218",
+   "site": "0x08021022",
+   "cbf_symbol": "terminal_flash_erase",
+   "registered_in": "bm_init",
+   "abi": "argv_r1",
+   "next_entry": "bm_target_help",
+   "in_help": true
+  },
+  {
+   "id": "bm_target_help",
+   "name": "bm_target_help",
+   "kind": "callback",
+   "handler": "0x080211e4",
+   "site": "0x0802102e",
+   "cbf_symbol": "terminal_target_help",
+   "registered_in": "bm_init",
+   "abi": "argv_r1",
+   "next_entry": "bm_target_cmd",
+   "in_help": true
+  },
+  {
+   "id": "bm_target_cmd",
+   "name": "bm_target_cmd",
+   "kind": "callback",
+   "handler": "0x08021188",
+   "site": "0x0802103a",
+   "cbf_symbol": "terminal_target_cmd",
+   "registered_in": "bm_init",
+   "abi": "argv_r1",
+   "next_entry": "bm_reset",
+   "in_help": true
+  },
+  {
+   "id": "bm_reset",
+   "name": "bm_reset",
+   "kind": "callback",
+   "handler": "0x08020fd8",
+   "site": "0x08021046",
+   "cbf_symbol": "terminal_reset",
+   "registered_in": "bm_init",
+   "abi": "argv_r1",
+   "next_entry": "bm_detach",
+   "in_help": true
+  },
+  {
+   "id": "bm_detach",
+   "name": "bm_detach",
+   "kind": "callback",
+   "handler": "0x08021158",
+   "site": "0x08021052",
+   "cbf_symbol": "terminal_detach",
+   "registered_in": "bm_init",
+   "abi": "argv_r1",
+   "next_entry": "bm_map_nrf5_pins",
+   "in_help": true
+  },
+  {
+   "id": "bm_map_nrf5_pins",
+   "name": "bm_map_nrf5_pins",
+   "kind": "callback",
+   "handler": "0x08021758",
+   "site": "0x08021062",
+   "cbf_symbol": "terminal_map_nrf5_pins",
+   "registered_in": "bm_init",
+   "abi": "argv_r1",
+   "next_entry": "help",
+   "in_help": true
+  }
+ ],
+ "hooks": [
+  {
+   "addr": "0x08000266",
+   "kind": "r4",
+   "label": "stop"
+  },
+  {
+   "addr": "0x08000286",
+   "kind": "r4",
+   "label": "mem"
+  },
+  {
+   "addr": "0x080002b6",
+   "kind": "r4",
+   "label": "threads"
+  },
+  {
+   "addr": "0x08000354",
+   "kind": "r4",
+   "label": "fault"
+  },
+  {
+   "addr": "0x08000374",
+   "kind": "r4",
+   "label": "faults"
+  },
+  {
+   "addr": "0x0800059c",
+   "kind": "r4",
+   "label": "volt"
+  },
+  {
+   "addr": "0x080005be",
+   "kind": "r4",
+   "label": "param_detect"
+  },
+  {
+   "addr": "0x08000784",
+   "kind": "r4",
+   "label": "rpm_dep"
+  },
+  {
+   "addr": "0x08000838",
+   "kind": "r4",
+   "label": "foc_encoder_detect"
+  },
+  {
+   "addr": "0x08000924",
+   "kind": "r4",
+   "label": "measure_res"
+  },
+  {
+   "addr": "0x08000a02",
+   "kind": "r4",
+   "label": "measure_ind"
+  },
+  {
+   "addr": "0x08000afe",
+   "kind": "r4",
+   "label": "measure_linkage_foc"
+  },
+  {
+   "addr": "0x08000b78",
+   "kind": "r4",
+   "label": "measure_linkage"
+  },
+  {
+   "addr": "0x08000cb4",
+   "kind": "r4",
+   "label": "measure_res_ind"
+  },
+  {
+   "addr": "0x08000f34",
+   "kind": "r4",
+   "label": "measure_linkage_openloop"
+  },
+  {
+   "addr": "0x08001132",
+   "kind": "r4",
+   "label": "foc_state"
+  },
+  {
+   "addr": "0x0800114c",
+   "kind": "r4",
+   "label": "foc_dc_cal"
+  },
+  {
+   "addr": "0x080011fe",
+   "kind": "r4",
+   "label": "hw_status"
+  },
+  {
+   "addr": "0x080013c2",
+   "kind": "r4",
+   "label": "foc_openloop"
+  },
+  {
+   "addr": "0x08001520",
+   "kind": "r4",
+   "label": "foc_openloop_duty"
+  },
+  {
+   "addr": "0x080015d6",
+   "kind": "r4",
+   "label": "nrf_ext_set_enabled"
+  },
+  {
+   "addr": "0x08001622",
+   "kind": "r4",
+   "label": "foc_sensors_detect_apply"
+  },
+  {
+   "addr": "0x080016a2",
+   "kind": "r4",
+   "label": "rotor_lock_openloop"
+  },
+  {
+   "addr": "0x08001898",
+   "kind": "r4",
+   "label": "foc_detect_apply_all"
+  },
+  {
+   "addr": "0x08001a00",
+   "kind": "r4",
+   "label": "foc_detect_apply_all_can"
+  },
+  {
+   "addr": "0x08001bf4",
+   "kind": "r4",
+   "label": "uptime"
+  },
+  {
+   "addr": "0x08001c20",
+   "kind": "r4",
+   "label": "hall_analyze"
+  },
+  {
+   "addr": "0x08002040",
+   "kind": "r4",
+   "label": "crc"
+  },
+  {
+   "addr": "0x08002084",
+   "kind": "decision",
+   "label": "drv_reset_faults"
+  },
+  {
+   "addr": "0x08002092",
+   "kind": "r4",
+   "label": "update_pid_pos_offset"
+  },
+  {
+   "addr": "0x080020f0",
+   "kind": "r4",
+   "label": "fw_info"
+  },
+  {
+   "addr": "0x08002114",
+   "kind": "r4",
+   "label": "rebootwdt"
+  },
+  {
+   "addr": "0x08002128",
+   "kind": "r4",
+   "label": "crash_diag"
+  },
+  {
+   "addr": "0x08002324",
+   "kind": "r4",
+   "label": "help"
+  },
+  {
+   "addr": "0x08017660",
+   "kind": "argv_r1",
+   "label": "events"
+  },
+  {
+   "addr": "0x0801c070",
+   "kind": "argv_r1",
+   "label": "uavcan_debug"
+  },
+  {
+   "addr": "0x08020700",
+   "kind": "argv_r1",
+   "label": "imu_status"
+  },
+  {
+   "addr": "0x080207a0",
+   "kind": "argv_r1",
+   "label": "imu_read_reg"
+  },
+  {
+   "addr": "0x08020fd8",
+   "kind": "argv_r1",
+   "label": "bm_reset"
+  },
+  {
+   "addr": "0x08021158",
+   "kind": "argv_r1",
+   "label": "bm_detach"
+  },
+  {
+   "addr": "0x08021188",
+   "kind": "argv_r1",
+   "label": "bm_target_cmd"
+  },
+  {
+   "addr": "0x080211e4",
+   "kind": "argv_r1",
+   "label": "bm_target_help"
+  },
+  {
+   "addr": "0x08021218",
+   "kind": "argv_r1",
+   "label": "bm_flash_erase"
+  },
+  {
+   "addr": "0x080212ac",
+   "kind": "argv_r1",
+   "label": "bm_attach"
+  },
+  {
+   "addr": "0x08021324",
+   "kind": "argv_r1",
+   "label": "bm_swdp_scan"
+  },
+  {
+   "addr": "0x08021758",
+   "kind": "argv_r1",
+   "label": "bm_map_nrf5_pins"
+  },
+  {
+   "addr": "0x08026d40",
+   "kind": "argv_r1",
+   "label": "encoder"
+  },
+  {
+   "addr": "0x0802722c",
+   "kind": "argv_r1",
+   "label": "encoder_clear_multiturn"
+  },
+  {
+   "addr": "0x080272f8",
+   "kind": "argv_r1",
+   "label": "encoder_clear_errors"
+  },
+  {
+   "addr": "0x08058390",
+   "kind": "argv_r1",
+   "label": "foc_plot_hfi_en"
+  },
+  {
+   "addr": "0x0805e6d0",
+   "kind": "argv_r1",
+   "label": "disconnect_virtual_motor"
+  },
+  {
+   "addr": "0x0805e790",
+   "kind": "argv_r1",
+   "label": "connect_virtual_motor"
+  },
+  {
+   "addr": "0x0800253c",
+   "kind": "default",
+   "label": "Invalid-command default"
+  },
+  {
+   "addr": "0x08002544",
+   "kind": "exit",
+   "label": "terminal_process_string common exit (shared label)"
+  },
+  {
+   "addr": "0x0800f8c0",
+   "kind": "isr",
+   "label": "SysTick_Handler"
+  },
+  {
+   "addr": "0x08011bb0",
+   "kind": "isr",
+   "label": "USART3 IRQ handler"
+  }
+ ],
+ "isr_control": {
+  "systick": "0x0800f8c0",
+  "usart3": "0x08011bb0"
+ },
+ "controls": [
+  {
+   "id": "ctl-undeclared",
+   "input": "rehostryqz",
+   "why": "absent from the dispatch and from the image bytes"
+  },
+  {
+   "id": "ctl-prefix-hel",
+   "input": "hel",
+   "why": "strict prefix of `help`"
+  },
+  {
+   "id": "ctl-suffix-helpx",
+   "input": "helpx",
+   "why": "`help` plus one byte"
+  },
+  {
+   "id": "ctl-upper-HELP",
+   "input": "HELP",
+   "why": "argv[0] is lower-cased in place before dispatch: expected to REACH help"
+  },
+  {
+   "id": "ctl-empty",
+   "input": "",
+   "why": "an empty command string"
+  },
+  {
+   "id": "ctl-silence",
+   "input": null,
+   "why": "send nothing; only the liveness probe"
+  }
+ ]
+}

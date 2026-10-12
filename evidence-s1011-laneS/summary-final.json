@@ -1,0 +1,124 @@
+{
+ "inputs": 52,
+ "controls": {
+  "ctl-empty": {
+   "declared_scored_reached": [],
+   "scores": {
+    "declared_entries_scored_reached": [],
+    "default_hit_with_this_input": false,
+    "weak_rule_shared_exit_hit": false
+   },
+   "reply": [
+    "No command received"
+   ],
+   "live_after": true,
+   "boot_hit_count": 0
+  },
+  "ctl-prefix-hel": {
+   "declared_scored_reached": [],
+   "scores": {
+    "declared_entries_scored_reached": [],
+    "default_hit_with_this_input": true,
+    "weak_rule_shared_exit_hit": true
+   },
+   "reply": [
+    "Invalid command: hel\ntype help to list all available commands"
+   ],
+   "live_after": true,
+   "boot_hit_count": 0
+  },
+  "ctl-silence": {
+   "declared_scored_reached": [],
+   "scores": {
+    "declared_entries_scored_reached": [],
+    "default_hit_with_this_input": false,
+    "weak_rule_shared_exit_hit": false
+   },
+   "reply": [],
+   "live_after": true,
+   "boot_hit_count": 0
+  },
+  "ctl-suffix-helpx": {
+   "declared_scored_reached": [],
+   "scores": {
+    "declared_entries_scored_reached": [],
+    "default_hit_with_this_input": true,
+    "weak_rule_shared_exit_hit": true
+   },
+   "reply": [
+    "Invalid command: helpx\ntype help to list all available commands"
+   ],
+   "live_after": true,
+   "boot_hit_count": 0
+  },
+  "ctl-undeclared": {
+   "declared_scored_reached": [],
+   "scores": {
+    "declared_entries_scored_reached": [],
+    "default_hit_with_this_input": true,
+    "weak_rule_shared_exit_hit": true
+   },
+   "reply": [
+    "Invalid command: rehostryqz\ntype help to list all available commands"
+   ],
+   "live_after": true,
+   "boot_hit_count": 0
+  },
+  "ctl-upper-HELP": {
+   "declared_scored_reached": [
+    "help"
+   ],
+   "scores": {
+    "declared_entries_scored_reached": [
+     "help"
+    ],
+    "default_hit_with_this_input": false,
+    "weak_rule_shared_exit_hit": false
+   },
+   "reply": [
+    "Valid commands are:",
+    "help",
+    "Show this help"
+   ],
+   "live_after": true,
+   "boot_hit_count": 0
+  }
+ },
+ "boots": 58,
+ "reached": 52,
+ "live_of_reached": 51,
+ "not_reached": [],
+ "reached_not_live": [
+  "rebootwdt"
+ ],
+ "next_identity_false_credits": [],
+ "boot_errors": [],
+ "hooks_registered_ok": true,
+ "listener_is_child_all": true,
+ "image_sha256_set": [
+  "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+ ],
+ "handler_hits_not_thread_mode": [],
+ "isr_control_thread_mode_true_total": 0,
+ "isr_control_records_total": 174,
+ "isr_control_ipsrs": [
+  15
+ ],
+ "faults_total": 0,
+ "boot_s_range": [
+  30.8,
+  32.6
+ ],
+ "wall_s_range": [
+  56.3,
+  243.9
+ ],
+ "load_range": [
+  3.37,
+  9.89
+ ],
+ "boot_hit_count_range": [
+  0,
+  0
+ ]
+}

@@ -1,6 +1,246 @@
-<!-- rehostry-census: milestone=M7 landed=true verdict=M4-OK verified=2026-09-30 method=live-run n=none core=hal-b0818-on-9bde2c0@60619b7e faults=0 fault_before_round_trip=false fault_after_round_trip=false note=NO-ENTRY-WAS-REMOVED-this-row-had-NO-M8-denominator-at-all-and-this-session-CREATES-one-so-the-reported-coverage-is-WORSE-than-the-row-s-previous-silence-implied-which-is-the-correct-direction;M8-WAS-RECORDED-UNDEFINED-ON-THE-WRONG-GROUND-the-old-reason-was-one-link-one-peer-which-answers-M5-not-M8-RULES-1b-separates-them-and-the-2026-09-29-ruling-makes-a-command-inside-one-framing-layer-an-ENTRY-naming-this-firmware-s-own-sibling-vesc-bms-16-COMM-packets-over-ONE-CAN-link-as-the-precedent;M5-STAYS-UNDEFINED-one-USART3-link-one-peer;M8-IS-DEFINED-AND-UNMET-denominator-52;WHAT-n-WOULD-COUNT-52-TERMINAL-COMMANDS-the-firmware-publishes-in-its-OWN-help-menu-NOT-interfaces-and-NOT-COMM-packet-ids;n-IS-none-BECAUSE-THE-NUMERATOR-IS-NOT-FULLY-MEASURED-49-driven-2-recognised-but-silent-1-UNDETERMINED-rebootwdt-so-the-bound-is-49-to-50-of-52-and-per-the-2026-09-30-ruling-a-bounded-numerator-publishes-n-none-never-a-fraction;INVENTORY-DERIVED-LIVE-FROM-THE-GUEST-S-OWN-BYTES-IN-EVERY-BOOT-one-COMM_TERMINAL_CMD-help-and-every-COMM_PRINT-frame-parsed-BY-SHAPE-52-command-shaped-lines-60-description-shaped-0-unclassifiable-summing-exactly-to-the-112-line-body-and-51-of-52-boots-re-derived-52-independently;COMPLETENESS-IS-STRUCTURAL-NOT-NUMERIC-help-ends-with-commands_printf-space-so-an-intact-menu-s-last-line-is-exactly-one-space-and-a-parse-without-that-sentinel-VOIDS-rather-than-reporting-a-smaller-denominator-because-a-count-cannot-detect-its-own-truncation-which-is-the-26-vs-34-lesson-the-sibling-paid-for;GUARD-IS-DIAGONAL-AND-PINNED-TO-RAW-BYTES-52-token-to-full-declaration-line-PAIRS-plus-help_sha256-625878ee-and-pairs_sha256-611e20fa-so-a-command-that-kept-its-name-and-changed-its-ARITY-breaks-it-and-a-mismatch-EITHER-WAY-voids;COULD-A-PASS-HAPPEN-WITH-THE-FIRMWARE-ASLEEP-NO-arm-B-is-the-answer-the-guest-must-RENDER-a-nonce-the-host-minted-seconds-earlier-inside-its-own-Invalid-command-line-and-both-strings-must-be-on-ONE-line-because-the-terminal-ECHOES-the-command-so-checking-them-separately-was-satisfied-by-the-echo-a-defect-caught-on-the-smoke-run;KNOB-BINDS-VESC_M8_TWIN_ONLY=1-gives-6-of-6-sampled-entries-driven-false-refused_by_firmware-with-the-inventory-STILL-52-and-the-guard-STILL-ok-which-is-pre-registered-PREDICTION-8-confirmed;HAL_SEAM_CONTROL-CANNOT-SERVE-AS-THE-NUMERATOR-KNOB-and-that-was-pre-registered-it-closes-the-seam-the-menu-is-read-over-so-it-voids-the-denominator-too;MY-PREDICTION-6-WAS-FALSIFIED-I-predicted-driven-in-15-to-40-and-measured-49-the-range-is-NOT-widened-the-error-was-conceptual-I-predicted-coverage-from-what-the-host-side-code-already-NAMES-when-the-sweep-drives-every-entry-DIRECTLY;ONE-FRESH-BOOT-PER-ENTRY-ENTRY-FIRST-52-of-52-because-stop-rebootwdt-and-foc_openloop-change-the-machine-a-later-entry-would-be-graded-against;MY-OWN-DEFECTS-a-late-async-print-from-measure_res_ind-was-consumed-by-arm-B-and-desynchronised-every-later-exchange-fixed-by-a-settle-and-re-run-with-4-driven-controls-unchanged-AND-my-aggregator-read-a-key-that-does-not-exist-and-printed-a-FALSE-VOID;THREE-CHECKS-ALL-0-check1-verdict-M4-OK-check2-0-check3-entitled-M7-credited-M7;firmware-UNCHANGED-sha256-ea6e96f9-before-and-after-all-59-chains-and-it-is-NOT-the-sibling-s-image-vesc-bms-is-f72bb1c4-and-85240-bytes-against-this-row-s-1048576 -->
+<!-- rehostry-census: milestone=M7 landed=true verdict=M4-OK verified=2026-09-30 method=live-run n=none fuzz_reach=52of52 fuzz_live=51of52 core=hal-b0818-on-9bde2c0@60619b7e faults=0 fault_before_round_trip=false fault_after_round_trip=false note=NO-ENTRY-WAS-REMOVED-this-row-had-NO-M8-denominator-at-all-and-this-session-CREATES-one-so-the-reported-coverage-is-WORSE-than-the-row-s-previous-silence-implied-which-is-the-correct-direction;M8-WAS-RECORDED-UNDEFINED-ON-THE-WRONG-GROUND-the-old-reason-was-one-link-one-peer-which-answers-M5-not-M8-RULES-1b-separates-them-and-the-2026-09-29-ruling-makes-a-command-inside-one-framing-layer-an-ENTRY-naming-this-firmware-s-own-sibling-vesc-bms-16-COMM-packets-over-ONE-CAN-link-as-the-precedent;M5-STAYS-UNDEFINED-one-USART3-link-one-peer;M8-IS-DEFINED-AND-UNMET-denominator-52;WHAT-n-WOULD-COUNT-52-TERMINAL-COMMANDS-the-firmware-publishes-in-its-OWN-help-menu-NOT-interfaces-and-NOT-COMM-packet-ids;n-IS-none-BECAUSE-THE-NUMERATOR-IS-NOT-FULLY-MEASURED-49-driven-2-recognised-but-silent-1-UNDETERMINED-rebootwdt-so-the-bound-is-49-to-50-of-52-and-per-the-2026-09-30-ruling-a-bounded-numerator-publishes-n-none-never-a-fraction;INVENTORY-DERIVED-LIVE-FROM-THE-GUEST-S-OWN-BYTES-IN-EVERY-BOOT-one-COMM_TERMINAL_CMD-help-and-every-COMM_PRINT-frame-parsed-BY-SHAPE-52-command-shaped-lines-60-description-shaped-0-unclassifiable-summing-exactly-to-the-112-line-body-and-51-of-52-boots-re-derived-52-independently;COMPLETENESS-IS-STRUCTURAL-NOT-NUMERIC-help-ends-with-commands_printf-space-so-an-intact-menu-s-last-line-is-exactly-one-space-and-a-parse-without-that-sentinel-VOIDS-rather-than-reporting-a-smaller-denominator-because-a-count-cannot-detect-its-own-truncation-which-is-the-26-vs-34-lesson-the-sibling-paid-for;GUARD-IS-DIAGONAL-AND-PINNED-TO-RAW-BYTES-52-token-to-full-declaration-line-PAIRS-plus-help_sha256-625878ee-and-pairs_sha256-611e20fa-so-a-command-that-kept-its-name-and-changed-its-ARITY-breaks-it-and-a-mismatch-EITHER-WAY-voids;COULD-A-PASS-HAPPEN-WITH-THE-FIRMWARE-ASLEEP-NO-arm-B-is-the-answer-the-guest-must-RENDER-a-nonce-the-host-minted-seconds-earlier-inside-its-own-Invalid-command-line-and-both-strings-must-be-on-ONE-line-because-the-terminal-ECHOES-the-command-so-checking-them-separately-was-satisfied-by-the-echo-a-defect-caught-on-the-smoke-run;KNOB-BINDS-VESC_M8_TWIN_ONLY=1-gives-6-of-6-sampled-entries-driven-false-refused_by_firmware-with-the-inventory-STILL-52-and-the-guard-STILL-ok-which-is-pre-registered-PREDICTION-8-confirmed;HAL_SEAM_CONTROL-CANNOT-SERVE-AS-THE-NUMERATOR-KNOB-and-that-was-pre-registered-it-closes-the-seam-the-menu-is-read-over-so-it-voids-the-denominator-too;MY-PREDICTION-6-WAS-FALSIFIED-I-predicted-driven-in-15-to-40-and-measured-49-the-range-is-NOT-widened-the-error-was-conceptual-I-predicted-coverage-from-what-the-host-side-code-already-NAMES-when-the-sweep-drives-every-entry-DIRECTLY;ONE-FRESH-BOOT-PER-ENTRY-ENTRY-FIRST-52-of-52-because-stop-rebootwdt-and-foc_openloop-change-the-machine-a-later-entry-would-be-graded-against;MY-OWN-DEFECTS-a-late-async-print-from-measure_res_ind-was-consumed-by-arm-B-and-desynchronised-every-later-exchange-fixed-by-a-settle-and-re-run-with-4-driven-controls-unchanged-AND-my-aggregator-read-a-key-that-does-not-exist-and-printed-a-FALSE-VOID;THREE-CHECKS-ALL-0-check1-verdict-M4-OK-check2-0-check3-entitled-M7-credited-M7;firmware-UNCHANGED-sha256-ea6e96f9-before-and-after-all-59-chains-and-it-is-NOT-the-sibling-s-image-vesc-bms-is-f72bb1c4-and-85240-bytes-against-this-row-s-1048576 -->
 <!-- Copyright 2026 Christopher Wright; SPDX-License-Identifier: AGPL-3.0-or-later -->
 # Status — device-vesc-bldc-f405
+
+## 2026-10-12 — lane s1011-laneS: fuzz reach by handler hook, one fresh boot per command
+
+**`fuzz_reach=52of52 fuzz_live=51of52`. `n=` and `milestone=` are unchanged**, and so are `core=` and
+the fault fields. This measures fuzz reachability, not M8 parity. Image `vesc.bin` sha256
+`ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9`. It was identical before and
+after the arm, and in every per-boot copy (58 boots).
+
+**The denominator, 52, is derived again from the image's own DISPATCH, not from `help`.** The census
+set came from the guest's `help` menu (`tools/m8_inventory_guard.json`). `tools/fuzz_reach_targets.py`
+reads `vesc.bin`, plus the same build's symbol table (`vesc_addrs.yaml`, for
+`terminal_process_string`, `strcmp`, `terminal_register_command_callback` and `commands_printf`).
+From those it walks `terminal_process_string` (`0x080001c0`). It raises on any mismatch:
+
+1. **The registered-callback loop** (the strcmp at `0x08000244`, `blx cbf`) runs **first**. A
+   registered name would therefore shadow a built-in; none does.
+2. **The built-in `strcmp` chain.** It starts at the loop's exit `0x0800025c`.
+   * Each link is `ldr r1,=<name>; mov r0,r4; bl strcmp`, then
+     `cbnz`/`cbz`/`cmp r0,#0;bne`/`beq`.
+   * The handler is the EQUAL edge. Each NOT-EQUAL edge must land exactly on the next link.
+   * There are **34 links**. The last not-equal edge must be, and is, the block that prints the
+     firmware's own `Invalid command: %s` (`0x0800253c`).
+   * A strcmp against `"clear"` inside `crash_diag` compares argv[1], not r4, and is correctly not a
+     link.
+3. **Every `terminal_register_command_callback` call site in the image** gives **18 callbacks**. r0
+   (the name) and r3 (the cbf) are read back from PC-relative literals, up to the previous
+   call/branch. Two of the call sites are tail calls (`b.w`).
+
+**34 + 18 = 52, and the set equals the help-menu guard set exactly**: nothing is missing from either
+side. This is two independent derivations of the same 52. All 52 handler addresses are distinct.
+The ids are names, so the macOS case-insensitivity trap applies only to file names, which are the
+hex of the id.
+
+**One shared label, handled as lane P handled theirs.** `drv_reset_faults` is an **empty case** on
+this hardware: its equal edge is the function's common exit `0x08002544`, which *every* command that
+returns also runs.
+* Its "handler" is therefore the **dispatch decision**: the `beq.w` at `0x08002084`, with r0
+  (strcmp's result) == 0 and r4 == `"drv_reset_faults"`.
+* The exit is hooked as well, for the weak-rule control only (below).
+
+**How the entry is identified at hit time, from guest state:**
+* For a chain handler, r4 points to argv[0], the string strcmp just matched, already lower-cased in
+  place by the firmware. The hook reads that string from guest memory.
+* For a callback, `cbf(argc, argv)` gets argv in r1.
+* **Reached** (`fuzz_entry._hit_for`) requires, after the input, that the **first** handler-class
+  hook (any entry's handler, or the default) firing with argv[0] == name is the entry's **own**
+  handler, in thread mode (IPSR 0), and that the default never fired with that name.
+
+**Inputs.** Each command was sent bare, as one `COMM_TERMINAL_CMD` frame. A refusal such as
+`This command requires one argument.` still proves reach.
+
+* **Run `final`:** 58 boots (52 commands and 6 controls), **5 at a time**.
+  * **Process and ports.** Each boot ran in its own process with a forced `os._exit`, on ports
+    39900–39924 (slot k owns 39900+5k..+4, each asserted inside 39850–39949). `lsof` showed the
+    listener to be the child pid in every boot.
+  * **Harness.** This repo at `7e11dcc`, committed before the run.
+  * **venv.** `venvs-on-9bde2c0.noindex/vesc-bldc-f405-a69`, the venv this STATUS names (py3.12.12,
+    unicorn 2.1.4). It resolves to `hal-b0818-on-9bde2c0` at `60619b7e`, which is clean. No fetch was
+    done.
+  * **Core file.** `unicorn_backend.py` sha256 was `e9af2133…f5b355` at the start and the end.
+  * **Load and timing.** Box load was 3.4 at the start and 9.9 at the peak. Boot to `USART3: enabled`
+    plus 5000 SysTicks took 30.8–32.6 s, and a boot was 56–244 s overall.
+* **Settle in guest time.** After the input, the harness waits until **50 000 SysTick exceptions**
+  (5 s of guest time at `CH_CFG_ST_FREQUENCY` 10 kHz) have been counted by the observe-only
+  `SysTick_Handler` hook, and the seam has been quiet for 3 s. The wait is capped at 120 s wall
+  time. About 56 s of wall time per 5 s of guest time was measured.
+* **Live after:** the terminal string `rh<12-hex nonce>` (in no byte of the image) must pass both
+  checks:
+  * it comes back as **one** COMM_PRINT line containing both `Invalid command` and the nonce (the
+    terminal echoes `-> rh…` on its own line, so the conjunction on one line makes it the guest's
+    sentence);
+  * the default block's hook fires with r4 == the token in thread mode.
+
+  The window is 90 s, with a second probe at 45 s. All 51 live entries answered the first probe in
+  1.3 s.
+
+### Controls (all on this image, all from `evidence-s1011-laneS/`)
+
+* **0 hook hits during boot**, in all 58 boots. The hooks are 52 handlers, the default and the
+  shared exit; the boot window is the time before the input.
+* **The next command's identity:** every command's hits were scored against the *next* command's
+  handler and name. **0 of 52 TRUE.**
+* **The nested-interrupt check can move.** `SysTick_Handler` (IPSR 15) and the USART3 IRQ handler
+  (IPSR 55) are hooked as ISR controls. They fired 10.2 M and 8.6 M times over the arm. **All 174
+  sampled ISR records fail the thread-mode check.** Every own-handler hit and every liveness hit has
+  IPSR 0.
+* **Undeclared input reaches no handler**, and the shared exit shows why the reach rule matters:
+
+| control | input | default hit (r4 = input) | declared entries scored reached | weak rule at the shared exit `0x08002544` | reply | live |
+|---|---|---|---|---|---|---|
+| `ctl-undeclared` | `rehostryqz` | y | none | **fires** (refused by the rule) | `Invalid command: rehostryqz` | y |
+| `ctl-prefix-hel` | `hel` | y | none | **fires** (refused) | `Invalid command: hel` | y |
+| `ctl-suffix-helpx` | `helpx` | y | none | **fires** (refused) | `Invalid command: helpx` | y |
+| `ctl-upper-HELP` | `HELP` | n | **`help`** (expected: see below) | no | the help menu | y |
+| `ctl-empty` | empty string | n | none | no | `No command received` | y |
+| `ctl-silence` | nothing | n | none | no | — | y |
+
+  * The **weak-rule column** is the shared-label hazard. Every undeclared input also runs
+    `0x08002544`, `drv_reset_faults`'s equal-edge target, with its own string in r4. "Any hit on the
+    label with r4 = input" would therefore credit undeclared input there. The rule actually used
+    credits none, and it hooks `drv_reset_faults` at its decision instead.
+  * `ctl-upper-HELP` **is meant to reach `help`.** It is the control that the identity comes from
+    guest state. We sent `HELP`; the firmware lower-cased argv[0] in place; the hook read `help` out
+    of guest memory, at `help`'s handler. A rule keyed on our own bytes would have missed it.
+
+### Not reached: 0. Reached but not live: 1
+
+| command | class | evidence |
+|---|---|---|
+| `rebootwdt` | **reset never performed (watchdog)** | Handler hit (`0x08002114`, r4 = `rebootwdt`, IPSR 0). The firmware does `cpsid i`, then spins `nop; b` at **`0x08002116..0x08002118`** (every PC sample, IPSR 0), waiting for an IWDG reset. This rehost models no IWDG, and its `SystemReset` handler covers only the three SYSRESETREQ sites. The guest clock stopped (+334 ticks). Neither probe was answered in 90 s. Not fixed. A row-local IWDG-expiry → warm-reset model with a mute control is the candidate. |
+
+* **The motor-measurement classes** (ADC or timer waits) **were not triggered.** Every
+  `measure_*`/`foc_*`/`hall_analyze` command sent bare refuses with its own arity message before
+  measuring, except two:
+  * `measure_res_ind` printed `Measuring resistance and inductance...`;
+  * `foc_dc_cal` printed `Performing DC offset calibration...`.
+
+  Both stayed live, and both handlers were reached.
+* **The 2026-09-30 "recognised but silent" pair is reached.** `drv_reset_faults` (decision r0 = 0)
+  and `update_pid_pos_offset` both reached their own handler and stayed live. They print nothing,
+  as M8 recorded.
+* **No other §3 class occurred.**
+  * 0x0 alias: no. The config maps `flash_alias` at 0 as an explicit `r-x` region, and this row is
+    not on the stm32-zero-alias list.
+  * Polling an unmodelled register: no.
+  * Timer re-entry: no.
+* **Unexplained: none.** No fault line and no `KERNEL PANIC` occurred in 58 boots. The one
+  `SYSRESETREQ` per boot is the documented first-boot CRC reboot, at `0x08013990`.
+
+### Every input entry: 52
+
+Reached = own-handler hook with argv[0] read from guest memory, first with that name, in thread mode.
+Live = the nonce rendered in the firmware's own `Invalid command` line, with the default hook in
+thread mode.
+
+| command | kind | handler | reached | live | reply (first COMM_PRINT after the echo) / not-live class | next-id control |
+|---|---|---|---|---|---|---|
+| `help` | chain | `0x08002324` | **y** | y | Valid commands are: | mem→FALSE |
+| `mem` | chain | `0x08000286` | **y** | y | core free memory : 20584 bytes | threads→FALSE |
+| `threads` | chain | `0x080002b6` | **y** | y | addr    stack prio refs     state           name motor stackmin  time | fault→FALSE |
+| `fault` | chain | `0x08000354` | **y** | y | FAULT_CODE_NONE | faults→FALSE |
+| `faults` | chain | `0x08000374` | **y** | y | No faults registered since startup | stop→FALSE |
+| `stop` | chain | `0x08000266` | **y** | y | Stopping all motors | volt→FALSE |
+| `volt` | chain | `0x0800059c` | **y** | y | Input voltage: 0.00 | param_detect→FALSE |
+| `param_detect` | chain | `0x080005be` | **y** | y | This command requires three arguments. [current erpm duty] | rpm_dep→FALSE |
+| `rpm_dep` | chain | `0x08000784` | **y** | y | Cycle int limit: 0.00 | foc_encoder_detect→FALSE |
+| `foc_encoder_detect` | chain | `0x08000838` | **y** | y | This command requires one argument. [current] | measure_res→FALSE |
+| `measure_res` | chain | `0x08000924` | **y** | y | This command requires one argument. [current] | measure_ind→FALSE |
+| `measure_ind` | chain | `0x08000a02` | **y** | y | This command requires one argument. [duty] | measure_linkage→FALSE |
+| `measure_linkage` | chain | `0x08000b78` | **y** | y | This command requires four arguments. [current duty min_erpm resistanc | measure_res_ind→FALSE |
+| `measure_res_ind` | chain | `0x08000cb4` | **y** | y | Measuring resistance and inductance... | measure_linkage_foc→FALSE |
+| `measure_linkage_foc` | chain | `0x08000afe` | **y** | y | This command requires one argument. [duty] | measure_linkage_openloop→FALSE |
+| `measure_linkage_openloop` | chain | `0x08000f34` | **y** | y | This command requires five arguments. [current duty erpm_ramp_per_sec  | foc_state→FALSE |
+| `foc_state` | chain | `0x08001132` | **y** | y | FOC State: | foc_dc_cal→FALSE |
+| `foc_dc_cal` | chain | `0x0800114c` | **y** | y | Performing DC offset calibration... | hw_status→FALSE |
+| `hw_status` | chain | `0x080011fe` | **y** | y | Firmware: 7.1 | foc_openloop→FALSE |
+| `foc_openloop` | chain | `0x080013c2` | **y** | y | This command requires two arguments. [current erpm] | foc_openloop_duty→FALSE |
+| `foc_openloop_duty` | chain | `0x08001520` | **y** | y | This command requires two arguments. [duty erpm] | nrf_ext_set_enabled→FALSE |
+| `nrf_ext_set_enabled` | chain | `0x080015d6` | **y** | y | This command requires one argument. [enabled] | foc_sensors_detect_apply→FALSE |
+| `foc_sensors_detect_apply` | chain | `0x08001622` | **y** | y | This command requires one argument. [current] | rotor_lock_openloop→FALSE |
+| `rotor_lock_openloop` | chain | `0x080016a2` | **y** | y | This command requires three arguments. [current time angle] | foc_detect_apply_all→FALSE |
+| `foc_detect_apply_all` | chain | `0x08001898` | **y** | y | This command requires one argument. [Max_power_loss] | foc_detect_apply_all_can→FALSE |
+| `foc_detect_apply_all_can` | chain | `0x08001a00` | **y** | y | This command requires one argument. [Max_power_loss] | uptime→FALSE |
+| `uptime` | chain | `0x08001bf4` | **y** | y | Uptime: 12.51 s | hall_analyze→FALSE |
+| `hall_analyze` | chain | `0x08001c20` | **y** | y | This command requires one argument. [current] | crc→FALSE |
+| `crc` | chain | `0x08002040` | **y** | y | MC CFG crc: 0x21E6 (stored)  0x6892 (recalc) | drv_reset_faults→FALSE |
+| `drv_reset_faults` | chain, EMPTY case | `0x08002084` | **y** | y | (no COMM_PRINT beyond the echo) | update_pid_pos_offset→FALSE |
+| `update_pid_pos_offset` | chain | `0x08002092` | **y** | y | (no COMM_PRINT beyond the echo) | fw_info→FALSE |
+| `fw_info` | chain | `0x080020f0` | **y** | y | Git Branch: | rebootwdt→FALSE |
+| `rebootwdt` | chain | `0x08002114` | **y** | **n** | reset never performed (watchdog): `cpsid i` then `nop; b` loop at 0x08002116..0x08002118, IPSR 0, waiting for an IWDG reset this rehost does not model | crash_diag→FALSE |
+| `crash_diag` | chain | `0x08002128` | **y** | y | Boot number: 2 | events→FALSE |
+| `events` | callback `terminal_print` | `0x08017660` | **y** | y | Age    : 12.46 s | encoder→FALSE |
+| `encoder` | callback `terminal_encoder` | `0x08026d40` | **y** | y | No encoder debug info available. | encoder_clear_errors→FALSE |
+| `encoder_clear_errors` | callback `terminal_encoder_clear_errors` | `0x080272f8` | **y** | y | Done! | encoder_clear_multiturn→FALSE |
+| `encoder_clear_multiturn` | callback `terminal_encoder_clear_multiturn` | `0x0802722c` | **y** | y | Done! | connect_virtual_motor→FALSE |
+| `connect_virtual_motor` | callback `terminal_cmd_connect_virtual_motor` | `0x0805e790` | **y** | y | arguments should be 3 | disconnect_virtual_motor→FALSE |
+| `disconnect_virtual_motor` | callback `terminal_cmd_disconnect_virtual_motor` | `0x0805e6d0` | **y** | y | virtual motor disconnected | foc_plot_hfi_en→FALSE |
+| `foc_plot_hfi_en` | callback `terminal_plot_hfi` | `0x08058390` | **y** | y | This command requires one argument. | imu_read_reg→FALSE |
+| `imu_read_reg` | callback `terminal_read_reg` | `0x080207a0` | **y** | y | This command requires one argument. | imu_status→FALSE |
+| `imu_status` | callback `terminal_status` | `0x08020700` | **y** | y | Model         : BMI160 | uavcan_debug→FALSE |
+| `uavcan_debug` | callback `terminal_debug_on` | `0x0801c070` | **y** | y | This command requires one argument. | bm_swdp_scan→FALSE |
+| `bm_swdp_scan` | callback `terminal_swdp_scan` | `0x08021324` | **y** | y | SW-DP scan failed! | bm_attach→FALSE |
+| `bm_attach` | callback `terminal_attach` | `0x080212ac` | **y** | y | This command requires one argument. | bm_flash_erase→FALSE |
+| `bm_flash_erase` | callback `terminal_flash_erase` | `0x08021218` | **y** | y | This command requires two arguments. | bm_target_help→FALSE |
+| `bm_target_help` | callback `terminal_target_help` | `0x080211e4` | **y** | y | No target attached | bm_target_cmd→FALSE |
+| `bm_target_cmd` | callback `terminal_target_cmd` | `0x08021188` | **y** | y | No target attached | bm_reset→FALSE |
+| `bm_reset` | callback `terminal_reset` | `0x08020fd8` | **y** | y | No target attached | bm_detach→FALSE |
+| `bm_detach` | callback `terminal_detach` | `0x08021158` | **y** | y | No target attached | bm_map_nrf5_pins→FALSE |
+| `bm_map_nrf5_pins` | callback `terminal_map_nrf5_pins` | `0x08021758` | **y** | y | This command requires one argument. | help→FALSE |
+
+### The fuzzer entry point
+
+```python
+from rehostry_vesc_bldc_f405.fuzz_entry import reach_one
+r = reach_one(entry="fw_info")                    # a declared command (as listed above)
+r = reach_one(term=b"foc_openloop 1 100")         # any terminal string, framed as COMM_TERMINAL_CMD
+r = reach_one(raw=bytes.fromhex("02..."))         # ARBITRARY bytes onto USART3
+r["handler_hit"], r["live_after"], r["entry_hits"], r["entry_prints"], r["pcring"]
+```
+
+```
+venvs-on-9bde2c0.noindex/vesc-bldc-f405-a69/bin/python -m rehostry_vesc_bldc_f405.fuzz_entry --entry fw_info --slot 0 --out x.json
+... -m rehostry_vesc_bldc_f405.fuzz_entry --term "measure_res 2" --slot 0 --out x.json
+... -m rehostry_vesc_bldc_f405.fuzz_entry --sweep --workers 5 --outdir DIR [--only fw_info ...]
+```
+
+* **Every call is one fresh boot.** It takes about 31 s to the seam and about 90 s in all, most of
+  that the 5-s guest-time settle.
+  * The boot runs from a pristine copy of `configs/`, and the image sha256 is recorded before and
+    after.
+  * The bridge listener is checked with `lsof` to be this child's pid.
+  * The input is sent **first**, then the liveness probe; then the process group is terminated.
+* **With `raw=`/`term=`,** `handler_hit` is true if any declared handler hook fired. Use
+  `entry_hits` for attribution: each record carries pc, the argv[0] string, r0 for the decision
+  hook, and ipsr.
+* **The hooks** (`bp_handlers/fuzz_reach_probe.py`) are observe-only: every hook returns
+  `(False, None)`. They are row-local and active only through the overlay `fuzz_entry` writes.
+  * Records are capped at 20 per (pc, argv), and log lines at 20 per message.
+  * There is a per-chunk PC ring, plus a watchdog PC read if chunks stop.
+* **`tools/fuzz_reach_targets.py --check`** read `PASS` at the start and end of the arm (id-set
+  sha256 `f057a207…`).
+
+Evidence: in `evidence-s1011-laneS/`:
+* `arm-final.txt`: environment, core and image hashes, and target checks at the start and end.
+* `results-final.json`: per input, the bytes sent, pid, ports, listener pids, every handler hit with
+  argv[0], r0 and IPSR, the replies, liveness, exception counts by IPSR, the spin sample and the
+  image hashes.
+* `summary-final.json`: counts and controls.
+
+The working copies are in `scratch-batch-s1011/laneS/vesc/`.
+
+**Not measured:**
+* Argument-bearing commands. Every command was sent bare, so the motor-measurement paths that wait
+  on ADC or timer state, which need arguments, were not exercised.
+* Repeatability beyond one boot per command. Smoke arms on earlier harness revisions ran 9 of
+  them with the same reach and live values; it is not graded.
+* Handler internals.
+* An IWDG model.
+* The COMM packet-id surface, and the CAN and USB inputs.
+
 
 **Milestone: M7** (2026-09-08) — a real VESC COMM protocol round-trip over
 USART3, matching a byte-exact prediction made before the first boot; the same

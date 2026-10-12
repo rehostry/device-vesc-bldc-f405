@@ -1,0 +1,16 @@
+row=device-vesc-bldc-f405 tag=final workers=5 start=2026-10-12T22:33:36Z load={ 3.37 6.01 7.69 }
+venv=/Users/user/Development/rehostry/venvs-on-9bde2c0.noindex/vesc-bldc-f405-a69 python=/Users/user/Development/rehostry/venvs-on-9bde2c0.noindex/vesc-bldc-f405-a69/bin/python (3.12.12)
+halucinator=/Users/user/Development/rehostry/hal-b0818-on-9bde2c0/src/halucinator
+core_tree=/Users/user/Development/rehostry/hal-b0818-on-9bde2c0 core_head=60619b7eae60b2d06d1ede86f6fd5dde9e11dd00 branch=hal-b0818-on-9bde2c0 core_dirty=0
+unicorn_backend_sha256=e9af21330154ad42484002fe4c7236321925df29fdeecb7aac2d15c371f5b355
+unicorn_py=2.1.4 /Users/user/Development/rehostry/venvs-on-9bde2c0.noindex/vesc-bldc-f405-a69/lib/python3.12/site-packages/unicorn/__init__.py
+row_head=7e11dcc row_dirty=0
+images_before:
+ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9  /Users/user/Development/rehostry/device-vesc-bldc-f405/src/rehostry_vesc_bldc_f405/configs/vesc.bin
+targets_check: PASS entries=52 hooks=56 id_set_sha256=f057a207527f388e
+end=2026-10-12T22:51:41Z load={ 6.21 6.80 7.23 }
+core_head_end=60619b7eae60b2d06d1ede86f6fd5dde9e11dd00
+unicorn_backend_sha256_end=e9af21330154ad42484002fe4c7236321925df29fdeecb7aac2d15c371f5b355
+images_after:
+ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9  /Users/user/Development/rehostry/device-vesc-bldc-f405/src/rehostry_vesc_bldc_f405/configs/vesc.bin
+targets_check_end: PASS entries=52 hooks=56 id_set_sha256=f057a207527f388e

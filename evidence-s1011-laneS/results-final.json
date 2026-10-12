@@ -1,0 +1,6770 @@
+{
+ "bm_attach": {
+  "entry": "bm_attach",
+  "input_hex": "020a14626d5f617474616368a57303",
+  "pid": 78815,
+  "ports": [
+   39910,
+   39911,
+   39912,
+   39913,
+   39914
+  ],
+  "listener_pids": [
+   78815
+  ],
+  "boot_s": 32.5,
+  "wall_s": 90.2,
+  "load_at_start": 6.6552734375,
+  "load_at_end": 6.66357421875,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 126005,
+  "entry_guest_ticks": 50822,
+  "entry_window_s": 56.4,
+  "handler": "0x080212ac",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "argv_r1",
+    "pc": 134353580,
+    "ipsr": 0,
+    "argc": 1,
+    "argv": [
+     "bm_attach"
+    ],
+    "r0": null
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "bm_attach"
+    ],
+    "r0": 36
+   }
+  ],
+  "handlers_fired": [
+   [
+    "argv_r1",
+    "0x80212ac",
+    "bm_attach",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "bm_flash_erase",
+   "next_handler": "0x08021218",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "This command requires one argument."
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rhb7429163bfc1 \n",
+   "Invalid command: rhb7429163bfc1\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 177715,
+   "55": 154224
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    55
+   ],
+   "ticks_total": 177715
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "bm_detach": {
+  "entry": "bm_detach",
+  "input_hex": "020a14626d5f646574616368487903",
+  "pid": 78901,
+  "ports": [
+   39910,
+   39911,
+   39912,
+   39913,
+   39914
+  ],
+  "listener_pids": [
+   78901
+  ],
+  "boot_s": 32.5,
+  "wall_s": 90.2,
+  "load_at_start": 6.66357421875,
+  "load_at_end": 7.45703125,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125818,
+  "entry_guest_ticks": 50535,
+  "entry_window_s": 56.4,
+  "handler": "0x08021158",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "argv_r1",
+    "pc": 134353240,
+    "ipsr": 0,
+    "argc": 1,
+    "argv": [
+     "bm_detach"
+    ],
+    "r0": null
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "bm_detach"
+    ],
+    "r0": 19
+   }
+  ],
+  "handlers_fired": [
+   [
+    "argv_r1",
+    "0x8021158",
+    "bm_detach",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "bm_map_nrf5_pins",
+   "next_handler": "0x08021758",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "No target attached"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh3641821fa168 \n",
+   "Invalid command: rh3641821fa168\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 177238,
+   "55": 153322
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x8011bb0",
+    "0x800c128"
+   ],
+   "tail_ipsr": [
+    0,
+    55
+   ],
+   "ticks_total": 177238
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "bm_flash_erase": {
+  "entry": "bm_flash_erase",
+  "input_hex": "020f14626d5f666c6173685f657261736545fc03",
+  "pid": 78816,
+  "ports": [
+   39915,
+   39916,
+   39917,
+   39918,
+   39919
+  ],
+  "listener_pids": [
+   78816
+  ],
+  "boot_s": 32.5,
+  "wall_s": 90.2,
+  "load_at_start": 6.6552734375,
+  "load_at_end": 6.66357421875,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125671,
+  "entry_guest_ticks": 50540,
+  "entry_window_s": 56.4,
+  "handler": "0x08021218",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "argv_r1",
+    "pc": 134353432,
+    "ipsr": 0,
+    "argc": 1,
+    "argv": [
+     "bm_flash_erase"
+    ],
+    "r0": null
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "bm_flash_erase"
+    ],
+    "r0": 37
+   }
+  ],
+  "handlers_fired": [
+   [
+    "argv_r1",
+    "0x8021218",
+    "bm_flash_erase",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "bm_target_help",
+   "next_handler": "0x080211e4",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "This command requires two arguments."
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh6cb9911826f8 \n",
+   "Invalid command: rh6cb9911826f8\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 177095,
+   "55": 153058
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 177095
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "bm_map_nrf5_pins": {
+  "entry": "bm_map_nrf5_pins",
+  "input_hex": "021114626d5f6d61705f6e7266355f70696e73182603",
+  "pid": 78904,
+  "ports": [
+   39915,
+   39916,
+   39917,
+   39918,
+   39919
+  ],
+  "listener_pids": [
+   78904
+  ],
+  "boot_s": 32.5,
+  "wall_s": 90.2,
+  "load_at_start": 6.66357421875,
+  "load_at_end": 7.45703125,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125717,
+  "entry_guest_ticks": 50382,
+  "entry_window_s": 56.4,
+  "handler": "0x08021758",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "argv_r1",
+    "pc": 134354776,
+    "ipsr": 0,
+    "argc": 1,
+    "argv": [
+     "bm_map_nrf5_pins"
+    ],
+    "r0": null
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "bm_map_nrf5_pins"
+    ],
+    "r0": 36
+   }
+  ],
+  "handlers_fired": [
+   [
+    "argv_r1",
+    "0x8021758",
+    "bm_map_nrf5_pins",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "help",
+   "next_handler": "0x08002324",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "This command requires one argument."
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh36799e17b7bc \n",
+   "Invalid command: rh36799e17b7bc\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 176984,
+   "55": 152616
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c138",
+    "0x800c128"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 176984
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "bm_reset": {
+  "entry": "bm_reset",
+  "input_hex": "020914626d5f7265736574d68e03",
+  "pid": 78897,
+  "ports": [
+   39905,
+   39906,
+   39907,
+   39908,
+   39909
+  ],
+  "listener_pids": [
+   78897
+  ],
+  "boot_s": 32.6,
+  "wall_s": 89.0,
+  "load_at_start": 6.66357421875,
+  "load_at_end": 7.45703125,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125898,
+  "entry_guest_ticks": 50292,
+  "entry_window_s": 55.2,
+  "handler": "0x08020fd8",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "argv_r1",
+    "pc": 134352856,
+    "ipsr": 0,
+    "argc": 1,
+    "argv": [
+     "bm_reset"
+    ],
+    "r0": null
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "bm_reset"
+    ],
+    "r0": 19
+   }
+  ],
+  "handlers_fired": [
+   [
+    "argv_r1",
+    "0x8020fd8",
+    "bm_reset",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "bm_detach",
+   "next_handler": "0x08021158",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "No target attached"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rhb053031e90a4 \n",
+   "Invalid command: rhb053031e90a4\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 177086,
+   "55": 152226
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c138",
+    "0x800c128"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 177086
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "bm_swdp_scan": {
+  "entry": "bm_swdp_scan",
+  "input_hex": "020d14626d5f737764705f7363616ecbe003",
+  "pid": 78811,
+  "ports": [
+   39905,
+   39906,
+   39907,
+   39908,
+   39909
+  ],
+  "listener_pids": [
+   78811
+  ],
+  "boot_s": 32.5,
+  "wall_s": 90.2,
+  "load_at_start": 6.6552734375,
+  "load_at_end": 6.66357421875,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125867,
+  "entry_guest_ticks": 50439,
+  "entry_window_s": 56.4,
+  "handler": "0x08021324",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "argv_r1",
+    "pc": 134353700,
+    "ipsr": 0,
+    "argc": 1,
+    "argv": [
+     "bm_swdp_scan"
+    ],
+    "r0": null
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "bm_swdp_scan"
+    ],
+    "r0": 18
+   }
+  ],
+  "handlers_fired": [
+   [
+    "argv_r1",
+    "0x8021324",
+    "bm_swdp_scan",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "bm_attach",
+   "next_handler": "0x080212ac",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "SW-DP scan failed!"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rhfc0859f06fbd \n",
+   "Invalid command: rhfc0859f06fbd\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 177183,
+   "55": 152770
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 177183
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "bm_target_cmd": {
+  "entry": "bm_target_cmd",
+  "input_hex": "020e14626d5f7461726765745f636d64b47b03",
+  "pid": 78874,
+  "ports": [
+   39920,
+   39921,
+   39922,
+   39923,
+   39924
+  ],
+  "listener_pids": [
+   78874
+  ],
+  "boot_s": 32.6,
+  "wall_s": 90.2,
+  "load_at_start": 7.01025390625,
+  "load_at_end": 6.966796875,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125328,
+  "entry_guest_ticks": 50622,
+  "entry_window_s": 56.4,
+  "handler": "0x08021188",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "argv_r1",
+    "pc": 134353288,
+    "ipsr": 0,
+    "argc": 1,
+    "argv": [
+     "bm_target_cmd"
+    ],
+    "r0": null
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "bm_target_cmd"
+    ],
+    "r0": 19
+   }
+  ],
+  "handlers_fired": [
+   [
+    "argv_r1",
+    "0x8021188",
+    "bm_target_cmd",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "bm_reset",
+   "next_handler": "0x08020fd8",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "No target attached"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rhac42abb3f293 \n",
+   "Invalid command: rhac42abb3f293\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 176831,
+   "55": 153187
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 176831
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "bm_target_help": {
+  "entry": "bm_target_help",
+  "input_hex": "020f14626d5f7461726765745f68656c70dcdf03",
+  "pid": 78823,
+  "ports": [
+   39900,
+   39901,
+   39902,
+   39903,
+   39904
+  ],
+  "listener_pids": [
+   78823
+  ],
+  "boot_s": 31.4,
+  "wall_s": 89.1,
+  "load_at_start": 6.6826171875,
+  "load_at_end": 6.66357421875,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 124054,
+  "entry_guest_ticks": 50371,
+  "entry_window_s": 56.4,
+  "handler": "0x080211e4",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "argv_r1",
+    "pc": 134353380,
+    "ipsr": 0,
+    "argc": 1,
+    "argv": [
+     "bm_target_help"
+    ],
+    "r0": null
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "bm_target_help"
+    ],
+    "r0": 19
+   }
+  ],
+  "handlers_fired": [
+   [
+    "argv_r1",
+    "0x80211e4",
+    "bm_target_help",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "bm_target_cmd",
+   "next_handler": "0x08021188",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "No target attached"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh857940854c85 \n",
+   "Invalid command: rh857940854c85\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 175308,
+   "55": 153580
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c138",
+    "0x800c128"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 175308
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "connect_virtual_motor": {
+  "entry": "connect_virtual_motor",
+  "input_hex": "021614636f6e6e6563745f7669727475616c5f6d6f746f72ad7a03",
+  "pid": 78635,
+  "ports": [
+   39900,
+   39901,
+   39902,
+   39903,
+   39904
+  ],
+  "listener_pids": [
+   78635
+  ],
+  "boot_s": 32.6,
+  "wall_s": 90.2,
+  "load_at_start": 7.3984375,
+  "load_at_end": 6.58056640625,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125230,
+  "entry_guest_ticks": 50174,
+  "entry_window_s": 56.4,
+  "handler": "0x0805e790",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "argv_r1",
+    "pc": 134604688,
+    "ipsr": 0,
+    "argc": 1,
+    "argv": [
+     "connect_virtual_motor"
+    ],
+    "r0": null
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "connect_virtual_motor"
+    ],
+    "r0": 21
+   }
+  ],
+  "handlers_fired": [
+   [
+    "argv_r1",
+    "0x805e790",
+    "connect_virtual_motor",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "disconnect_virtual_motor",
+   "next_handler": "0x0805e6d0",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "arguments should be 3"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh3f81e253f92c \n",
+   "Invalid command: rh3f81e253f92c\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 176279,
+   "55": 151972
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x8011bb0",
+    "0x800c128"
+   ],
+   "tail_ipsr": [
+    0,
+    55
+   ],
+   "ticks_total": 176279
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "crash_diag": {
+  "entry": "crash_diag",
+  "input_hex": "020b1463726173685f64696167958403",
+  "pid": 78542,
+  "ports": [
+   39905,
+   39906,
+   39907,
+   39908,
+   39909
+  ],
+  "listener_pids": [
+   78542
+  ],
+  "boot_s": 32.5,
+  "wall_s": 89.0,
+  "load_at_start": 6.96044921875,
+  "load_at_end": 7.25927734375,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125475,
+  "entry_guest_ticks": 50106,
+  "entry_window_s": 55.2,
+  "handler": "0x08002128",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "decision",
+    "pc": 134226052,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "crash_diag"
+    ],
+    "r0": 4294967295
+   },
+   {
+    "k": "r4",
+    "pc": 134226216,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "crash_diag"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "X"
+    ],
+    "r0": 12
+   }
+  ],
+  "handlers_fired": [
+   [
+    "decision",
+    "0x8002084",
+    "crash_diag",
+    4294967295,
+    0
+   ],
+   [
+    "r4",
+    "0x8002128",
+    "crash_diag",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "events",
+   "next_handler": "0x08017660",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "Boot number: 2",
+   "Uptime: 12 s",
+   "Reset flags:"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh0ae98e49cb7e \n",
+   "Invalid command: rh0ae98e49cb7e\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 176480,
+   "55": 151992
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 176480
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "crc": {
+  "entry": "crc",
+  "input_hex": "020414637263219303",
+  "pid": 78457,
+  "ports": [
+   39910,
+   39911,
+   39912,
+   39913,
+   39914
+  ],
+  "listener_pids": [
+   78457
+  ],
+  "boot_s": 31.4,
+  "wall_s": 89.0,
+  "load_at_start": 6.59716796875,
+  "load_at_end": 6.96044921875,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 123926,
+  "entry_guest_ticks": 50301,
+  "entry_window_s": 56.2,
+  "handler": "0x08002040",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "r4",
+    "pc": 134225984,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "crc"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     ""
+    ],
+    "r0": 72
+   }
+  ],
+  "handlers_fired": [
+   [
+    "r4",
+    "0x8002040",
+    "crc",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "drv_reset_faults",
+   "next_handler": "0x08002084",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "MC CFG crc: 0x21E6 (stored)  0x6892 (recalc)",
+   "APP CFG crc: 0x1E16 (stored)  0x1E16 (recalc)",
+   "Discrepancy is expected due to run-time recalculation of config params."
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh624039ae1945 \n",
+   "Invalid command: rh624039ae1945\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 175112,
+   "55": 153120
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c138",
+    "0x800c128"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 175112
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "ctl-empty": {
+  "entry": "ctl-empty",
+  "input_hex": "02011452b503",
+  "pid": 78996,
+  "ports": [
+   39915,
+   39916,
+   39917,
+   39918,
+   39919
+  ],
+  "listener_pids": [
+   78996
+  ],
+  "boot_s": 32.6,
+  "wall_s": 90.8,
+  "load_at_start": 7.45703125,
+  "load_at_end": 6.212890625,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125213,
+  "entry_guest_ticks": 50683,
+  "entry_window_s": 57.0,
+  "handler": null,
+  "handler_hit": null,
+  "entry_hits": [
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU"
+    ],
+    "r0": 20
+   }
+  ],
+  "handlers_fired": [],
+  "control_next_identity": null,
+  "control_scores": {
+   "declared_entries_scored_reached": [],
+   "default_hit_with_this_input": false,
+   "weak_rule_shared_exit_hit": false
+  },
+  "reply": [
+   "No command received"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rhc72361d668ee \n",
+   "Invalid command: rhc72361d668ee\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 176776,
+   "55": 153482
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 176776
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "ctl-prefix-hel": {
+  "entry": "ctl-prefix-hel",
+  "input_hex": "02041468656cba6903",
+  "pid": 78961,
+  "ports": [
+   39920,
+   39921,
+   39922,
+   39923,
+   39924
+  ],
+  "listener_pids": [
+   78961
+  ],
+  "boot_s": 32.5,
+  "wall_s": 90.2,
+  "load_at_start": 6.966796875,
+  "load_at_end": 6.81787109375,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125622,
+  "entry_guest_ticks": 50659,
+  "entry_window_s": 56.4,
+  "handler": null,
+  "handler_hit": null,
+  "entry_hits": [
+   {
+    "k": "decision",
+    "pc": 134226052,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "hel"
+    ],
+    "r0": 4
+   },
+   {
+    "k": "default",
+    "pc": 134227260,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "hel"
+    ],
+    "r0": 4294967184
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "hel"
+    ],
+    "r0": 62
+   }
+  ],
+  "handlers_fired": [
+   [
+    "decision",
+    "0x8002084",
+    "hel",
+    4,
+    0
+   ],
+   [
+    "default",
+    "0x800253c",
+    "hel",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": null,
+  "control_scores": {
+   "declared_entries_scored_reached": [],
+   "default_hit_with_this_input": true,
+   "weak_rule_shared_exit_hit": true
+  },
+  "reply": [
+   "Invalid command: hel\ntype help to list all available commands"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rhe639d0e2bc92 \n",
+   "Invalid command: rhe639d0e2bc92\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 177172,
+   "55": 153769
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 177172
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "ctl-silence": {
+  "entry": "ctl-silence",
+  "input_hex": "",
+  "pid": 79002,
+  "ports": [
+   39900,
+   39901,
+   39902,
+   39903,
+   39904
+  ],
+  "listener_pids": [
+   79002
+  ],
+  "boot_s": 32.5,
+  "wall_s": 56.3,
+  "load_at_start": 7.45703125,
+  "load_at_end": 6.88916015625,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125274,
+  "entry_guest_ticks": 52288,
+  "entry_window_s": 22.4,
+  "handler": null,
+  "handler_hit": null,
+  "entry_hits": [],
+  "handlers_fired": [],
+  "control_next_identity": null,
+  "control_scores": {
+   "declared_entries_scored_reached": [],
+   "default_hit_with_this_input": false,
+   "weak_rule_shared_exit_hit": false
+  },
+  "reply": [],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh5d73f1dba206 \n",
+   "Invalid command: rh5d73f1dba206\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 179248,
+   "55": 1088
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 179248
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 1,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "ctl-suffix-helpx": {
+  "entry": "ctl-suffix-helpx",
+  "input_hex": "02061468656c7078fb8f03",
+  "pid": 78988,
+  "ports": [
+   39905,
+   39906,
+   39907,
+   39908,
+   39909
+  ],
+  "listener_pids": [
+   78988
+  ],
+  "boot_s": 32.5,
+  "wall_s": 90.2,
+  "load_at_start": 7.45703125,
+  "load_at_end": 6.212890625,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 126081,
+  "entry_guest_ticks": 50255,
+  "entry_window_s": 56.4,
+  "handler": null,
+  "handler_hit": null,
+  "entry_hits": [
+   {
+    "k": "decision",
+    "pc": 134226052,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "helpx"
+    ],
+    "r0": 4
+   },
+   {
+    "k": "default",
+    "pc": 134227260,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "helpx"
+    ],
+    "r0": 120
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "helpx"
+    ],
+    "r0": 64
+   }
+  ],
+  "handlers_fired": [
+   [
+    "decision",
+    "0x8002084",
+    "helpx",
+    4,
+    0
+   ],
+   [
+    "default",
+    "0x800253c",
+    "helpx",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": null,
+  "control_scores": {
+   "declared_entries_scored_reached": [],
+   "default_hit_with_this_input": true,
+   "weak_rule_shared_exit_hit": true
+  },
+  "reply": [
+   "Invalid command: helpx\ntype help to list all available commands"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rhb23bfd1e2e04 \n",
+   "Invalid command: rhb23bfd1e2e04\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 177202,
+   "55": 152191
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 177202
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "ctl-undeclared": {
+  "entry": "ctl-undeclared",
+  "input_hex": "020b147265686f73747279717a32c403",
+  "pid": 78908,
+  "ports": [
+   39900,
+   39901,
+   39902,
+   39903,
+   39904
+  ],
+  "listener_pids": [
+   78908
+  ],
+  "boot_s": 32.6,
+  "wall_s": 90.2,
+  "load_at_start": 6.66357421875,
+  "load_at_end": 7.45703125,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 126006,
+  "entry_guest_ticks": 50516,
+  "entry_window_s": 56.4,
+  "handler": null,
+  "handler_hit": null,
+  "entry_hits": [
+   {
+    "k": "decision",
+    "pc": 134226052,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "rehostryqz"
+    ],
+    "r0": 14
+   },
+   {
+    "k": "default",
+    "pc": 134227260,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "rehostryqz"
+    ],
+    "r0": 10
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "rehostryqz"
+    ],
+    "r0": 69
+   }
+  ],
+  "handlers_fired": [
+   [
+    "decision",
+    "0x8002084",
+    "rehostryqz",
+    14,
+    0
+   ],
+   [
+    "default",
+    "0x800253c",
+    "rehostryqz",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": null,
+  "control_scores": {
+   "declared_entries_scored_reached": [],
+   "default_hit_with_this_input": true,
+   "weak_rule_shared_exit_hit": true
+  },
+  "reply": [
+   "Invalid command: rehostryqz\ntype help to list all available commands"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh3c6506d798d5 \n",
+   "Invalid command: rh3c6506d798d5\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 177416,
+   "55": 153000
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c138",
+    "0x800c128"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 177416
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "ctl-upper-HELP": {
+  "entry": "ctl-upper-HELP",
+  "input_hex": "02051448454c50820a03",
+  "pid": 78991,
+  "ports": [
+   39910,
+   39911,
+   39912,
+   39913,
+   39914
+  ],
+  "listener_pids": [
+   78991
+  ],
+  "boot_s": 32.5,
+  "wall_s": 89.8,
+  "load_at_start": 7.45703125,
+  "load_at_end": 6.212890625,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125677,
+  "entry_guest_ticks": 50170,
+  "entry_window_s": 56.0,
+  "handler": null,
+  "handler_hit": null,
+  "entry_hits": [
+   {
+    "k": "decision",
+    "pc": 134226052,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "help"
+    ],
+    "r0": 4
+   },
+   {
+    "k": "r4",
+    "pc": 134226724,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "help"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "\u0012"
+    ],
+    "r0": 1
+   }
+  ],
+  "handlers_fired": [
+   [
+    "decision",
+    "0x8002084",
+    "help",
+    4,
+    0
+   ],
+   [
+    "r4",
+    "0x8002324",
+    "help",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": null,
+  "control_scores": {
+   "declared_entries_scored_reached": [
+    "help"
+   ],
+   "default_hit_with_this_input": false,
+   "weak_rule_shared_exit_hit": false
+  },
+  "reply": [
+   "Valid commands are:",
+   "help",
+   "Show this help"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh708930e00adb \n",
+   "Invalid command: rh708930e00adb\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 176746,
+   "55": 152196
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 176746
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "disconnect_virtual_motor": {
+  "entry": "disconnect_virtual_motor",
+  "input_hex": "021914646973636f6e6e6563745f7669727475616c5f6d6f746f728f5203",
+  "pid": 78711,
+  "ports": [
+   39905,
+   39906,
+   39907,
+   39908,
+   39909
+  ],
+  "listener_pids": [
+   78711
+  ],
+  "boot_s": 32.6,
+  "wall_s": 90.2,
+  "load_at_start": 6.54443359375,
+  "load_at_end": 6.6552734375,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 126029,
+  "entry_guest_ticks": 50736,
+  "entry_window_s": 56.4,
+  "handler": "0x0805e6d0",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "argv_r1",
+    "pc": 134604496,
+    "ipsr": 0,
+    "argc": 1,
+    "argv": [
+     "disconnect_virtual_motor"
+    ],
+    "r0": null
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "disconnect_virtual_motor"
+    ],
+    "r0": 1
+   }
+  ],
+  "handlers_fired": [
+   [
+    "argv_r1",
+    "0x805e6d0",
+    "disconnect_virtual_motor",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "foc_plot_hfi_en",
+   "next_handler": "0x08058390",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "virtual motor disconnected"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh210b2290cb56 \n",
+   "Invalid command: rh210b2290cb56\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 177634,
+   "55": 153392
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c138",
+    "0x800c128"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 177634
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "drv_reset_faults": {
+  "entry": "drv_reset_faults",
+  "input_hex": "0211146472765f72657365745f6661756c7473759b03",
+  "pid": 78460,
+  "ports": [
+   39900,
+   39901,
+   39902,
+   39903,
+   39904
+  ],
+  "listener_pids": [
+   78460
+  ],
+  "boot_s": 32.5,
+  "wall_s": 90.2,
+  "load_at_start": 6.78955078125,
+  "load_at_end": 7.04345703125,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125756,
+  "entry_guest_ticks": 50233,
+  "entry_window_s": 56.4,
+  "handler": "0x08002084",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "decision",
+    "pc": 134226052,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "drv_reset_faults"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "drv_reset_faults"
+    ],
+    "r0": 0
+   }
+  ],
+  "handlers_fired": [
+   [
+    "decision",
+    "0x8002084",
+    "drv_reset_faults",
+    0,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "update_pid_pos_offset",
+   "next_handler": "0x08002092",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh67cc6a0295d6 \n",
+   "Invalid command: rh67cc6a0295d6\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 176886,
+   "55": 152170
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c138",
+    "0x800c128"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 176886
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "encoder": {
+  "entry": "encoder",
+  "input_hex": "020814656e636f646572b04c03",
+  "pid": 78620,
+  "ports": [
+   39915,
+   39916,
+   39917,
+   39918,
+   39919
+  ],
+  "listener_pids": [
+   78620
+  ],
+  "boot_s": 32.5,
+  "wall_s": 90.2,
+  "load_at_start": 7.25927734375,
+  "load_at_end": 6.54443359375,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125940,
+  "entry_guest_ticks": 50642,
+  "entry_window_s": 56.4,
+  "handler": "0x08026d40",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "argv_r1",
+    "pc": 134376768,
+    "ipsr": 0,
+    "argc": 1,
+    "argv": [
+     "encoder"
+    ],
+    "r0": null
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "encoder"
+    ],
+    "r0": 1
+   }
+  ],
+  "handlers_fired": [
+   [
+    "argv_r1",
+    "0x8026d40",
+    "encoder",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "encoder_clear_errors",
+   "next_handler": "0x080272f8",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "No encoder debug info available."
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh733610b4e33e \n",
+   "Invalid command: rh733610b4e33e\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 177468,
+   "55": 153699
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x8011bb0",
+    "0x800c128"
+   ],
+   "tail_ipsr": [
+    0,
+    55
+   ],
+   "ticks_total": 177468
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "encoder_clear_errors": {
+  "entry": "encoder_clear_errors",
+  "input_hex": "021514656e636f6465725f636c6561725f6572726f7273db4e03",
+  "pid": 78622,
+  "ports": [
+   39905,
+   39906,
+   39907,
+   39908,
+   39909
+  ],
+  "listener_pids": [
+   78622
+  ],
+  "boot_s": 31.4,
+  "wall_s": 89.1,
+  "load_at_start": 7.25927734375,
+  "load_at_end": 6.54443359375,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 124103,
+  "entry_guest_ticks": 50639,
+  "entry_window_s": 56.4,
+  "handler": "0x080272f8",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "argv_r1",
+    "pc": 134378232,
+    "ipsr": 0,
+    "argc": 1,
+    "argv": [
+     "encoder_clear_errors"
+    ],
+    "r0": null
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "encoder_clear_errors"
+    ],
+    "r0": 6
+   }
+  ],
+  "handlers_fired": [
+   [
+    "argv_r1",
+    "0x80272f8",
+    "encoder_clear_errors",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "encoder_clear_multiturn",
+   "next_handler": "0x0802722c",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "Done!"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh32fb5d48eeda \n",
+   "Invalid command: rh32fb5d48eeda\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 175631,
+   "55": 154140
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    55
+   ],
+   "ticks_total": 175631
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "encoder_clear_multiturn": {
+  "entry": "encoder_clear_multiturn",
+  "input_hex": "021814656e636f6465725f636c6561725f6d756c74697475726ee0b703",
+  "pid": 78628,
+  "ports": [
+   39910,
+   39911,
+   39912,
+   39913,
+   39914
+  ],
+  "listener_pids": [
+   78628
+  ],
+  "boot_s": 32.6,
+  "wall_s": 90.2,
+  "load_at_start": 7.25927734375,
+  "load_at_end": 6.54443359375,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125916,
+  "entry_guest_ticks": 50392,
+  "entry_window_s": 56.4,
+  "handler": "0x0802722c",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "argv_r1",
+    "pc": 134378028,
+    "ipsr": 0,
+    "argc": 1,
+    "argv": [
+     "encoder_clear_multiturn"
+    ],
+    "r0": null
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "encoder_clear_multiturn"
+    ],
+    "r0": 6
+   }
+  ],
+  "handlers_fired": [
+   [
+    "argv_r1",
+    "0x802722c",
+    "encoder_clear_multiturn",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "connect_virtual_motor",
+   "next_handler": "0x0805e790",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "Done!"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rhfcb6d17dd013 \n",
+   "Invalid command: rhfcb6d17dd013\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 177186,
+   "55": 152486
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c138",
+    "0x800c128"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 177186
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "events": {
+  "entry": "events",
+  "input_hex": "0207146576656e7473d53303",
+  "pid": 78545,
+  "ports": [
+   39900,
+   39901,
+   39902,
+   39903,
+   39904
+  ],
+  "listener_pids": [
+   78545
+  ],
+  "boot_s": 32.5,
+  "wall_s": 88.9,
+  "load_at_start": 7.04345703125,
+  "load_at_end": 7.3984375,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 126331,
+  "entry_guest_ticks": 50447,
+  "entry_window_s": 55.1,
+  "handler": "0x08017660",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "argv_r1",
+    "pc": 134313568,
+    "ipsr": 0,
+    "argc": 1,
+    "argv": [
+     "events"
+    ],
+    "r0": null
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "events"
+    ],
+    "r0": 16
+   }
+  ],
+  "handlers_fired": [
+   [
+    "argv_r1",
+    "0x8017660",
+    "events",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "encoder",
+   "next_handler": "0x08026d40",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "Age    : 12.46 s",
+   "Thread : main",
+   "Motor  : 1"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh1497fde87bb3 \n",
+   "Invalid command: rh1497fde87bb3\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 177674,
+   "55": 153205
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x8011bb0",
+    "0x800c128"
+   ],
+   "tail_ipsr": [
+    0,
+    55
+   ],
+   "ticks_total": 177674
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "fault": {
+  "entry": "fault",
+  "input_hex": "0206146661756c74a4b603",
+  "pid": 77585,
+  "ports": [
+   39915,
+   39916,
+   39917,
+   39918,
+   39919
+  ],
+  "listener_pids": [
+   77585
+  ],
+  "boot_s": 32.5,
+  "wall_s": 90.8,
+  "load_at_start": 3.37353515625,
+  "load_at_end": 7.92822265625,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 126063,
+  "entry_guest_ticks": 50489,
+  "entry_window_s": 57.0,
+  "handler": "0x08000354",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "r4",
+    "pc": 134218580,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "fault"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "fault"
+    ],
+    "r0": 16
+   }
+  ],
+  "handlers_fired": [
+   [
+    "r4",
+    "0x8000354",
+    "fault",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "faults",
+   "next_handler": "0x08000374",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "FAULT_CODE_NONE"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh9eaff00db19a \n",
+   "Invalid command: rh9eaff00db19a\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 177424,
+   "55": 153348
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 177424
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "faults": {
+  "entry": "faults",
+  "input_hex": "0207146661756c74730d9a03",
+  "pid": 77586,
+  "ports": [
+   39920,
+   39921,
+   39922,
+   39923,
+   39924
+  ],
+  "listener_pids": [
+   77586
+  ],
+  "boot_s": 32.5,
+  "wall_s": 90.8,
+  "load_at_start": 3.37353515625,
+  "load_at_end": 7.92822265625,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125720,
+  "entry_guest_ticks": 50715,
+  "entry_window_s": 57.0,
+  "handler": "0x08000374",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "r4",
+    "pc": 134218612,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "faults"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "faults"
+    ],
+    "r0": 35
+   }
+  ],
+  "handlers_fired": [
+   [
+    "r4",
+    "0x8000374",
+    "faults",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "stop",
+   "next_handler": "0x08000266",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "No faults registered since startup"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rhcbe882849d3b \n",
+   "Invalid command: rhcbe882849d3b\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 177322,
+   "55": 153921
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    55
+   ],
+   "ticks_total": 177322
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "foc_dc_cal": {
+  "entry": "foc_dc_cal",
+  "input_hex": "020b14666f635f64635f63616c217803",
+  "pid": 78223,
+  "ports": [
+   39900,
+   39901,
+   39902,
+   39903,
+   39904
+  ],
+  "listener_pids": [
+   78223
+  ],
+  "boot_s": 32.6,
+  "wall_s": 93.3,
+  "load_at_start": 7.080078125,
+  "load_at_end": 6.728515625,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125859,
+  "entry_guest_ticks": 50433,
+  "entry_window_s": 59.4,
+  "handler": "0x0800114c",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "r4",
+    "pc": 134222156,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "foc_dc_cal"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     ""
+    ],
+    "r0": 6
+   }
+  ],
+  "handlers_fired": [
+   [
+    "r4",
+    "0x800114c",
+    "foc_dc_cal",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "hw_status",
+   "next_handler": "0x080011fe",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "Performing DC offset calibration...",
+   "Done!"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh63920b58cec0 \n",
+   "Invalid command: rh63920b58cec0\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 177137,
+   "55": 152554
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x8011bb0",
+    "0x800c128"
+   ],
+   "tail_ipsr": [
+    0,
+    55
+   ],
+   "ticks_total": 177137
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "foc_detect_apply_all": {
+  "entry": "foc_detect_apply_all",
+  "input_hex": "021514666f635f6465746563745f6170706c795f616c6c1f8603",
+  "pid": 78360,
+  "ports": [
+   39900,
+   39901,
+   39902,
+   39903,
+   39904
+  ],
+  "listener_pids": [
+   78360
+  ],
+  "boot_s": 31.4,
+  "wall_s": 89.1,
+  "load_at_start": 6.728515625,
+  "load_at_end": 6.78955078125,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 124372,
+  "entry_guest_ticks": 50604,
+  "entry_window_s": 56.4,
+  "handler": "0x08001898",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "r4",
+    "pc": 134224024,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "foc_detect_apply_all"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "foc_detect_apply_all"
+    ],
+    "r0": 53
+   }
+  ],
+  "handlers_fired": [
+   [
+    "r4",
+    "0x8001898",
+    "foc_detect_apply_all",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "foc_detect_apply_all_can",
+   "next_handler": "0x08001a00",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "This command requires one argument. [Max_power_loss]"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh8a4ea9aba437 \n",
+   "Invalid command: rh8a4ea9aba437\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 175873,
+   "55": 154211
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 175873
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "foc_detect_apply_all_can": {
+  "entry": "foc_detect_apply_all_can",
+  "input_hex": "021914666f635f6465746563745f6170706c795f616c6c5f63616e902e03",
+  "pid": 78445,
+  "ports": [
+   39920,
+   39921,
+   39922,
+   39923,
+   39924
+  ],
+  "listener_pids": [
+   78445
+  ],
+  "boot_s": 32.5,
+  "wall_s": 90.8,
+  "load_at_start": 6.59716796875,
+  "load_at_end": 6.96044921875,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125328,
+  "entry_guest_ticks": 50806,
+  "entry_window_s": 57.0,
+  "handler": "0x08001a00",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "r4",
+    "pc": 134224384,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "foc_detect_apply_all_can"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "foc_detect_apply_all_can"
+    ],
+    "r0": 53
+   }
+  ],
+  "handlers_fired": [
+   [
+    "r4",
+    "0x8001a00",
+    "foc_detect_apply_all_can",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "uptime",
+   "next_handler": "0x08001bf4",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "This command requires one argument. [Max_power_loss]"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rhc250a6a216c8 \n",
+   "Invalid command: rhc250a6a216c8\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 177020,
+   "55": 154044
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 177020
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "foc_encoder_detect": {
+  "entry": "foc_encoder_detect",
+  "input_hex": "021314666f635f656e636f6465725f64657465637403f803",
+  "pid": 77844,
+  "ports": [
+   39910,
+   39911,
+   39912,
+   39913,
+   39914
+  ],
+  "listener_pids": [
+   77844
+  ],
+  "boot_s": 32.5,
+  "wall_s": 90.2,
+  "load_at_start": 8.333984375,
+  "load_at_end": 9.65576171875,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125622,
+  "entry_guest_ticks": 50445,
+  "entry_window_s": 56.4,
+  "handler": "0x08000838",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "r4",
+    "pc": 134219832,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "foc_encoder_detect"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "foc_encoder_detect"
+    ],
+    "r0": 46
+   }
+  ],
+  "handlers_fired": [
+   [
+    "r4",
+    "0x8000838",
+    "foc_encoder_detect",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "measure_res",
+   "next_handler": "0x08000924",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "This command requires one argument. [current]"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh746f51239b05 \n",
+   "Invalid command: rh746f51239b05\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 176952,
+   "55": 152990
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 176952
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "foc_openloop": {
+  "entry": "foc_openloop",
+  "input_hex": "020d14666f635f6f70656e6c6f6f707ebf03",
+  "pid": 78229,
+  "ports": [
+   39920,
+   39921,
+   39922,
+   39923,
+   39924
+  ],
+  "listener_pids": [
+   78229
+  ],
+  "boot_s": 32.4,
+  "wall_s": 90.7,
+  "load_at_start": 7.3935546875,
+  "load_at_end": 6.728515625,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 124656,
+  "entry_guest_ticks": 50603,
+  "entry_window_s": 57.0,
+  "handler": "0x080013c2",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "r4",
+    "pc": 134222786,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "foc_openloop"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "foc_openloop"
+    ],
+    "r0": 52
+   }
+  ],
+  "handlers_fired": [
+   [
+    "r4",
+    "0x80013c2",
+    "foc_openloop",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "foc_openloop_duty",
+   "next_handler": "0x08001520",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "This command requires two arguments. [current erpm]"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh1feb3028b33c \n",
+   "Invalid command: rh1feb3028b33c\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 176138,
+   "55": 154049
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 176138
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "foc_openloop_duty": {
+  "entry": "foc_openloop_duty",
+  "input_hex": "021214666f635f6f70656e6c6f6f705f647574790c2203",
+  "pid": 78337,
+  "ports": [
+   39915,
+   39916,
+   39917,
+   39918,
+   39919
+  ],
+  "listener_pids": [
+   78337
+  ],
+  "boot_s": 32.6,
+  "wall_s": 90.2,
+  "load_at_start": 6.6181640625,
+  "load_at_end": 6.59716796875,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125858,
+  "entry_guest_ticks": 50468,
+  "entry_window_s": 56.4,
+  "handler": "0x08001520",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "r4",
+    "pc": 134223136,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "foc_openloop_duty"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "foc_openloop_duty"
+    ],
+    "r0": 49
+   }
+  ],
+  "handlers_fired": [
+   [
+    "r4",
+    "0x8001520",
+    "foc_openloop_duty",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "nrf_ext_set_enabled",
+   "next_handler": "0x080015d6",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "This command requires two arguments. [duty erpm]"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rhf77123a3b840 \n",
+   "Invalid command: rhf77123a3b840\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 177214,
+   "55": 152746
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 177214
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "foc_plot_hfi_en": {
+  "entry": "foc_plot_hfi_en",
+  "input_hex": "021014666f635f706c6f745f6866695f656e212603",
+  "pid": 78719,
+  "ports": [
+   39915,
+   39916,
+   39917,
+   39918,
+   39919
+  ],
+  "listener_pids": [
+   78719
+  ],
+  "boot_s": 32.4,
+  "wall_s": 90.7,
+  "load_at_start": 6.54443359375,
+  "load_at_end": 6.6552734375,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 124846,
+  "entry_guest_ticks": 50255,
+  "entry_window_s": 57.0,
+  "handler": "0x08058390",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "argv_r1",
+    "pc": 134579088,
+    "ipsr": 0,
+    "argc": 1,
+    "argv": [
+     "foc_plot_hfi_en"
+    ],
+    "r0": null
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "foc_plot_hfi_en"
+    ],
+    "r0": 36
+   }
+  ],
+  "handlers_fired": [
+   [
+    "argv_r1",
+    "0x8058390",
+    "foc_plot_hfi_en",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "imu_read_reg",
+   "next_handler": "0x080207a0",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "This command requires one argument."
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rhf253ab0d099e \n",
+   "Invalid command: rhf253ab0d099e\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 175966,
+   "55": 152967
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 175966
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "foc_sensors_detect_apply": {
+  "entry": "foc_sensors_detect_apply",
+  "input_hex": "021914666f635f73656e736f72735f6465746563745f6170706c79651603",
+  "pid": 78354,
+  "ports": [
+   39910,
+   39911,
+   39912,
+   39913,
+   39914
+  ],
+  "listener_pids": [
+   78354
+  ],
+  "boot_s": 31.4,
+  "wall_s": 89.1,
+  "load_at_start": 6.728515625,
+  "load_at_end": 6.59716796875,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 123979,
+  "entry_guest_ticks": 50759,
+  "entry_window_s": 56.4,
+  "handler": "0x08001622",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "r4",
+    "pc": 134223394,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "foc_sensors_detect_apply"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "foc_sensors_detect_apply"
+    ],
+    "r0": 46
+   }
+  ],
+  "handlers_fired": [
+   [
+    "r4",
+    "0x8001622",
+    "foc_sensors_detect_apply",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "rotor_lock_openloop",
+   "next_handler": "0x080016a2",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "This command requires one argument. [current]"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh43ba8cb71a42 \n",
+   "Invalid command: rh43ba8cb71a42\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 175635,
+   "55": 154810
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 175635
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "foc_state": {
+  "entry": "foc_state",
+  "input_hex": "020a14666f635f73746174653e6e03",
+  "pid": 78220,
+  "ports": [
+   39905,
+   39906,
+   39907,
+   39908,
+   39909
+  ],
+  "listener_pids": [
+   78220
+  ],
+  "boot_s": 32.5,
+  "wall_s": 90.2,
+  "load_at_start": 7.080078125,
+  "load_at_end": 6.6181640625,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125450,
+  "entry_guest_ticks": 50168,
+  "entry_window_s": 56.4,
+  "handler": "0x08001132",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "r4",
+    "pc": 134222130,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "foc_state"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "foc_state"
+    ],
+    "r0": 1
+   }
+  ],
+  "handlers_fired": [
+   [
+    "r4",
+    "0x8001132",
+    "foc_state",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "foc_dc_cal",
+   "next_handler": "0x0800114c",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "FOC State:",
+   "Mod d:     0.00",
+   "Mod q:     0.00"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh1b819c52369a \n",
+   "Invalid command: rh1b819c52369a\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 176496,
+   "55": 152040
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c138",
+    "0x800c128"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 176496
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "fw_info": {
+  "entry": "fw_info",
+  "input_hex": "02081466775f696e666fcbfa03",
+  "pid": 78534,
+  "ports": [
+   39910,
+   39911,
+   39912,
+   39913,
+   39914
+  ],
+  "listener_pids": [
+   78534
+  ],
+  "boot_s": 32.5,
+  "wall_s": 90.2,
+  "load_at_start": 6.96044921875,
+  "load_at_end": 7.25927734375,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125524,
+  "entry_guest_ticks": 50769,
+  "entry_window_s": 56.4,
+  "handler": "0x080020f0",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "decision",
+    "pc": 134226052,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "fw_info"
+    ],
+    "r0": 2
+   },
+   {
+    "k": "r4",
+    "pc": 134226160,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "fw_info"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "fw_info"
+    ],
+    "r0": 1
+   }
+  ],
+  "handlers_fired": [
+   [
+    "decision",
+    "0x8002084",
+    "fw_info",
+    2,
+    0
+   ],
+   [
+    "r4",
+    "0x80020f0",
+    "fw_info",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "rebootwdt",
+   "next_handler": "0x08002114",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "Git Branch:",
+   "Git Hash  : -dirty",
+   "Compiler  : 15.2.1"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh34567500ec7a \n",
+   "Invalid command: rh34567500ec7a\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 177182,
+   "55": 153944
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 177182
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "hall_analyze": {
+  "entry": "hall_analyze",
+  "input_hex": "020d1468616c6c5f616e616c797a6592e803",
+  "pid": 78454,
+  "ports": [
+   39905,
+   39906,
+   39907,
+   39908,
+   39909
+  ],
+  "listener_pids": [
+   78454
+  ],
+  "boot_s": 32.6,
+  "wall_s": 90.3,
+  "load_at_start": 6.59716796875,
+  "load_at_end": 6.96044921875,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125622,
+  "entry_guest_ticks": 50124,
+  "entry_window_s": 56.4,
+  "handler": "0x08001c20",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "r4",
+    "pc": 134224928,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "hall_analyze"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "hall_analyze"
+    ],
+    "r0": 46
+   }
+  ],
+  "handlers_fired": [
+   [
+    "r4",
+    "0x8001c20",
+    "hall_analyze",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "crc",
+   "next_handler": "0x08002040",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "This command requires one argument. [current]"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh0afdc913f06c \n",
+   "Invalid command: rh0afdc913f06c\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 176620,
+   "55": 151377
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 176620
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "help": {
+  "entry": "help",
+  "input_hex": "02051468656c70110603",
+  "pid": 77582,
+  "ports": [
+   39900,
+   39901,
+   39902,
+   39903,
+   39904
+  ],
+  "listener_pids": [
+   77582
+  ],
+  "boot_s": 32.5,
+  "wall_s": 91.0,
+  "load_at_start": 3.37353515625,
+  "load_at_end": 7.92822265625,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125328,
+  "entry_guest_ticks": 50266,
+  "entry_window_s": 57.3,
+  "handler": "0x08002324",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "decision",
+    "pc": 134226052,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "help"
+    ],
+    "r0": 4
+   },
+   {
+    "k": "r4",
+    "pc": 134226724,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "help"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "\u0012"
+    ],
+    "r0": 1
+   }
+  ],
+  "handlers_fired": [
+   [
+    "decision",
+    "0x8002084",
+    "help",
+    4,
+    0
+   ],
+   [
+    "r4",
+    "0x8002324",
+    "help",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "mem",
+   "next_handler": "0x08000286",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "Valid commands are:",
+   "help",
+   "Show this help"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh73f31327403e \n",
+   "Invalid command: rh73f31327403e\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 176461,
+   "55": 152515
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 176461
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "hw_status": {
+  "entry": "hw_status",
+  "input_hex": "020a1468775f737461747573721903",
+  "pid": 78227,
+  "ports": [
+   39910,
+   39911,
+   39912,
+   39913,
+   39914
+  ],
+  "listener_pids": [
+   78227
+  ],
+  "boot_s": 32.6,
+  "wall_s": 90.1,
+  "load_at_start": 7.3935546875,
+  "load_at_end": 6.728515625,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125696,
+  "entry_guest_ticks": 50235,
+  "entry_window_s": 56.2,
+  "handler": "0x080011fe",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "r4",
+    "pc": 134222334,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "hw_status"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     null
+    ],
+    "r0": 1
+   }
+  ],
+  "handlers_fired": [
+   [
+    "r4",
+    "0x80011fe",
+    "hw_status",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "foc_openloop",
+   "next_handler": "0x080013c2",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "Firmware: 7.1",
+   "Hardware: 100_250",
+   "UUID: 52 45 48 4F 53 54 52 59 56 45 53 43"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh8a1f6afff63c \n",
+   "Invalid command: rh8a1f6afff63c\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 176813,
+   "55": 152010
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    55
+   ],
+   "ticks_total": 176813
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "imu_read_reg": {
+  "entry": "imu_read_reg",
+  "input_hex": "020d14696d755f726561645f72656774df03",
+  "pid": 78724,
+  "ports": [
+   39910,
+   39911,
+   39912,
+   39913,
+   39914
+  ],
+  "listener_pids": [
+   78724
+  ],
+  "boot_s": 32.5,
+  "wall_s": 90.2,
+  "load_at_start": 6.54443359375,
+  "load_at_end": 6.6552734375,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125818,
+  "entry_guest_ticks": 50321,
+  "entry_window_s": 56.4,
+  "handler": "0x080207a0",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "argv_r1",
+    "pc": 134350752,
+    "ipsr": 0,
+    "argc": 1,
+    "argv": [
+     "imu_read_reg"
+    ],
+    "r0": null
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "imu_read_reg"
+    ],
+    "r0": 35
+   }
+  ],
+  "handlers_fired": [
+   [
+    "argv_r1",
+    "0x80207a0",
+    "imu_read_reg",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "imu_status",
+   "next_handler": "0x08020700",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "This command requires one argument."
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rhde6bff139832 \n",
+   "Invalid command: rhde6bff139832\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 177023,
+   "55": 152777
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c138",
+    "0x800c128"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 177023
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "imu_status": {
+  "entry": "imu_status",
+  "input_hex": "020b14696d755f737461747573d9b303",
+  "pid": 78729,
+  "ports": [
+   39900,
+   39901,
+   39902,
+   39903,
+   39904
+  ],
+  "listener_pids": [
+   78729
+  ],
+  "boot_s": 32.5,
+  "wall_s": 90.2,
+  "load_at_start": 6.58056640625,
+  "load_at_end": 6.6826171875,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125809,
+  "entry_guest_ticks": 50626,
+  "entry_window_s": 56.4,
+  "handler": "0x08020700",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "argv_r1",
+    "pc": 134350592,
+    "ipsr": 0,
+    "argc": 1,
+    "argv": [
+     "imu_status"
+    ],
+    "r0": null
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "imu_status"
+    ],
+    "r0": 83
+   }
+  ],
+  "handlers_fired": [
+   [
+    "argv_r1",
+    "0x8020700",
+    "imu_status",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "uavcan_debug",
+   "next_handler": "0x0801c070",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "Model         : BMI160",
+   "Transport     : i2c-bb\nRunning       : yes\nSample Rate   : 200 Hz\nRead fails    : 0"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rheac075450b3a \n",
+   "Invalid command: rheac075450b3a\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 177317,
+   "55": 153383
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c138",
+    "0x800c128"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 177317
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "measure_ind": {
+  "entry": "measure_ind",
+  "input_hex": "020c146d6561737572655f696e64b40a03",
+  "pid": 78105,
+  "ports": [
+   39905,
+   39906,
+   39907,
+   39908,
+   39909
+  ],
+  "listener_pids": [
+   78105
+  ],
+  "boot_s": 31.5,
+  "wall_s": 89.1,
+  "load_at_start": 9.88720703125,
+  "load_at_end": 7.080078125,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 123777,
+  "entry_guest_ticks": 50649,
+  "entry_window_s": 56.4,
+  "handler": "0x08000a02",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "r4",
+    "pc": 134220290,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "measure_ind"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "measure_ind"
+    ],
+    "r0": 43
+   }
+  ],
+  "handlers_fired": [
+   [
+    "r4",
+    "0x8000a02",
+    "measure_ind",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "measure_linkage",
+   "next_handler": "0x08000b78",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "This command requires one argument. [duty]"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rhd122d5b41202 \n",
+   "Invalid command: rhd122d5b41202\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 175310,
+   "55": 153916
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 175310
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "measure_linkage": {
+  "entry": "measure_linkage",
+  "input_hex": "0210146d6561737572655f6c696e6b6167654e8103",
+  "pid": 78107,
+  "ports": [
+   39900,
+   39901,
+   39902,
+   39903,
+   39904
+  ],
+  "listener_pids": [
+   78107
+  ],
+  "boot_s": 31.5,
+  "wall_s": 89.1,
+  "load_at_start": 9.65576171875,
+  "load_at_end": 7.080078125,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 124016,
+  "entry_guest_ticks": 50538,
+  "entry_window_s": 56.4,
+  "handler": "0x08000b78",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "r4",
+    "pc": 134220664,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "measure_linkage"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "measure_linkage"
+    ],
+    "r0": 73
+   }
+  ],
+  "handlers_fired": [
+   [
+    "r4",
+    "0x8000b78",
+    "measure_linkage",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "measure_res_ind",
+   "next_handler": "0x08000cb4",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "This command requires four arguments. [current duty min_erpm resistance]"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh46867085f1b4 \n",
+   "Invalid command: rh46867085f1b4\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 175439,
+   "55": 153567
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 175439
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "measure_linkage_foc": {
+  "entry": "measure_linkage_foc",
+  "input_hex": "0214146d6561737572655f6c696e6b6167655f666f630f6303",
+  "pid": 78115,
+  "ports": [
+   39920,
+   39921,
+   39922,
+   39923,
+   39924
+  ],
+  "listener_pids": [
+   78115
+  ],
+  "boot_s": 32.5,
+  "wall_s": 90.2,
+  "load_at_start": 9.65576171875,
+  "load_at_end": 7.3935546875,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 126046,
+  "entry_guest_ticks": 50253,
+  "entry_window_s": 56.4,
+  "handler": "0x08000afe",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "r4",
+    "pc": 134220542,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "measure_linkage_foc"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "measure_linkage_foc"
+    ],
+    "r0": 43
+   }
+  ],
+  "handlers_fired": [
+   [
+    "r4",
+    "0x8000afe",
+    "measure_linkage_foc",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "measure_linkage_openloop",
+   "next_handler": "0x08000f34",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "This command requires one argument. [duty]"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rhb2d7fffd0f2f \n",
+   "Invalid command: rhb2d7fffd0f2f\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 177176,
+   "55": 152310
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 177176
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "measure_linkage_openloop": {
+  "entry": "measure_linkage_openloop",
+  "input_hex": "0219146d6561737572655f6c696e6b6167655f6f70656e6c6f6f70dcc003",
+  "pid": 78205,
+  "ports": [
+   39915,
+   39916,
+   39917,
+   39918,
+   39919
+  ],
+  "listener_pids": [
+   78205
+  ],
+  "boot_s": 32.5,
+  "wall_s": 90.2,
+  "load_at_start": 7.080078125,
+  "load_at_end": 6.6181640625,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125934,
+  "entry_guest_ticks": 50305,
+  "entry_window_s": 56.4,
+  "handler": "0x08000f34",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "r4",
+    "pc": 134221620,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "measure_linkage_openloop"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "measure_linkage_openloop"
+    ],
+    "r0": 93
+   }
+  ],
+  "handlers_fired": [
+   [
+    "r4",
+    "0x8000f34",
+    "measure_linkage_openloop",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "foc_state",
+   "next_handler": "0x08001132",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "This command requires five arguments. [current duty erpm_ramp_per_sec resistance inductance]"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh5d72f5f3295f \n",
+   "Invalid command: rh5d72f5f3295f\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 177121,
+   "55": 152755
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c138",
+    "0x800c128"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 177121
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "measure_res": {
+  "entry": "measure_res",
+  "input_hex": "020c146d6561737572655f726573b9b403",
+  "pid": 78104,
+  "ports": [
+   39915,
+   39916,
+   39917,
+   39918,
+   39919
+  ],
+  "listener_pids": [
+   78104
+  ],
+  "boot_s": 31.4,
+  "wall_s": 87.9,
+  "load_at_start": 9.88720703125,
+  "load_at_end": 7.080078125,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 124201,
+  "entry_guest_ticks": 50212,
+  "entry_window_s": 55.2,
+  "handler": "0x08000924",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "r4",
+    "pc": 134220068,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "measure_res"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "measure_res"
+    ],
+    "r0": 46
+   }
+  ],
+  "handlers_fired": [
+   [
+    "r4",
+    "0x8000924",
+    "measure_res",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "measure_ind",
+   "next_handler": "0x08000a02",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "This command requires one argument. [current]"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh85695ea6d069 \n",
+   "Invalid command: rh85695ea6d069\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 175308,
+   "55": 153216
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c138",
+    "0x800c128"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 175308
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "measure_res_ind": {
+  "entry": "measure_res_ind",
+  "input_hex": "0210146d6561737572655f7265735f696e6480b103",
+  "pid": 78112,
+  "ports": [
+   39910,
+   39911,
+   39912,
+   39913,
+   39914
+  ],
+  "listener_pids": [
+   78112
+  ],
+  "boot_s": 32.6,
+  "wall_s": 90.3,
+  "load_at_start": 9.65576171875,
+  "load_at_end": 7.3935546875,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125622,
+  "entry_guest_ticks": 50305,
+  "entry_window_s": 56.4,
+  "handler": "0x08000cb4",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "r4",
+    "pc": 134220980,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "measure_res_ind"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "measure_res_ind"
+    ],
+    "r0": 536969124
+   }
+  ],
+  "handlers_fired": [
+   [
+    "r4",
+    "0x8000cb4",
+    "measure_res_ind",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "measure_linkage_foc",
+   "next_handler": "0x08000afe",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "Measuring resistance and inductance...",
+   "Resistance: nan ohm",
+   "Inductance: inf uH (Lq-Ld: nan uH)"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh792855523206 \n",
+   "Invalid command: rh792855523206\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 176806,
+   "55": 152299
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 176806
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "mem": {
+  "entry": "mem",
+  "input_hex": "0204146d656d41b803",
+  "pid": 77584,
+  "ports": [
+   39905,
+   39906,
+   39907,
+   39908,
+   39909
+  ],
+  "listener_pids": [
+   77584
+  ],
+  "boot_s": 32.5,
+  "wall_s": 90.8,
+  "load_at_start": 3.37353515625,
+  "load_at_end": 7.92822265625,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125524,
+  "entry_guest_ticks": 50330,
+  "entry_window_s": 57.0,
+  "handler": "0x08000286",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "r4",
+    "pc": 134218374,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "mem"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "mem"
+    ],
+    "r0": 27
+   }
+  ],
+  "handlers_fired": [
+   [
+    "r4",
+    "0x8000286",
+    "mem",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "threads",
+   "next_handler": "0x080002b6",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "core free memory : 20584 bytes",
+   "heap fragments   : 0",
+   "heap free total  : 0 bytes"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rhb07425ab93dd \n",
+   "Invalid command: rhb07425ab93dd\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 176729,
+   "55": 152815
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c138",
+    "0x800c128"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 176729
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "nrf_ext_set_enabled": {
+  "entry": "nrf_ext_set_enabled",
+  "input_hex": "0214146e72665f6578745f7365745f656e61626c65645b5703",
+  "pid": 78342,
+  "ports": [
+   39905,
+   39906,
+   39907,
+   39908,
+   39909
+  ],
+  "listener_pids": [
+   78342
+  ],
+  "boot_s": 32.5,
+  "wall_s": 90.2,
+  "load_at_start": 6.6181640625,
+  "load_at_end": 6.59716796875,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125930,
+  "entry_guest_ticks": 50446,
+  "entry_window_s": 56.4,
+  "handler": "0x080015d6",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "r4",
+    "pc": 134223318,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "nrf_ext_set_enabled"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "nrf_ext_set_enabled"
+    ],
+    "r0": 46
+   }
+  ],
+  "handlers_fired": [
+   [
+    "r4",
+    "0x80015d6",
+    "nrf_ext_set_enabled",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "foc_sensors_detect_apply",
+   "next_handler": "0x08001622",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "This command requires one argument. [enabled]"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rhb3432749a41e \n",
+   "Invalid command: rhb3432749a41e\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 177258,
+   "55": 153052
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 177258
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "param_detect": {
+  "entry": "param_detect",
+  "input_hex": "020d14706172616d5f646574656374f3a703",
+  "pid": 77836,
+  "ports": [
+   39920,
+   39921,
+   39922,
+   39923,
+   39924
+  ],
+  "listener_pids": [
+   77836
+  ],
+  "boot_s": 32.4,
+  "wall_s": 91.3,
+  "load_at_start": 7.92822265625,
+  "load_at_end": 9.65576171875,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 124838,
+  "entry_guest_ticks": 50764,
+  "entry_window_s": 57.6,
+  "handler": "0x080005be",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "r4",
+    "pc": 134219198,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "param_detect"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "param_detect"
+    ],
+    "r0": 59
+   }
+  ],
+  "handlers_fired": [
+   [
+    "r4",
+    "0x80005be",
+    "param_detect",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "rpm_dep",
+   "next_handler": "0x08000784",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "This command requires three arguments. [current erpm duty]"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh47a6ab87d8df \n",
+   "Invalid command: rh47a6ab87d8df\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 176484,
+   "55": 154644
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c138",
+    "0x800c128"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 176484
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "rebootwdt": {
+  "entry": "rebootwdt",
+  "input_hex": "020a147265626f6f74776474883f03",
+  "pid": 78540,
+  "ports": [
+   39920,
+   39921,
+   39922,
+   39923,
+   39924
+  ],
+  "listener_pids": [
+   78540
+  ],
+  "boot_s": 32.5,
+  "wall_s": 243.9,
+  "load_at_start": 6.96044921875,
+  "load_at_end": 6.26904296875,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125426,
+  "entry_guest_ticks": 334,
+  "entry_window_s": 120.5,
+  "handler": "0x08002114",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "decision",
+    "pc": 134226052,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "rebootwdt"
+    ],
+    "r0": 14
+   },
+   {
+    "k": "r4",
+    "pc": 134226196,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "rebootwdt"
+    ],
+    "r0": 0
+   }
+  ],
+  "handlers_fired": [
+   [
+    "decision",
+    "0x8002084",
+    "rebootwdt",
+    14,
+    0
+   ],
+   [
+    "r4",
+    "0x8002114",
+    "rebootwdt",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "crash_diag",
+   "next_handler": "0x08002128",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [],
+  "live_after": false,
+  "live_reply_ok": false,
+  "live_handler_hit": false,
+  "live_thread_mode": false,
+  "live_probe_used": null,
+  "live_wait_s": 90.8,
+  "live_tail": [],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 125760,
+   "55": 1
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x8002118"
+   ],
+   "tail_ipsr": [
+    0
+   ],
+   "ticks_total": 125760
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 1,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "rotor_lock_openloop": {
+  "entry": "rotor_lock_openloop",
+  "input_hex": "021414726f746f725f6c6f636b5f6f70656e6c6f6f70529d03",
+  "pid": 78358,
+  "ports": [
+   39920,
+   39921,
+   39922,
+   39923,
+   39924
+  ],
+  "listener_pids": [
+   78358
+  ],
+  "boot_s": 30.8,
+  "wall_s": 86.1,
+  "load_at_start": 6.728515625,
+  "load_at_end": 6.59716796875,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 122543,
+  "entry_guest_ticks": 50274,
+  "entry_window_s": 54.0,
+  "handler": "0x080016a2",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "r4",
+    "pc": 134223522,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "rotor_lock_openloop"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "rotor_lock_openloop"
+    ],
+    "r0": 60
+   }
+  ],
+  "handlers_fired": [
+   [
+    "r4",
+    "0x80016a2",
+    "rotor_lock_openloop",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "foc_detect_apply_all",
+   "next_handler": "0x08001898",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "This command requires three arguments. [current time angle]"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh570dbd3a2be5 \n",
+   "Invalid command: rh570dbd3a2be5\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 173715,
+   "55": 150228
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x8011bb0",
+    "0x800c128"
+   ],
+   "tail_ipsr": [
+    0,
+    55
+   ],
+   "ticks_total": 173715
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "rpm_dep": {
+  "entry": "rpm_dep",
+  "input_hex": "02081472706d5f646570c75703",
+  "pid": 77842,
+  "ports": [
+   39900,
+   39901,
+   39902,
+   39903,
+   39904
+  ],
+  "listener_pids": [
+   77842
+  ],
+  "boot_s": 32.4,
+  "wall_s": 90.1,
+  "load_at_start": 7.92822265625,
+  "load_at_end": 9.88720703125,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 124887,
+  "entry_guest_ticks": 50198,
+  "entry_window_s": 56.4,
+  "handler": "0x08000784",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "r4",
+    "pc": 134219652,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "rpm_dep"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "rpm_dep"
+    ],
+    "r0": 26
+   }
+  ],
+  "handlers_fired": [
+   [
+    "r4",
+    "0x8000784",
+    "rpm_dep",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "foc_encoder_detect",
+   "next_handler": "0x08000838",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "Cycle int limit: 0.00",
+   "Cycle int limit running: 0.00",
+   "Cycle int limit max: 0.00"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh38c86a219dba \n",
+   "Invalid command: rh38c86a219dba\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 175970,
+   "55": 152807
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 175970
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "stop": {
+  "entry": "stop",
+  "input_hex": "02051473746f7035be03",
+  "pid": 77831,
+  "ports": [
+   39915,
+   39916,
+   39917,
+   39918,
+   39919
+  ],
+  "listener_pids": [
+   77831
+  ],
+  "boot_s": 32.5,
+  "wall_s": 90.2,
+  "load_at_start": 7.92822265625,
+  "load_at_end": 9.88720703125,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125445,
+  "entry_guest_ticks": 50353,
+  "entry_window_s": 56.4,
+  "handler": "0x08000266",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "r4",
+    "pc": 134218342,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "stop"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "stop"
+    ],
+    "r0": 536890992
+   }
+  ],
+  "handlers_fired": [
+   [
+    "r4",
+    "0x8000266",
+    "stop",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "volt",
+   "next_handler": "0x0800059c",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "Stopping all motors"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rha869ab6494b2 \n",
+   "Invalid command: rha869ab6494b2\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 176690,
+   "55": 152708
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 176690
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "threads": {
+  "entry": "threads",
+  "input_hex": "02081474687265616473bcf703",
+  "pid": 77583,
+  "ports": [
+   39910,
+   39911,
+   39912,
+   39913,
+   39914
+  ],
+  "listener_pids": [
+   77583
+  ],
+  "boot_s": 32.6,
+  "wall_s": 91.3,
+  "load_at_start": 3.37353515625,
+  "load_at_end": 8.333984375,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125230,
+  "entry_guest_ticks": 50651,
+  "entry_window_s": 57.4,
+  "handler": "0x080002b6",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "r4",
+    "pc": 134218422,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "threads"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     null
+    ],
+    "r0": 1
+   }
+  ],
+  "handlers_fired": [
+   [
+    "r4",
+    "0x80002b6",
+    "threads",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "fault",
+   "next_handler": "0x08000354",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "addr    stack prio refs     state           name motor stackmin  time",
+   "-----------------------------------------------------------------------------",
+   "20001980 20000f54   64    1  SLEEPING           main     1     1352  0 (0.0 %)"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rhccf158de0b01 \n",
+   "Invalid command: rhccf158de0b01\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 176753,
+   "55": 153099
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c138",
+    "0x800c128"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 176753
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "uavcan_debug": {
+  "entry": "uavcan_debug",
+  "input_hex": "020d1475617663616e5f6465627567437403",
+  "pid": 78780,
+  "ports": [
+   39920,
+   39921,
+   39922,
+   39923,
+   39924
+  ],
+  "listener_pids": [
+   78780
+  ],
+  "boot_s": 32.4,
+  "wall_s": 90.7,
+  "load_at_start": 6.26904296875,
+  "load_at_end": 7.01025390625,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 124945,
+  "entry_guest_ticks": 50804,
+  "entry_window_s": 57.0,
+  "handler": "0x0801c070",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "argv_r1",
+    "pc": 134332528,
+    "ipsr": 0,
+    "argc": 1,
+    "argv": [
+     "uavcan_debug"
+    ],
+    "r0": null
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "uavcan_debug"
+    ],
+    "r0": 36
+   }
+  ],
+  "handlers_fired": [
+   [
+    "argv_r1",
+    "0x801c070",
+    "uavcan_debug",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "bm_swdp_scan",
+   "next_handler": "0x08021324",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "This command requires one argument."
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh430c429a51eb \n",
+   "Invalid command: rh430c429a51eb\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 176621,
+   "55": 154612
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 176621
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "update_pid_pos_offset": {
+  "entry": "update_pid_pos_offset",
+  "input_hex": "0216147570646174655f7069645f706f735f6f666673657456e503",
+  "pid": 78530,
+  "ports": [
+   39915,
+   39916,
+   39917,
+   39918,
+   39919
+  ],
+  "listener_pids": [
+   78530
+  ],
+  "boot_s": 32.5,
+  "wall_s": 90.1,
+  "load_at_start": 6.96044921875,
+  "load_at_end": 7.25927734375,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125671,
+  "entry_guest_ticks": 50259,
+  "entry_window_s": 56.4,
+  "handler": "0x08002092",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "decision",
+    "pc": 134226052,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "update_pid_pos_offset"
+    ],
+    "r0": 17
+   },
+   {
+    "k": "r4",
+    "pc": 134226066,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "update_pid_pos_offset"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "update_pid_pos_offset"
+    ],
+    "r0": 0
+   }
+  ],
+  "handlers_fired": [
+   [
+    "decision",
+    "0x8002084",
+    "update_pid_pos_offset",
+    17,
+    0
+   ],
+   [
+    "r4",
+    "0x8002092",
+    "update_pid_pos_offset",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "fw_info",
+   "next_handler": "0x080020f0",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rhbadfdb54a0b7 \n",
+   "Invalid command: rhbadfdb54a0b7\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 176818,
+   "55": 152792
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 176818
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "uptime": {
+  "entry": "uptime",
+  "input_hex": "020714757074696d6521ad03",
+  "pid": 78449,
+  "ports": [
+   39915,
+   39916,
+   39917,
+   39918,
+   39919
+  ],
+  "listener_pids": [
+   78449
+  ],
+  "boot_s": 32.5,
+  "wall_s": 90.2,
+  "load_at_start": 6.59716796875,
+  "load_at_end": 6.96044921875,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125671,
+  "entry_guest_ticks": 50262,
+  "entry_window_s": 56.4,
+  "handler": "0x08001bf4",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "r4",
+    "pc": 134224884,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "uptime"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "uptime"
+    ],
+    "r0": 16
+   }
+  ],
+  "handlers_fired": [
+   [
+    "r4",
+    "0x8001bf4",
+    "uptime",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "hall_analyze",
+   "next_handler": "0x08001c20",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "Uptime: 12.51 s"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh7abf7202c306 \n",
+   "Invalid command: rh7abf7202c306\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 176822,
+   "55": 152145
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    55
+   ],
+   "ticks_total": 176822
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ },
+ "volt": {
+  "entry": "volt",
+  "input_hex": "020514766f6c742fbe03",
+  "pid": 77837,
+  "ports": [
+   39905,
+   39906,
+   39907,
+   39908,
+   39909
+  ],
+  "listener_pids": [
+   77837
+  ],
+  "boot_s": 32.5,
+  "wall_s": 90.2,
+  "load_at_start": 7.92822265625,
+  "load_at_end": 9.88720703125,
+  "boot_error": null,
+  "harness_error": null,
+  "hooks_registered": 56,
+  "hooks_expected": 56,
+  "boot_hit_count": 0,
+  "ticks_at_input": 125524,
+  "entry_guest_ticks": 50127,
+  "entry_window_s": 56.4,
+  "handler": "0x0800059c",
+  "handler_hit": true,
+  "entry_hits": [
+   {
+    "k": "r4",
+    "pc": 134219164,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "volt"
+    ],
+    "r0": 0
+   },
+   {
+    "k": "exit",
+    "pc": 134227268,
+    "ipsr": 0,
+    "argc": null,
+    "argv": [
+     "volt"
+    ],
+    "r0": 20
+   }
+  ],
+  "handlers_fired": [
+   [
+    "r4",
+    "0x800059c",
+    "volt",
+    null,
+    0
+   ]
+  ],
+  "control_next_identity": {
+   "next": "param_detect",
+   "next_handler": "0x080005be",
+   "scored_true": false
+  },
+  "control_scores": null,
+  "reply": [
+   "Input voltage: 0.00"
+  ],
+  "live_after": true,
+  "live_reply_ok": true,
+  "live_handler_hit": true,
+  "live_thread_mode": true,
+  "live_probe_used": 1,
+  "live_wait_s": 1.3,
+  "live_tail": [
+   "-> rh62c8251c9713 \n",
+   "Invalid command: rh62c8251c9713\ntype help to list all available commands\n"
+  ],
+  "isr_control": {
+   "records": 3,
+   "thread_mode_true": 0,
+   "ipsrs": [
+    15
+   ]
+  },
+  "exc_by_ipsr": {
+   "15": 176530,
+   "55": 152135
+  },
+  "spin": {
+   "async_samples": 0,
+   "tail_pcs": [
+    "0x800d100",
+    "0x800c128",
+    "0x800c138"
+   ],
+   "tail_ipsr": [
+    0,
+    15,
+    55
+   ],
+   "ticks_total": 176530
+  },
+  "faults": 0,
+  "fault_lines": [
+   "HAL_LOG|WARNING|  system_reset: firmware requested SYSRESETREQ at 0x08013990 (reset #1) -- performing a warm reset to SP=0x20000800 PC=0x0800c001. Flash contents are KEPT, which is the whole point of this reboot."
+  ],
+  "reset_lines": 1,
+  "packets_accepted_guest_count": 2,
+  "alive_at_end": true,
+  "rc": -15,
+  "bin_sha256": [
+   "ea6e96f9c282f93fe0199db77991dcfd422cbf88f174a8043e987455b643bed9"
+  ]
+ }
+}
